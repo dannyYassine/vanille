@@ -9,10 +9,14 @@ export class ObservableFactory {
   static subs = {};
 
   static build<T>(data: T): Observable<T> {
+    return ObservableFactory.buildNode(data);
+  }
+
+  static buildNode(data) {
     data.__proto__.$on = (event, cb) => {
       ObservableFactory.listeners[event] = cb;
     };
-
+    
     return new Proxy(data, {
       get: (target, prop, receiver) => {
         if (prop.startsWith("$") && !prop.startsWith("$on")) {
@@ -23,7 +27,24 @@ export class ObservableFactory {
 
           return ObservableFactory.subs[event];
         }
-        return target[prop];
+
+        const node = target[prop];
+        if (typeof node === 'object' &&
+        !Array.isArray(node)) {
+          return ObservableFactory.buildNode(node);
+        }
+
+        // array of obj
+        if (typeof node === 'object' &&
+        Array.isArray(node) && node.length) {
+          const val = node[0];
+          if (typeof val === 'object' &&
+        !Array.isArray(val)) {
+          return node.map((val)=> ObservableFactory.buildNode(val));
+        }
+        }
+
+        return node;
       },
       set: (obj, prop, value) => {
         const oldValue = obj[prop];

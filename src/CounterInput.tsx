@@ -9,12 +9,14 @@ export class CounterInput extends BaseView {
 
   data() {
     return {
-      name: ''
+      user: {
+        name: '90'
+      }
     };
   }
 
   setBindings(): void {
-    this.state.$on('name', (nv: string) =>{
+    this.state.user.$on('name', (nv: string) =>{
       this.refs.name.textContent = nv;
     })
   }
@@ -22,8 +24,8 @@ export class CounterInput extends BaseView {
   render() {
     return (
       <div>
-        <input value={this.state.name} oninput={(e) => this.state.name = e.target.value} />
-        <p ref="name">{this.state.name}</p>
+        <input value={this.state.user.name} oninput={(e) => this.state.user.name = e.target.value} />
+        <p ref="name">{this.state.user.name}</p>
       </div>
     );
   }
