@@ -1,8 +1,8 @@
 import { BaseView } from "./BaseElement";
-import {h} from './jsx';
 import typescriptLogo from './typescript.svg'
 import viteLogo from '/vite.svg'
 import './counter';
+import './CounterInput';
 import { define } from "./decorators";
 
 @define()
@@ -16,7 +16,7 @@ export class App extends BaseView {
     const counter = {
       initialCount: 3
     };
-    return h(
+    return (
       <div>
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} class="logo" alt="Vite logo" />
@@ -27,6 +27,9 @@ export class App extends BaseView {
         <h1>Vite + TypeScript</h1>
         <div class="card">
           <v-counter ref="counter" counter={counter}></v-counter>
+        </div>
+        <div class="card">
+          <v-counter-input ref="countInput"></v-counter-input>
         </div>
         <p class="read-the-docs">
           Click on the Vite and TypeScript logos to learn more

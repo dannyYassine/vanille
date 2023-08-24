@@ -1,7 +1,6 @@
 import { BaseView } from "./BaseElement"
 import { Observable } from "./Observable";
 import { define } from "./decorators";
-import { h } from "./jsx";
 
 type CounterProps = {counter: {initialCount: number}}
 type CounterData = {count: number}
@@ -27,7 +26,7 @@ export class Counter extends BaseView {
   }
 
   render() {
-    return h(
+    return (
       <button type="button" onclick={() => this.state.count += 1}>
         count is <span ref="count">{this.state.count}</span>
       </button>

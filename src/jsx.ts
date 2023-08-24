@@ -2,8 +2,9 @@ export function h(...args: any[]): any[] {
   return [...args];
 }
 
-export function render(args: Array<Array<unknown>>) {
-  const jsx: Array<unknown> = args[0] as Array<unknown>;
+window.h = h;
+
+export function render(jsx: Array<unknown>) {
   const el: string = jsx[0] as string;
   const attrs: null|object = jsx[1] as null|object;
   const children: Array<string|HTMLElement|Array<unknown>> = (() => {
@@ -37,7 +38,7 @@ export function render(args: Array<Array<unknown>>) {
         return $el.append(child);
       }
       $el.appendChild(
-        render([[child[0] ?? null, child[1] ?? null, child[2] ?? null]])
+        render(child)
       );
     });
   }
