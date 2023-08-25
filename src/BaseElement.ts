@@ -1,5 +1,5 @@
-import {render} from './jsx';
-import { ObservableFactory } from './Observable';
+import { render } from './jsx';
+import { observable } from './Observable';
 
 export abstract class BaseView extends HTMLElement {
   props: unknown = {};
@@ -11,20 +11,20 @@ export abstract class BaseView extends HTMLElement {
 
   constructor() {
     super();
-    this.shadowDom = this.attachShadow({ mode: "open" });
+    this.shadowDom = this.attachShadow({ mode: 'open' });
 
     this.refs = new Proxy(
       {},
       {
         get: (_, prop: string) => {
           return this.shadowDom!.querySelector(`[ref=${prop}]`);
-        },
+        }
       }
     ) as typeof Proxy;
   }
 
   data() {
-      return {}
+    return {};
   }
 
   styles() {
@@ -40,12 +40,12 @@ export abstract class BaseView extends HTMLElement {
   }
 
   buildState() {
-    this.props = ObservableFactory.build(this.props);
-    this.state = ObservableFactory.build(this.data());
+    this.props = observable(this.props);
+    this.state = observable(this.data());
   }
 
   startRender() {
-    this.removeAllChildren()
+    this.removeAllChildren();
     this.renderTemplate();
   }
 
@@ -59,7 +59,7 @@ export abstract class BaseView extends HTMLElement {
     const node = this.render();
 
     const style = document.createElement('style');
-    style.textContent = `@import url("/style.css");`+this.styles();
+    style.textContent = `@import url("/style.css");` + this.styles();
     this.shadowDom?.appendChild(style);
 
     this.shadowDom?.appendChild(render(node));

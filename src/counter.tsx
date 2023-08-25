@@ -1,14 +1,14 @@
-import { BaseView } from "./BaseElement"
-import { Observable } from "./Observable";
-import { define } from "./decorators";
+import { BaseView } from './BaseElement';
+import { Observable } from './Observable';
+import { define } from './decorators';
 
-type CounterProps = {counter: {initialCount: number}}
-type CounterData = {count: number}
+type CounterProps = { counter: { initialCount: number } };
+type CounterData = { count: number };
 
 @define()
 export class Counter extends BaseView {
-  props: Observable<CounterProps>
-  state: Observable<CounterData>
+  props: Observable<CounterProps>;
+  state: Observable<CounterData>;
 
   data(): CounterData {
     return {
@@ -17,17 +17,17 @@ export class Counter extends BaseView {
   }
 
   setBindings(): void {
-    this.state.$on('count', (nv: number) =>{
+    this.state.$on('count', (nv: number) => {
       this.refs.count.textContent = nv;
-    })
-    this.props.$on('counter', (nv: {initialCount: number}) => {
+    });
+    this.props.$on('counter', (nv: { initialCount: number }) => {
       this.state.count = nv.initialCount;
     });
   }
 
   render() {
     return (
-      <button type="button" onclick={() => this.state.count += 1}>
+      <button type="button" onclick={() => (this.state.count += 1)}>
         count is <span ref="count">{this.state.count}</span>
       </button>
     );
