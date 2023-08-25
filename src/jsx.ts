@@ -22,7 +22,6 @@ export function render(jsx: Array<unknown>) {
         $el[key.toLowerCase()] = value;
         return;
       }
-
       if (!$el.props) {
         $el.props = {};
       }

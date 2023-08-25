@@ -6,30 +6,14 @@ export type Observable<T> = T & ObservableEvent;
 
 export function observable<T>(data: T): Observable<T> {
   const obj = {};
-  Object.defineProperty(obj, '$$listeners', {
-    enumerable: false,
-    configurable: false,
-    writable: false,
-    value: {}
-  });
-
-  Object.defineProperty(obj, '$$subs', {
-    enumerable: false,
-    configurable: false,
-    writable: false,
-    value: {}
-  });
+  initialSetup(obj);
 
   Object.entries(data).forEach(([key, value]) => {
-    if (typeof value === 'object' && !Array.isArray(value)) {
+    if (isObject(value)) {
       obj[key] = observable(value);
-    } else if (
-      typeof value === 'object' &&
-      Array.isArray(value) &&
-      value.length
-    ) {
+    } else if (isArray(value) && value.length) {
       const val = value[0];
-      if (typeof val === 'object' && !Array.isArray(val)) {
+      if (isObject(val)) {
         obj[key] = value.map((val) => observable(val));
       }
     } else {
@@ -65,7 +49,12 @@ function buildNode(data) {
     },
     set: (obj, prop, value) => {
       const oldValue = obj[prop];
-      obj[prop] = value;
+
+      if (!value.$$listeners && isObject(value)) {
+        obj[prop] = observable(value);
+      } else {
+        obj[prop] = value;
+      }
       if (obj.$$listeners[prop]) {
         obj.$$listeners[prop].forEach((cb) => {
           cb(value, oldValue, obj);
@@ -74,4 +63,28 @@ function buildNode(data) {
       return true;
     }
   }) as Observable<T>;
+}
+
+function isObject(value) {
+  return typeof value === 'object' && !Array.isArray(value);
+}
+
+function isArray(value) {
+  return typeof value === 'object' && Array.isArray(value);
+}
+
+function initialSetup(obj) {
+  Object.defineProperty(obj, '$$listeners', {
+    enumerable: false,
+    configurable: false,
+    writable: false,
+    value: {}
+  });
+
+  Object.defineProperty(obj, '$$subs', {
+    enumerable: false,
+    configurable: false,
+    writable: false,
+    value: {}
+  });
 }
