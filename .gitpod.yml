@@ -1,0 +1,13 @@
+tasks:
+  - name: bootstrap
+    init: docker-compose pull; docker-compose build
+    command: docker-compose up
+
+ports:
+  - port: 3000
+    onOpen: ignore
+
+vscode:
+  extensions:
+    - ms-azuretools.vscode-docker
+    - ms-vscode.makefile-tools
