@@ -9,6 +9,7 @@ export class CounterInput extends BaseView {
 
   data() {
     return {
+      firstName: '',
       user: {
         name: '90'
       }
@@ -18,14 +19,23 @@ export class CounterInput extends BaseView {
   setBindings(): void {
     this.state.user.$on('name', (nv: string) =>{
       this.refs.name.textContent = nv;
-    })
+    });
+    this.state.user.$on('name', (nv: string) =>{
+      console.log(nv);
+    });
+    this.state.$on('firstName', (nv: string) =>{
+      this.refs.firstName.textContent = nv;
+    });
+    console.log(this.state.user);
   }
 
   render() {
     return (
       <div>
         <input value={this.state.user.name} oninput={(e) => this.state.user.name = e.target.value} />
+        <input value={this.state.firstName} oninput={(e) => this.state.firstName = e.target.value} />
         <p ref="name">{this.state.user.name}</p>
+        <p ref="firstName">{this.state.firstName}</p>
       </div>
     );
   }

@@ -9,48 +9,59 @@ export class ObservableFactory {
   static subs = {};
 
   static build<T>(data: T): Observable<T> {
-    return ObservableFactory.buildNode(data);
+    const obj = {};
+    obj.$$listeners = {};
+    obj.$$subs = {};
+
+    Object.entries(data).forEach(([key, value]) => {
+      if (typeof value === 'object' &&
+        !Array.isArray(value)) {
+          obj[key] =  ObservableFactory.build(value);
+        } else if (typeof value === 'object' &&
+        Array.isArray(value) && value.length) {
+          const val = value[0];
+          if (typeof val === 'object' &&
+        !Array.isArray(val)) {
+          obj[key] = value.map((val)=> ObservableFactory.build(val));
+        }
+        } else {
+          obj[key] = value;
+        }
+    });
+
+    return ObservableFactory.buildNode(obj);
   }
 
   static buildNode(data) {
-    data.__proto__.$on = (event, cb) => {
-      ObservableFactory.listeners[event] = cb;
+    data.$on = (event, cb) => {
+      if (!data.$$listeners[event]) {
+        data.$$listeners[event] = [];
+      }
+     data.$$listeners[event].push(cb);
     };
     
     return new Proxy(data, {
       get: (target, prop, receiver) => {
         if (prop.startsWith("$") && !prop.startsWith("$on")) {
           const event = prop.replace("$", "").toLowerCase();
-          ObservableFactory.subs[event] = (fn) => {
-            ObservableFactory.listeners[event] = fn;
+          target.$$subs[event] = (fn) => {
+            target.$$listeners[event] = fn;
           };
 
-          return ObservableFactory.subs[event];
+          return target.$$subs[event];
         }
 
         const node = target[prop];
-        if (typeof node === 'object' &&
-        !Array.isArray(node)) {
-          return ObservableFactory.buildNode(node);
-        }
-
-        // array of obj
-        if (typeof node === 'object' &&
-        Array.isArray(node) && node.length) {
-          const val = node[0];
-          if (typeof val === 'object' &&
-        !Array.isArray(val)) {
-          return node.map((val)=> ObservableFactory.buildNode(val));
-        }
-        }
 
         return node;
       },
       set: (obj, prop, value) => {
         const oldValue = obj[prop];
         obj[prop] = value;
-        if (ObservableFactory.listeners[prop]) {
-          ObservableFactory.listeners[prop](value, oldValue, obj);
+        if (obj.$$listeners[prop]) {
+         obj.$$listeners[prop].forEach((cb) => {
+            cb(value, oldValue, obj);
+         });
         }
         return true;
       },
