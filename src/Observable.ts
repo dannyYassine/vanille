@@ -10,8 +10,18 @@ export class ObservableFactory {
 
   static build<T>(data: T): Observable<T> {
     const obj = {};
-    obj.$$listeners = {};
-    obj.$$subs = {};
+    Object.defineProperty(obj, '$$listeners', {
+      enumerable: false,
+      configurable: false,
+      writable: false,
+      value: {},
+    });
+    Object.defineProperty(obj, '$$subs', {
+      enumerable: false,
+      configurable: false,
+      writable: false,
+      value: {},
+    });
 
     Object.entries(data).forEach(([key, value]) => {
       if (typeof value === 'object' &&
