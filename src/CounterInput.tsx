@@ -17,6 +17,9 @@ export class CounterInput extends BaseView {
   }
 
   setBindings(): void {
+    this.props.counter.$on('initialCount', (nv) => {
+      this.refs.name.textContent = nv;
+    });
     this.state.user.$on('name', (nv: string) => {
       this.refs.name.textContent = nv;
     });

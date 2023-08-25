@@ -40,7 +40,6 @@ export abstract class BaseView extends HTMLElement {
   }
 
   buildState() {
-    this.props = observable(this.props);
     this.state = observable(this.data());
   }
 

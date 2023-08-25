@@ -26,7 +26,9 @@ export function render(jsx: Array<unknown>) {
         $el.props = {};
       }
       $el.props[key] = value;
-      $el.setAttribute(key, value);
+      try {
+        $el.setAttribute(key, value);
+      } catch (e) {}
     });
   }
   if (children) {

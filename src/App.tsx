@@ -4,18 +4,14 @@ import viteLogo from '/vite.svg';
 import './counter';
 import './CounterInput';
 import { define } from './decorators';
+import { observable } from './Observable';
 
 @define()
 export class App extends BaseView {
   render() {
-    setTimeout(() => {
-      this.refs.counter.props.counter = {
-        initialCount: 5
-      };
-    }, 2000);
-    const counter = {
+    const counter = observable({
       initialCount: 3
-    };
+    });
 
     return (
       <div>
@@ -34,7 +30,7 @@ export class App extends BaseView {
           <v-counter ref="counter" counter={counter}></v-counter>
         </div>
         <div class="card">
-          <v-counter-input ref="countInput"></v-counter-input>
+          <v-counter-input ref="countInput" counter={counter}></v-counter-input>
         </div>
         <p class="read-the-docs">
           Click on the Vite and TypeScript logos to learn more
