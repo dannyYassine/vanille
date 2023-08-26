@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import { observable } from '../src/Observable';
 
 describe('observables', () => {
@@ -42,29 +42,95 @@ describe('observables', () => {
     test('triggers first level changes', async () => {
       const name: string = 'vanille';
       const obj = observable({
-        email: ''
+        email: 'old'
       });
       const promise = new Promise((resolve) => {
-        obj.$on('email', () => {
+        obj.$on('email', (newValue: string, oldValue: string, target) => {
+          expect(newValue).toBe(name);
+          expect(oldValue).toBe('old');
+          expect(target).toEqual(obj);
           resolve({});
         });
       });
+
       obj.email = name;
+
       await promise;
     });
 
     test('triggers nested level changes', async () => {
       const name: string = 'vanille';
       const obj = observable({
-        user: { email: '' }
+        user: { email: 'old' }
       });
       const promise = new Promise((resolve) => {
-        obj.user.$on('email', () => {
+        obj.user.$on('email', (newValue: string, oldValue: string, target) => {
+          expect(newValue).toBe(name);
+          expect(oldValue).toBe('old');
+          expect(target).toEqual(obj.user);
           resolve({});
         });
       });
-      obj.user.email = 'name';
+
+      obj.user.email = name;
+
       await promise;
+    });
+
+    test('triggers deeply nested level changes', async () => {
+      const name: string = 'vanille';
+      const obj = observable({
+        user: { email: '', contact: { firstName: 'old' } }
+      });
+      const promise = new Promise((resolve) => {
+        obj.user.contact.$on(
+          'firstName',
+          (newValue: string, oldValue: string, target) => {
+            expect(newValue).toBe(name);
+            expect(oldValue).toBe('old');
+            expect(target).toEqual(obj.user.contact);
+            resolve({});
+          }
+        );
+      });
+
+      obj.user.contact.firstName = name;
+
+      await promise;
+    });
+  });
+
+  describe('when setting objects', () => {
+    test('should trigger all listeners when prop values changed', async () => {
+      const name: string = 'vanille';
+      const obj = observable({
+        user: { email: 'old' }
+      });
+      const promise = new Promise((resolve) => {
+        obj.user.$on('email', (newValue: string, oldValue: string, target) => {
+          expect(newValue).toBe(name);
+          expect(oldValue).toBe('old');
+          expect(target.email).toBe(name);
+          resolve({});
+        });
+      });
+
+      obj.user = { email: name };
+
+      await promise;
+    });
+
+    test('should not trigger listeners when prop values changed', async () => {
+      const name: string = 'same';
+      const obj = observable({
+        user: { email: 'same' }
+      });
+      const cbSpy = vi.fn();
+
+      obj.user.$on('email', cbSpy);
+      obj.user = { email: name };
+
+      expect(cbSpy).not.toHaveBeenCalled();
     });
   });
 });

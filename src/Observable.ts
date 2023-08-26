@@ -44,8 +44,9 @@ function buildNode(data) {
       const oldValue = obj[prop];
 
       if (!value.$$listeners && isObject(value)) {
+        value = observable(value);
         triggerListeners(obj[prop], value);
-        obj[prop] = observable(value);
+        obj[prop] = value;
       } else {
         obj[prop] = value;
         if (obj.$$listeners[prop]) {
@@ -73,9 +74,9 @@ function triggerListeners(obj, newObject) {
     }
     const val = obj[key];
     if (Array.isArray(val)) {
-        val.forEach(() => {
-          triggerListeners(val, newObject[key]);
-        });
+      val.forEach(() => {
+        triggerListeners(val, newObject[key]);
+      });
     } else {
       triggerListeners(obj[key], newObject[key]);
     }
