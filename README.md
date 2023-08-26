@@ -1,4 +1,6 @@
-# vanille
+<p align="center">
+<img height="400px" style="max-width:100%" src="https://github.com/dannyYassine/vanille/blob/main/vanille.png?raw=true" alt="logo.png">
+</p>
 
 A minimalistic vanilla web component framework
 
