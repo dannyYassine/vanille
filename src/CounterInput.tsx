@@ -20,6 +20,12 @@ export class CounterInput extends BaseView {
     this.props.counter.$on('initialCount', (nv) => {
       this.refs.name.textContent = nv;
     });
+    this.props.counter.user.$on('name', (nv) => {
+      this.refs.name.textContent = nv;
+    });
+    this.props.counter.user.contact.$on('phone', (nv) => {
+      this.refs.phone.textContent = nv;
+    });
     this.state.user.$on('name', (nv: string) => {
       this.refs.name.textContent = nv;
     });
@@ -29,7 +35,6 @@ export class CounterInput extends BaseView {
     this.state.$on('firstName', (nv: string) => {
       this.refs.firstName.textContent = nv;
     });
-    console.log(this.state.user);
   }
 
   render() {
@@ -44,6 +49,7 @@ export class CounterInput extends BaseView {
           oninput={(e) => (this.state.firstName = e.target.value)}
         />
         <p ref="name">{this.state.user.name}</p>
+        <p ref="phone">{this.props.counter.user.contact.phone}</p>
         <p ref="firstName">{this.state.firstName}</p>
       </div>
     );

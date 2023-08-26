@@ -21,9 +21,6 @@ export class Counter extends BaseView {
       this.refs.count.textContent = nv;
       this.props.counter.initialCount = nv;
     });
-    this.props.$on('counter', (nv: { initialCount: number }) => {
-      this.state.count = nv.initialCount;
-    });
   }
 
   render() {

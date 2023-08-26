@@ -9,11 +9,11 @@ export function observable<T>(data: T): Observable<T> {
   initialSetup(obj);
 
   Object.entries(data).forEach(([key, value]) => {
-    if (isObject(value)) {
+    if (isObject(value) && !value.$$subs) {
       obj[key] = observable(value);
     } else if (isArray(value) && value.length) {
       const val = value[0];
-      if (isObject(val)) {
+      if (isObject(val) && !value.$$subs) {
         obj[key] = value.map((val) => observable(val));
       }
     } else {
@@ -34,35 +34,52 @@ function buildNode(data) {
 
   return new Proxy(data, {
     get: (target, prop, receiver) => {
-      if (prop.startsWith('$') && !prop.startsWith('$on')) {
-        const event = prop.replace('$', '').toLowerCase();
-        target.$$subs[event] = (fn) => {
-          target.$$listeners[event] = fn;
-        };
-
-        return target.$$subs[event];
+      if (prop === '$$listeners' || prop === '$$subs' || prop === '$on') {
+        return target[prop];
       }
-
       const node = target[prop];
-
       return node;
     },
     set: (obj, prop, value) => {
       const oldValue = obj[prop];
 
       if (!value.$$listeners && isObject(value)) {
+        triggerListeners(obj[prop], value);
         obj[prop] = observable(value);
       } else {
         obj[prop] = value;
-      }
-      if (obj.$$listeners[prop]) {
-        obj.$$listeners[prop].forEach((cb) => {
-          cb(value, oldValue, obj);
-        });
+        if (obj.$$listeners[prop]) {
+          obj.$$listeners[prop].forEach((cb) => {
+            cb(value, oldValue, obj);
+          });
+        }
       }
       return true;
     }
   }) as Observable<T>;
+}
+
+function triggerListeners(obj, newObject) {
+  if (!isObject(obj)) {
+    return;
+  }
+  Object.entries(obj).forEach(([key, value]) => {
+    if (obj.$$listeners[key]) {
+      if (obj[key] !== newObject[key]) {
+        obj.$$listeners[key].forEach((cb) => {
+          cb(newObject[key], obj[key], newObject);
+        });
+      }
+    }
+    const val = obj[key];
+    if (Array.isArray(val)) {
+        val.forEach(() => {
+          triggerListeners(val, newObject[key]);
+        });
+    } else {
+      triggerListeners(obj[key], newObject[key]);
+    }
+  });
 }
 
 function isObject(value) {

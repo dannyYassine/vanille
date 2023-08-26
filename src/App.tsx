@@ -10,7 +10,13 @@ import { observable } from './Observable';
 export class App extends BaseView {
   render() {
     const counter = observable({
-      initialCount: 3
+      initialCount: 3,
+      user: {
+        name: '',
+        contact: {
+          phone: 123
+        }
+      }
     });
 
     return (
