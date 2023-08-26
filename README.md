@@ -58,23 +58,23 @@ export class App extends BaseView {
 }
 ```
 
-## Observable `data` and `props`
+## Pass objects as observable `data` and `props`
 
 ```ts
-const name = 'vanille';
+const user = { name: 'vanille' };
 
-<v-app name="name"></v-app>;
+<v-app user="user"></v-app>;
 
 export class App extends BaseView {
   setBindings() {
-    this.props.$on('name', (newValue) => {
+    this.props.user.$on('name', (newValue) => {
       // name changed
     });
   }
 }
 ```
 
-## Use `Refs` to update the DOM
+## Use `refs` to update the DOM
 
 ```ts
 export class App extends BaseView {
