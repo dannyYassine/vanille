@@ -5,6 +5,7 @@ import './counter';
 import './CounterInput';
 import { define } from './decorators';
 import { observable } from './Observable';
+import './Route';
 
 @define()
 export class App extends BaseView {
@@ -21,6 +22,17 @@ export class App extends BaseView {
 
     return (
       <div>
+        <v-route path="/">
+          home
+        </v-route>
+        <v-route path="/left">
+          left
+        </v-route>
+        <v-route path="/right">
+          right
+        </v-route>
+        <button onclick={() => window.history.pushState({}, '', '/left')}>LEFT</button>
+        <button onclick={() => window.history.pushState({}, '', '/right')}>RIGHT</button>
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} class="logo" alt="Vite logo" />
         </a>
