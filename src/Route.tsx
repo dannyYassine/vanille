@@ -1,21 +1,37 @@
 import { BaseView } from "./BaseElement";
 import { define } from "./decorators";
 
+history.pushState = (f => function pushState() {
+  var ret = f.apply(this, arguments);
+  window.dispatchEvent(new Event('pushstate'));
+  window.dispatchEvent(new Event('locationchange'));
+  return ret;
+})(history.pushState);
+
+history.replaceState = (f => function replaceState() {
+  var ret = f.apply(this, arguments);
+  window.dispatchEvent(new Event('replacestate'));
+  window.dispatchEvent(new Event('locationchange'));
+  return ret;
+})(history.replaceState);
+
+window.addEventListener('popstate', () => {
+  window.dispatchEvent(new Event('locationchange'))
+});
+
 @define()
-export class Route extends BaseView
-{
+export class Route extends BaseView {
   matches: boolean = false;
 
   setBindings(): void {
-    window.navigation.addEventListener("navigate", (e) => {
-      this.checkPath(e.destination.url);
+    window.addEventListener("locationchange", (e) => {
+      this.checkPath();
     });
-
-    this.checkPath(window.location.href);
+    this.checkPath();
   }
 
-  checkPath(url) {
-    if (url === `${window.location.origin}${this.props.path}`) {
+  checkPath() {
+    if (window.location.pathname === this.props.path || this.matchesPattern()) {
       if (!this.matches) {
         this.matches = true;
         this.update();
@@ -24,6 +40,19 @@ export class Route extends BaseView
       this.matches = false;
       this.update();
     }
+  }
+
+  matchesPattern() {
+    const paths = window.location.pathname.split('/');
+    const propsPaths = this.props.path.split('/');
+
+    if (paths.length !== propsPaths.length) {
+      return false;
+    }
+    return propsPaths.filter((path, index) => {
+      if (path === '/' || path.startsWith(':')) return true;
+      return path === paths[index];
+    }).length === paths.length;
   }
 
   render() {

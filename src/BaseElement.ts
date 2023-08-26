@@ -59,7 +59,8 @@ export abstract class BaseView extends HTMLElement {
     const node = this.render();
 
     const style = document.createElement('style');
-    style.textContent = `@import url("/style.css");` + this.styles();
+    style.textContent =
+      `@import url("${window.location.origin}/style.css");` + this.styles();
     this.shadowDom?.appendChild(style);
 
     this.shadowDom?.appendChild(render(node));
