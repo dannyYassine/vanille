@@ -5,7 +5,21 @@
   A minimalistic vanilla web component framework
 </p>
 
-## Routing
+## web components with JSX
+
+```ts
+export class App extends BaseView {
+  render() {
+    return (
+      <div>
+        <span>JSX!</span>
+      </div>
+    );
+  }
+}
+```
+
+## routing
 
 ```jsx
 <v-route path="/">
@@ -19,7 +33,7 @@
 </v-route>
 ```
 
-## Observables
+## observables
 
 ```ts
 const object = observable({
@@ -44,21 +58,7 @@ user.contact.firstName = 'vanille';
 // log: 'vanille' '' { contact: { firstName: '' } }
 ```
 
-## Web components with JSX
-
-```ts
-export class App extends BaseView {
-  render() {
-    return (
-      <div>
-        <span>JSX!</span>
-      </div>
-    );
-  }
-}
-```
-
-## Pass objects as observable `data` and `props`
+## objects as observables with `props`
 
 ```ts
 const user = { name: 'vanille' };
@@ -74,7 +74,25 @@ export class App extends BaseView {
 }
 ```
 
-## Use `refs` to update the DOM
+## data as observables with `data()`
+
+```ts
+export class App extends BaseView {
+  data() {
+    return {
+      name: 'vanille'
+    };
+  }
+
+  setBindings() {
+    this.data.$on('name', (newValue) => {
+      // name changed
+    });
+  }
+}
+```
+
+## use `refs` to update the DOM
 
 ```ts
 export class App extends BaseView {
