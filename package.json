@@ -10,8 +10,17 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.1.2",
+    "@testing-library/react": "^14.0.0",
+    "@vitejs/plugin-react": "^4.0.4",
+    "@vitest/browser": "^0.34.3",
+    "jsdom": "^22.1.0",
+    "playwright": "^1.37.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "typescript": "^5.0.2",
     "vite": "^4.4.9",
-    "vitest": "^0.34.3"
+    "vitest": "^0.34.3",
+    "webdriverio": "^8.15.8"
   }
 }

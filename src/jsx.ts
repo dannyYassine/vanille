@@ -4,7 +4,7 @@ export function h(...args: any[]): any[] {
 
 window.h = h;
 
-export function render(jsx: Array<unknown>) {
+export function render(jsx: Array<unknown>, document) {
   const el: string = jsx[0] as string;
   const attrs: null | object = jsx[1] as null | object;
   const children: Array<string | HTMLElement | Array<unknown>> = (() => {
@@ -39,7 +39,7 @@ export function render(jsx: Array<unknown>) {
       if ('nodeName' in child || child instanceof HTMLElement) {
         return $el.append(child);
       }
-      $el.appendChild(render(child));
+      $el.appendChild(render(child, document));
     });
   }
 
