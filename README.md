@@ -1,5 +1,5 @@
 <p align="center">
-<img height="400px" style="max-width:100%; object-fit:contain;" src="https://github.com/dannyYassine/vanille/blob/main/vanille.png?raw=true" alt="logo.png">
+<img height="400px" style="max-width:100%; object-fit: contain;" src="https://github.com/dannyYassine/vanille/blob/main/vanille.png?raw=true" alt="logo.png">
 </p>
 <p align="center">
   A minimalistic vanilla web component framework
