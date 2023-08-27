@@ -1,32 +1,15 @@
-import { describe, expect, test, vi } from 'vitest';
-import { BaseView } from '../src/BaseElement';
-import { render } from '../src/jsx';
-import { define } from '../src/decorators';
-import { JSDOM } from 'jsdom';
+import { describe, expect, test } from 'vitest';
+import { mount } from './utils/utils';
+import './utils/Test';
 
 describe('BaseView.tsx', () => {
-  // describe('rendering', () => {
-  //   test('can render', () => {
-  //     const $el = render(<v-test />);
+  describe('rendering', () => {
+    test('can render its own template', () => {
+      const $shadow = mount(<v-test />)
 
-  //     expect($el.querySelector('test')).toBeTruthy();
-  //   });
-  // });
+      const $el = $shadow.querySelector('#test');
 
-  describe('props', () => {
-    test('can pass object props', () => {
-      const dom = new JSDOM(`<!DOCTYPE html><p>Hello world</p>`, { runScripts: 'dangerously', resources: 'usable' });
-      global.window = dom.window;
-      const $el = render(<div><span test-id="test"></span></div>, dom.window.document);
-      dom.window.document.body.appendChild($el);
-      expect(dom.window.document.body.querySelector('[test-id="test"')).toBeTruthy();
+      expect($el).toBeTruthy();
     });
   });
 });
-
-@define()
-class Test extends BaseView {
-  render() {
-    return <div test-id="test"></div>;
-  }
-}
