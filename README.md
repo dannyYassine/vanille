@@ -111,3 +111,18 @@ export class App extends BaseView {
   }
 }
 ```
+
+## testing
+```tsx
+import { mount } from './test-utils';
+
+describe('rendering', () => {
+  test('can render its template', () => {
+    const $shadow = mount(<v-test />)
+
+    const $el = $shadow.querySelector('[data-id="test"');
+
+    expect($el).toBeTruthy();
+  });
+});
+```
