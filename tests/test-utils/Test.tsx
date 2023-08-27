@@ -2,8 +2,13 @@ import { BaseView } from '../../src/BaseElement';
 import { define } from '../../src/decorators';
 
 @define()
-class Test extends BaseView {
+export class Test extends BaseView {
     render() {
-        return <div data-id="test"></div>;
+        return (
+            <div>
+                <div data-id="test"></div>
+                <div data-id="name">{this.props.name}</div>
+            </div>
+        );
     }
 }
