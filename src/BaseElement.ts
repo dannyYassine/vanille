@@ -68,8 +68,4 @@ export abstract class BaseView extends HTMLElement {
   update() {
     this.startRender();
   }
-
-  attributeChanged(prop) {
-    this.update();
-  }
 }

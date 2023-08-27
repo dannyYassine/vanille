@@ -24,7 +24,7 @@ export class Route extends BaseView {
   matches: boolean = false;
 
   setBindings(): void {
-    window.addEventListener("locationchange", (e) => {
+    window.addEventListener("locationchange", () => {
       this.checkPath();
     });
     this.checkPath();
