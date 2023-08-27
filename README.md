@@ -115,10 +115,19 @@ export class App extends BaseView {
 ## testing
 ```tsx
 import { mount } from './test-utils';
+import { Test } from './test-utils/Test';
 
 describe('rendering', () => {
-  test('can render its template', () => {
+  test('can render from jsx', () => {
     const $shadow = mount(<v-test />)
+
+    const $el = $shadow.querySelector('[data-id="test"');
+
+    expect($el).toBeTruthy();
+  });
+
+  test('can render from web component class', () => {
+    const $shadow = mount(Test)
 
     const $el = $shadow.querySelector('[data-id="test"');
 
