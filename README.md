@@ -1,8 +1,15 @@
 <p align="center">
-<img height="400px" style="max-width:100%; object-fit: contain;" src="https://github.com/dannyYassine/vanille/blob/main/vanille.png?raw=true" alt="logo.png">
+<img height="auto" style="width: 320px; object-fit: contain;" src="https://github.com/dannyYassine/vanille/blob/main/vanille.png?raw=true" alt="logo.png">
 </p>
 <p align="center">
   A minimalistic vanilla web component framework
+</p>
+
+<p align="center">
+    <a><img src="https://img.shields.io/bundlephobia/min/vanille.svg" alt="Minified size"></a>
+    <a href="https://npm-stat.com/charts.html?package=vanille"><img src="https://img.shields.io/npm/dm/vanille.svg" alt="Downloads"></a>
+    <img loading="lazy" alt="Dependencies" src="https://img.shields.io/badge/dependencies-none-pink" class="img_ev3q">
+    <img loading="lazy" alt="Dependencies" src="https://img.shields.io/badge/license-MIT-green" class="img_ev3q">
 </p>
 
 ## web components with JSX
@@ -85,7 +92,7 @@ export class App extends BaseView {
   }
 
   setBindings() {
-    this.data.$on('name', (newValue) => {
+    this.state.$on('name', (newValue) => {
       // name changed
     });
   }
