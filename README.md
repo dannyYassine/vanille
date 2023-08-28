@@ -91,7 +91,7 @@ export class App extends BaseView {
   }
 
   setBindings() {
-    this.data.$on('name', (newValue) => {
+    this.state.$on('name', (newValue) => {
       // name changed
     });
   }
