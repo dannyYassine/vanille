@@ -9,6 +9,7 @@
     <a><img src="https://img.shields.io/bundlephobia/min/vanille.svg" alt="Minified size"></a>
     <a href="https://npm-stat.com/charts.html?package=vanille"><img src="https://img.shields.io/npm/dm/vanille.svg" alt="Downloads"></a>
     <img loading="lazy" alt="Dependencies" src="https://img.shields.io/badge/dependencies-none-pink" class="img_ev3q">
+    <img loading="lazy" alt="Dependencies" src="https://img.shields.io/badge/license-MIT-green" class="img_ev3q">
 </p>
 
 ## web components with JSX
