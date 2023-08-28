@@ -10,6 +10,7 @@ export function mount(template, renderingOptions?: RenderingOptions): typeof Sha
         template = new template();
         template.props = {...renderingOptions?.props};
         document.body.appendChild(template);
+
         return template.shadowRoot;
     } catch (e) {
         $el = render(template, document);

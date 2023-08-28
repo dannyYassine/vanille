@@ -1,4 +1,4 @@
-import { hasJsxTemplate, hasObservableState, hasRefs, hasShadowDom, hasObservableProps, define } from './decorators';
+import { hasJsxTemplate, hasObservableState, hasRefs, hasObservableProps } from './decorators';
 
 @hasRefs()
 @hasJsxTemplate()
@@ -9,6 +9,11 @@ export abstract class BaseView extends HTMLElement {
   state: unknown = {};
   refs: typeof Proxy;
   shadowDom: ShadowRoot;
+
+  constructor() {
+    super();
+    this.shadowDom = this.attachShadow({mode: 'open'});
+  }
 
   abstract render(): any;
 
