@@ -12,16 +12,16 @@ export abstract class BaseView extends HTMLElement {
 
   constructor() {
     super();
-    this.shadowDom = this.attachShadow({mode: 'open'});
+    this.shadowDom = this.attachShadow({ mode: 'open' });
   }
 
   abstract render(): any;
 
-  globalStylesheet() {
-    return `@import url("${window.location.origin}/style.css");`;
-  }
+  // globalStylesheet() {
+  //   return `@import url("${window.location.origin}/style.css");`;
+  // }
 
-  setBindings() {}
+  setBindings() { }
 
   protected connectedCallback() {
     this.buildProps();
