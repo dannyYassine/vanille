@@ -1,6 +1,9 @@
-import { render } from './jsx';
-import { observable } from './Observable';
+import { hasJsxTemplate, hasObservableState, hasRefs, hasShadowDom, hasObservableProps, define } from './decorators';
 
+@hasRefs()
+@hasJsxTemplate()
+@hasObservableProps()
+@hasObservableState()
 export abstract class BaseView extends HTMLElement {
   props: unknown = {};
   state: unknown = {};
@@ -9,44 +12,17 @@ export abstract class BaseView extends HTMLElement {
 
   abstract render(): any;
 
-  constructor() {
-    super();
-    this.shadowDom = this.attachShadow({ mode: 'open' });
-
-    this.refs = new Proxy(
-      {},
-      {
-        get: (_, prop: string) => {
-          return this.shadowDom!.querySelector(`[ref=${prop}]`);
-        }
-      }
-    ) as typeof Proxy;
-  }
-
-  data() {
-    return {};
-  }
-
-  styles() {
-    return ``;
+  globalStylesheet() {
+    return `@import url("${window.location.origin}/style.css");`;
   }
 
   setBindings() {}
 
   protected connectedCallback() {
+    this.buildProps();
     this.buildState();
-    this.startRender();
-    this.setBindings();
-  }
-
-  buildState() {
-    this.props = observable(this.props);
-    this.state = observable(this.data());
-  }
-
-  startRender() {
-    this.removeAllChildren();
     this.renderTemplate();
+    this.setBindings();
   }
 
   removeAllChildren() {
@@ -55,17 +31,8 @@ export abstract class BaseView extends HTMLElement {
     }
   }
 
-  renderTemplate() {
-    const node = this.render();
-    const style = document.createElement('style');
-    style.textContent =
-      `@import url("${window.location.origin}/style.css");` + this.styles();
-    this.shadowDom?.appendChild(style);
-
-    this.shadowDom?.appendChild(render(node, window.document));
-  }
-
   update() {
-    this.startRender();
+    this.removeAllChildren();
+    this.renderTemplate();
   }
 }
