@@ -5,6 +5,11 @@
   A minimalistic vanilla web component framework
 </p>
 
+<p align="center">
+    <a><img src="https://img.shields.io/bundlephobia/min/vanille.svg" alt="Minified size"></a>
+    <a href="https://npm-stat.com/charts.html?package=vanille"><img src="https://img.shields.io/npm/dm/vanille.svg" alt="Downloads"></a>
+</p>
+
 ## web components with JSX
 
 ```ts
