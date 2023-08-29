@@ -63,6 +63,24 @@ describe('BaseView.tsx', () => {
     });
   });
 
+  describe('function update', () => {
+    test('does a full refresh of the DOM template', () => {
+      const $component = mount(<v-test name={'vanille'} />);
+
+      let $el = $component.refs.name;
+
+      $component.props.name = 'strawberry';
+
+      expect($el.textContent).toBe('vanille');
+
+      $component.update();
+      
+      $el = $component.refs.name;
+
+      expect($el.textContent).toBe('strawberry');
+    });
+  });
+
   describe('rendering as web component class', () => {
     test('can render its own template with web component class', () => {
       const $component = mount(Test);
