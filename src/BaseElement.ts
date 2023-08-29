@@ -10,10 +10,10 @@ export abstract class BaseView extends HTMLElement {
   refs: typeof Proxy;
   shadowDom: ShadowRoot;
 
-  constructor() {
-    super();
-    this.shadowDom = this.attachShadow({ mode: 'open' });
-  }
+  // constructor() {
+  //   super();
+  //   this.shadowDom = this.attachShadow({ mode: 'open' });
+  // }
 
   abstract render(): any;
 
