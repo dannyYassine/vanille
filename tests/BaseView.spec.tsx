@@ -5,7 +5,7 @@ import { Test } from './test-utils/Test';
 describe('BaseView.tsx', () => {
   describe('rendering as jsx template', () => {
     test('can render its own template with JSX', () => {
-      const $shadow = mount(<v-test />)
+      const $shadow = mount(<v-test />);
 
       const $el = $shadow.querySelector('[data-id="test"');
 
@@ -14,18 +14,28 @@ describe('BaseView.tsx', () => {
 
     test('can render with attributes', () => {
       const name = 'vanille';
-      const $shadow = mount(<v-test name={name} />)
+      const $shadow = mount(<v-test name={name} />);
 
       const $el = $shadow.querySelector('[data-id="name"]');
 
       expect($el).toBeTruthy();
       expect($el.textContent).toBe(name);
     });
+
+    test('can render with attributes as objects', () => {
+      const user = { name: 'vanille' };
+      const $shadow = mount(<v-test user={user} />);
+
+      const $el = $shadow.querySelector('[data-id="user.name"]');
+
+      expect($el).toBeTruthy();
+      expect($el.textContent).toBe(user.name);
+    });
   });
 
   describe('rendeing as web component class', () => {
     test('can render its own template with web component class', () => {
-      const $shadow = mount(Test)
+      const $shadow = mount(Test);
 
       const $el = $shadow.querySelector('[data-id="test"');
 
@@ -34,12 +44,22 @@ describe('BaseView.tsx', () => {
 
     test('can render its own template with web component class', () => {
       const name = 'vanille';
-      const $shadow = mount(Test, { props: { name } })
+      const $shadow = mount(Test, { props: { name } });
 
       const $el = $shadow.querySelector('[data-id="name"]');
 
       expect($el).toBeTruthy();
       expect($el.textContent).toBe(name);
     });
-  })
+
+    test('can render with attributes as objects', () => {
+      const user = { name: 'vanille' };
+      const $shadow = mount(Test, { props: { user } });
+
+      const $el = $shadow.querySelector('[data-id="user.name"]');
+
+      expect($el).toBeTruthy();
+      expect($el.textContent).toBe(user.name);
+    });
+  });
 });

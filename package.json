@@ -7,11 +7,14 @@
     "dev": "vite --host",
     "test": "vitest run",
     "test:watch": "vitest watch",
+    "test:coverage": "vitest run --coverage",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
   "devDependencies": {
     "@vitest/browser": "^0.34.3",
+    "@vitest/coverage-istanbul": "^0.34.3",
+    "coveralls": "^3.1.0",
     "jsdom": "^22.1.0",
     "playwright": "^1.37.1",
     "typescript": "^5.0.2",
