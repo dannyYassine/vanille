@@ -51,6 +51,18 @@ describe('BaseView.tsx', () => {
     });
   });
 
+  describe('getter refs', () => {
+    test('dynamically queries DOM element as getter properties', () => {
+      const $component = mount(<v-test name={'vanille'} />);
+
+      const $el = $component.refs.name;
+
+      expect($el).toBeTruthy();
+      expect($el instanceof HTMLElement).toBeTruthy();
+      expect($el.textContent).toBe('vanille');
+    });
+  });
+
   describe('rendering as web component class', () => {
     test('can render its own template with web component class', () => {
       const $component = mount(Test);
