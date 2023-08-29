@@ -36,6 +36,21 @@ describe('observables', () => {
 
       expect(obj.users[0].contact.firstName).toEqual(name);
     });
+
+    test('can build with array of objects', () => {
+      const name: string = 'vanille';
+      const obj = observable({
+        users: [
+          {
+            contact: {
+              firstName: name
+            }
+          }
+        ]
+      });
+
+      expect(obj.users[0].contact.firstName).toEqual(name);
+    });
   });
 
   describe('function $on', () => {

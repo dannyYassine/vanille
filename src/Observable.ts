@@ -13,7 +13,7 @@ export function observable<T>(data: T): Observable<T> {
       obj[key] = observable(value);
     } else if (isArray(value) && value.length) {
       const val = value[0];
-      if (isObject(val) && !value.$$subs) {
+      if (isObject(val) && !val.$$subs) {
         obj[key] = value.map((val) => observable(val));
       }
     } else {
