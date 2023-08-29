@@ -126,6 +126,20 @@ describe('BaseView.tsx', () => {
       $component.onclick();
       expect(user.name).toBe('strawberry');
     });
+
+    test('can render html element as expressions', () => {
+      const $p = document.createElement('p');
+      $p.setAttribute('ref', 'slotvanilla');
+      $p.textContent = 'slot vanilla';
+      const $component = mount(
+        <v-test>
+          {$p}
+        </v-test>
+      );
+
+      expect(document.querySelector('[ref="slotvanilla"]')).not.toBeNull();
+      expect(document.querySelector('[ref="slotvanilla"]').textContent).toBe('slot vanilla');
+    });
   });
 
   describe('rendering as web component class', () => {

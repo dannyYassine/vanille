@@ -9,6 +9,7 @@ export class Test extends BaseView {
         <div data-id="test"></div>
         <div ref="name" data-id="name">{this.props.name}</div>
         <div data-id="user.name">{this.props.user?.name}</div>
+        <slot></slot>
       </div>
     );
   }
