@@ -40,10 +40,9 @@ export class TestWithPropListeners extends BaseView {
       this.refs.username.textContent = nv;
     });
     this.props.$on('user', (nv) => {
-      console.log('123');
       this.refs.user.textContent = nv.name;
     });
-  } 
+  }
 
   render() {
     return (

@@ -115,6 +115,19 @@ describe('BaseView.tsx', () => {
     });
   });
 
+  describe('jsx template', () => {
+    test('can assign events starting with <on*>', () => {
+      const user = {
+          name: 'vanille' 
+      };
+      const $component = mount(<v-test user={user} onclick={() => user.name = 'strawberry'} />);
+
+      expect($component.onclick).toBeDefined();
+      $component.onclick();
+      expect(user.name).toBe('strawberry');
+    });
+  });
+
   describe('rendering as web component class', () => {
     test('can render its own template with web component class', () => {
       const $component = mount(Test);
