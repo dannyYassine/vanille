@@ -14,12 +14,12 @@ export function mount(
     template.props = { ...renderingOptions?.props };
     document.body.appendChild(template);
 
-    return template.shadowRoot;
+    return template;
   } catch (e) {
     $el = render(template, document);
   }
 
   document.body.appendChild($el);
 
-  return $el.shadowRoot;
+  return $el;
 }

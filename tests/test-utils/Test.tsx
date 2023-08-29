@@ -13,3 +13,22 @@ export class Test extends BaseView {
     );
   }
 }
+
+@define()
+export class TestWithData extends BaseView {
+  data() {
+    return {
+      user: {
+        name: 'vanille' 
+      }
+    };
+  }
+
+  render() {
+    return (
+      <div>
+        <div data-id="user.name">{this.state.user.name}</div>
+      </div>
+    );
+  }
+}
