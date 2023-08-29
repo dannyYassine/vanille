@@ -46,14 +46,13 @@ function buildNode(data) {
       if (!value.$$listeners && isObject(value)) {
         value = observable(value);
         triggerListeners(obj[prop], value);
-        obj[prop] = value;
-      } else {
-        obj[prop] = value;
-        if (obj.$$listeners[prop]) {
-          obj.$$listeners[prop].forEach((cb) => {
-            cb(value, oldValue, obj);
-          });
-        }
+      }
+
+      obj[prop] = value;
+      if (obj.$$listeners[prop]) {
+        obj.$$listeners[prop].forEach((cb) => {
+          cb(value, oldValue, obj);
+        });
       }
       return true;
     }

@@ -32,3 +32,25 @@ export class TestWithData extends BaseView {
     );
   }
 }
+
+@define()
+export class TestWithPropListeners extends BaseView {
+  setBindings(): void {
+    this.props.user.$on('name', (nv) => {
+      this.refs.username.textContent = nv;
+    });
+    this.props.$on('user', (nv) => {
+      console.log('123');
+      this.refs.user.textContent = nv.name;
+    });
+  } 
+
+  render() {
+    return (
+      <div>
+        <div ref="username" data-id="user.name">{this.props.user.name}</div>
+        <div ref="user" data-id="user.name">{this.props.user.name}</div>
+      </div>
+    );
+  }
+}

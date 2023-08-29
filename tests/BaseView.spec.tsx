@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 import { mount } from './test-utils';
-import { Test, TestWithData } from './test-utils/Test';
+import { Test, TestWithData, TestWithPropListeners } from './test-utils/Test';
 
 describe('BaseView.tsx', () => {
   describe('rendering as jsx template', () => {
@@ -77,6 +77,40 @@ describe('BaseView.tsx', () => {
       
       $el = $component.refs.name;
 
+      expect($el.textContent).toBe('strawberry');
+    });
+  });
+
+  describe('props', () => {
+    test('trigger listeners when lower properties changed', () => {
+      const user = {
+          name: 'vanille' 
+      };
+      const $component = mount(<v-test-with-prop-listeners user={user} />);
+
+      let $el = $component.refs.username;
+
+      expect($el.textContent).toBe('vanille');
+
+      $component.props.user = {
+        name: 'strawberry' 
+      }
+      expect($el.textContent).toBe('strawberry');
+    });
+
+    test('trigger listeners when root object changes', () => {
+      const user = {
+          name: 'vanille' 
+      };
+      const $component = mount(<v-test-with-prop-listeners user={user} />);
+
+      let $el = $component.refs.user;
+
+      expect($el.textContent).toBe('vanille');
+
+      $component.props.user = {
+        name: 'strawberry' 
+      }
       expect($el.textContent).toBe('strawberry');
     });
   });
