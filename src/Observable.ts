@@ -5,25 +5,31 @@ export interface ObservableEvent {
 export type Observable<T> = T & ObservableEvent;
 
 export function observable<T>(data: T): Observable<T> {
-  const obj = {};
+  const obj = isArray(data) ? [] : {};
   initialSetup(obj);
 
+  mapObject(obj, data);
+  
+  return buildNode(obj);
+}
+
+function mapObject(obj, data) {
   Object.entries(data).forEach(([key, value]) => {
     if (isObject(value) && !value.$$subs) {
       obj[key] = observable(value);
     } else if (isArray(value) && value.length) {
       const val = value[0];
       if (isObject(val) && !val.$$subs) {
-        obj[key] = value.map((val) => observable(val));
+        const obArray = value.map((val) => observable(val));
+        initialSetup(obArray);
+        obj[key] = obArray;
       } else if (!isObject(val) && !isArray(val)) {
-        obj[key] = value;
+        obj[key] = observable(value);
       }
     } else {
       obj[key] = value;
     }
   });
-
-  return buildNode(obj);
 }
 
 function buildNode(data) {
