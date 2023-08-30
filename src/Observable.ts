@@ -15,6 +15,8 @@ export function observable<T>(data: T): Observable<T> {
       const val = value[0];
       if (isObject(val) && !val.$$subs) {
         obj[key] = value.map((val) => observable(val));
+      } else if (!isObject(val) && !isArray(val)) {
+        obj[key] = value;
       }
     } else {
       obj[key] = value;
@@ -42,7 +44,7 @@ function buildNode(data) {
     },
     set: (obj, prop, value) => {
       const oldValue = obj[prop];
-
+      
       if (!value.$$listeners && isObject(value)) {
         value = observable(value);
         triggerListeners(obj[prop], value);
@@ -64,6 +66,7 @@ function triggerListeners(obj, newObject) {
     return;
   }
   Object.entries(obj).forEach(([key, value]) => {
+    
     if (obj.$$listeners[key]) {
       if (obj[key] !== newObject[key]) {
         obj.$$listeners[key].forEach((cb) => {
@@ -71,14 +74,14 @@ function triggerListeners(obj, newObject) {
         });
       }
     }
-    // const val = obj[key];
-    // if (Array.isArray(val)) {
-    //   val.forEach(() => {
-    //     triggerListeners(val, newObject[key]);
-    //   });
-    // } else {
+    const val = obj[key];
+    if (Array.isArray(val)) {
+      val.forEach(() => {
+        triggerListeners(val, newObject[key]);
+      });
+    } else {
       triggerListeners(obj[key], newObject[key]);
-    // }
+    }
   });
 }
 

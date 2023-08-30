@@ -9,6 +9,14 @@ describe('observables', () => {
       expect(obj).toBeTruthy();
     });
 
+    test('can build array of primitives', async () => {
+      const obj = observable({
+        users: [{contact_ids: [1, 2]}]
+      });
+
+      expect(obj.users[0].contact_ids).toEqual([1, 2]);
+    });
+
     test('can build with nested objects', () => {
       const name: string = 'vanille';
       const obj = observable({
@@ -226,7 +234,7 @@ describe('observables', () => {
       await promise;
     });
 
-    test('triggers when non object is updated inside an array', async () => {
+    test('triggers when non object property is updated inside an array', async () => {
       const obj = observable({
         users: [{contacts: [], email: ''}]
       });
