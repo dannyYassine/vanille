@@ -206,6 +206,25 @@ describe('observables', () => {
 
       await promise;
     });
+
+    test('triggers when object is updated containing an array objects', async () => {
+      const obj = observable({
+        users: [{contacts: [{firstName: ''}]}]
+      });
+      const promise = new Promise((resolve) => {
+        obj.$on('users', (newValue: string, oldValue: string) => {
+          expect(newValue[0].contacts[0].firstName).toEqual('newname');
+          // expect(oldValue[0].contacts[0].firstName).toEqual('');
+          resolve({});
+        });
+      });
+
+      const users = obj.users;
+      users[0].contacts[0].firstName = 'newname';
+      obj.users = users;
+
+      await promise;
+    });
   });
 
   describe('when setting objects', () => {
