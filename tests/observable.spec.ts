@@ -73,6 +73,34 @@ describe('observables', () => {
       await promise;
     });
 
+    test('can have multiple listeners', async () => {
+      const name: string = 'vanille1';
+      const obj = observable({
+        email: 'old'
+      });
+      const promise1 = new Promise((resolve) => {
+        obj.$on('email', (newValue: string, oldValue: string, target) => {
+          expect(newValue).toBe(name);
+          expect(oldValue).toBe('old');
+          expect(target).toEqual(obj);
+          resolve({});
+        });
+      });
+      const promise2 = new Promise((resolve) => {
+        obj.$on('email', (newValue: string, oldValue: string, target) => {
+          expect(newValue).toBe(name);
+          expect(oldValue).toBe('old');
+          expect(target).toEqual(obj);
+          resolve({});
+        });
+      });
+
+      obj.email = name;
+
+      await promise1;
+      await promise2;
+    });
+
     test('triggers nested level changes', async () => {
       const name: string = 'vanille';
       const obj = observable({
@@ -151,6 +179,30 @@ describe('observables', () => {
       });
 
       obj.users[0].email = 'new';
+
+      await promise;
+    });
+
+    test('triggers when object is updated containing an array objects', async () => {
+      const obj = observable({
+        users: []
+      });
+      const promise = new Promise((resolve) => {
+        obj.$on('users', (newValue: string, oldValue: string, target) => {
+          expect(newValue).toEqual(
+            [{email: 'email'}]
+          );
+          expect(oldValue).toEqual([{email: 'email'}]);
+          expect(target).toEqual(obj);
+          resolve({});
+        });
+      });
+
+      const users = obj.users;
+      users.push(
+        { email: 'email' }
+      );
+      obj.users = users;
 
       await promise;
     });
