@@ -214,13 +214,34 @@ describe('observables', () => {
       const promise = new Promise((resolve) => {
         obj.$on('users', (newValue: string, oldValue: string) => {
           expect(newValue[0].contacts[0].firstName).toEqual('newname');
-          // expect(oldValue[0].contacts[0].firstName).toEqual('');
+          expect(oldValue[0].contacts[0].firstName).toEqual('newname');
           resolve({});
         });
       });
 
       const users = obj.users;
       users[0].contacts[0].firstName = 'newname';
+      obj.users = users;
+
+      await promise;
+    });
+
+    test('triggers when non object is updated inside an array', async () => {
+      const obj = observable({
+        users: [{contacts: [], email: ''}]
+      });
+      const promise = new Promise((resolve) => {
+        obj.$on('users', (newValue: string, oldValue: string) => {
+          expect(newValue[0].email).toEqual('email');
+          expect(newValue[0].contacts).toEqual([]);
+          expect(oldValue[0].email).toEqual('email');
+          expect(oldValue[0].contacts).toEqual([]);
+          resolve({});
+        });
+      });
+
+      const users = obj.users;
+      users[0].email = 'email';
       obj.users = users;
 
       await promise;
