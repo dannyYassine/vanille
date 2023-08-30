@@ -5,7 +5,7 @@ layout: home
 hero:
   name: "vanille"
   text: "A minimalistic vanilla web component framework"
-  tagline: My great project tagline
+  tagline: Using native browser features with a few exceptions
   actions:
     - theme: brand
       text: Markdown Examples
@@ -15,11 +15,11 @@ hero:
       link: /api-examples
 
 features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - title: JSX templates
+    details: Quickly create your UI with the standardazied jsx syntax
+  - title: Observables props and data attributes
+    details: Quickly react to changes with observable object
+  - title: No virtual DOM
+    details: With observables, you are in charge of what and when gets updated on the UI
 ---
 
