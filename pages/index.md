@@ -16,9 +16,9 @@ hero:
 
 features:
   - title: JSX templates
-    details: Quickly create your UI with the standardazied jsx syntax
+    details: Create your UI with standardized jsx syntax
   - title: Observables props and data attributes
-    details: Quickly react to changes with observable object
+    details: React to recursive changes with observable objects
   - title: No virtual DOM
     details: With observables, you are in charge of what and when gets updated on the UI
 ---
