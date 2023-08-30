@@ -74,14 +74,14 @@ function triggerListeners(obj, newObject) {
         });
       }
     }
-    const val = obj[key];
-    if (Array.isArray(val)) {
-      val.forEach(() => {
-        triggerListeners(val, newObject[key]);
-      });
-    } else {
+    // const val = obj[key];
+    // if (Array.isArray(val)) {
+    //   val.forEach(() => {
+    //     triggerListeners(val, newObject[key]);
+    //   });
+    // } else {
       triggerListeners(obj[key], newObject[key]);
-    }
+    // }
   });
 }
 
