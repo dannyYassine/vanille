@@ -3,6 +3,7 @@ import { defineConfig } from 'vitepress'
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "vanille",
+  base: '/vanille/',
   description: "A minimalistic vanilla web component framework",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
