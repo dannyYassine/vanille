@@ -113,6 +113,47 @@ describe('observables', () => {
 
       await promise;
     });
+
+    test('triggers when array object changes', async () => {
+      const obj = observable({
+        users: []
+      });
+      const promise = new Promise((resolve) => {
+        obj.$on('users', (newValue: string, oldValue: string, target) => {
+          expect(newValue).toEqual([
+            {email: 'email'}
+          ]);
+          expect(oldValue).toEqual([]);
+          expect(target).toEqual(obj);
+          resolve({});
+        });
+      });
+
+      obj.users = [
+        { email: 'email' }
+      ];
+
+      await promise;
+    });
+
+
+    test('triggers when object in array changes', async () => {
+      const obj = observable({
+        users: [{ email: 'email' }]
+      });
+      const promise = new Promise((resolve) => {
+        obj.users[0].$on('email', (newValue: string, oldValue: string, target) => {
+          expect(newValue).toEqual('new');
+          expect(oldValue).toEqual('email');
+          expect(target).toEqual(obj.users[0]);
+          resolve({});
+        });
+      });
+
+      obj.users[0].email = 'new';
+
+      await promise;
+    });
   });
 
   describe('when setting objects', () => {
