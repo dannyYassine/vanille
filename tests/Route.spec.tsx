@@ -29,7 +29,7 @@ describe('Route.tsx', () => {
 
       test('can render its slot on matching path with variables', () => {
         const $location = {
-          pathname: '/users/:id'
+          pathname: '/users/1'
         }
 
         window.$location = $location;
@@ -136,5 +136,49 @@ describe('Route.tsx', () => {
 
       expect($el).toBeFalsy();
     });
+ });
+
+ describe('navigation between routes', () => {
+  test('going to new route, renders slot', () => {
+    let $location = {
+      pathname: '/'
+    }
+
+    window.$location = $location;
+    
+    const $component = mount(
+        <v-route path="/home">
+            <div test-id="test"></div>
+        </v-route>
+    );
+  
+    expect($component.shadowRoot.querySelector('slot')).toBeFalsy();
+
+    window.$location.pathname = '/home';
+    window.history.pushState({}, '', '/home');
+
+    expect($component.shadowRoot.querySelector('slot')).toBeTruthy();
+  });
+
+  test('when navigating to new route, does not render slot', () => {
+    let $location = {
+      pathname: '/home'
+    }
+
+    window.$location = $location;
+    
+    const $component = mount(
+        <v-route path="/home">
+            <div test-id="test"></div>
+        </v-route>
+    );
+  
+    expect($component.shadowRoot.querySelector('slot')).toBeTruthy();
+
+    window.$location.pathname = '/';
+    window.history.pushState({}, '', '/');
+
+    expect($component.shadowRoot.querySelector('slot')).toBeFalsy();
+  });
  });
 });
