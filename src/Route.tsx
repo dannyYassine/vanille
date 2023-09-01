@@ -70,31 +70,28 @@ export class Route extends BaseView {
     
     if (this.props.path) {
       return propsPaths.filter((path, index) => {
-        if (path === '') return false;
         if (path.startsWith(':')) return true;
         return path === browserPaths[index];
       }).length === browserPaths.length;
     }
     
-    if (this.props.startWith) {
-      const paths = propsPaths.filter((path, index) => {
-        if (path === '') return false;
-        if (path.startsWith(':')) return true;
-        return true;
-      });
-      let index = 0;
-      while (index < paths.length) {
-        if (paths[index].startsWith(':')) {
-          index++;
-          continue;
-        }
-        if (paths[index] !== browserPaths[index]) {
-          return false;
-        }
-        index++;
-      }
+    // startWith
+    const paths = propsPaths.filter((path, index) => {
+      if (path.startsWith(':')) return true;
       return true;
+    });
+    let index = 0;
+    while (index < paths.length) {
+      if (paths[index].startsWith(':')) {
+        index++;
+        continue;
+      }
+      if (paths[index] !== browserPaths[index]) {
+        return false;
+      }
+      index++;
     }
+    return true;
   }
 
   render() {
