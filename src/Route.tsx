@@ -52,6 +52,10 @@ export class Route extends BaseView {
   }
 
   matchesPattern() {
+    if (!this.props.startWith && !this.props.path) {
+      return false;
+    }
+
     const browserPaths = this.location.pathname.split('/').filter((path, index) => {
       return path !== '';
     });;
@@ -91,8 +95,6 @@ export class Route extends BaseView {
       }
       return true;
     }
-
-    return false;
   }
 
   render() {

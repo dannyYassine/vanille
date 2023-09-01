@@ -8,6 +8,25 @@ describe('Route.tsx', () => {
     window.$location = originalLocation;
   });
   
+  describe('missing path and startWith props', () => {
+    test('does not render slot', () => {
+      const $location = {
+        pathname: '/'
+      }
+      window.$location = $location;
+      
+      const $component = mount(
+          <v-route>
+              <div test-id="test"></div>
+          </v-route>
+      );
+
+      const $el = $component.shadowRoot.querySelector('slot');
+
+      expect($el).toBeFalsy();
+    });
+  });
+
     describe('prop path', () => {
       test('can render its slot on matching path', () => {
         const $location = {
@@ -138,7 +157,7 @@ describe('Route.tsx', () => {
     });
  });
 
- describe('navigation between routes', () => {
+ describe('using history.pushState', () => {
   test('going to new route, renders slot', () => {
     let $location = {
       pathname: '/'
@@ -179,6 +198,108 @@ describe('Route.tsx', () => {
     window.history.pushState({}, '', '/');
 
     expect($component.shadowRoot.querySelector('slot')).toBeFalsy();
+  });
+ });
+ 
+ describe('using history.replaceState', () => {
+  test('going to new route, renders slot', () => {
+    let $location = {
+      pathname: '/'
+    }
+
+    window.$location = $location;
+    
+    const $component = mount(
+        <v-route path="/home">
+            <div test-id="test"></div>
+        </v-route>
+    );
+  
+    expect($component.shadowRoot.querySelector('slot')).toBeFalsy();
+
+    window.$location.pathname = '/home';
+    window.history.replaceState({}, '', '/home');
+
+    expect($component.shadowRoot.querySelector('slot')).toBeTruthy();
+  });
+
+  test('when navigating to new route, does not render slot', () => {
+    let $location = {
+      pathname: '/home'
+    }
+
+    window.$location = $location;
+    
+    const $component = mount(
+        <v-route path="/home">
+            <div test-id="test"></div>
+        </v-route>
+    );
+  
+    expect($component.shadowRoot.querySelector('slot')).toBeTruthy();
+
+    window.$location.pathname = '/';
+    window.history.replaceState({}, '', '/');
+
+    expect($component.shadowRoot.querySelector('slot')).toBeFalsy();
+  });
+ });
+
+ describe('triggering popstate', () => {
+  test('going to new route, then back, renders slot', async () => {
+    let $location = {
+      pathname: '/'
+    }
+
+    window.$location = $location;
+    
+    const $component = mount(
+        <v-route path="/home">
+            <div test-id="test"></div>
+        </v-route>
+    );
+  
+    expect($component.shadowRoot.querySelector('slot')).toBeFalsy();
+
+    window.$location.pathname = '/home';
+    window.history.pushState({}, '', '/home');
+
+    expect($component.shadowRoot.querySelector('slot')).toBeTruthy();
+
+    window.$location.pathname = '/';
+    window.history.back();
+
+    setTimeout(() => {
+      expect($component.shadowRoot.querySelector('slot')).toBeFalsy();
+    }, 1000);
+  });
+
+  test('going to new route, then back, renders slot', async () => {
+    let $location = {
+      pathname: '/home'
+    }
+
+    window.$location = $location;
+    
+    const $component = mount(
+        <v-route path="/home">
+            <div test-id="test"></div>
+        </v-route>
+    );
+  
+    expect($component.shadowRoot.querySelector('slot')).toBeTruthy();
+
+    window.$location.pathname = '/';
+    window.history.pushState({}, '', '/');
+
+    expect($component.shadowRoot.querySelector('slot')).toBeFalsy();
+
+    window.$location.pathname = '/home';
+    window.history.back();
+
+    setTimeout(() => {
+      expect($component.shadowRoot.querySelector('slot')).toBeTruthy();
+    }, 1000);
   });
  });
 });
