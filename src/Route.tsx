@@ -19,9 +19,18 @@ window.addEventListener('popstate', () => {
   window.dispatchEvent(new Event('locationchange'))
 });
 
+window.$location = window.location;
+
 @define()
 export class Route extends BaseView {
   matches: boolean = false;
+
+  location: Location;
+
+  constructor() {
+    super();
+    this.location = window.$location;
+  }
 
   setBindings(): void {
     window.addEventListener("locationchange", () => {
@@ -31,7 +40,7 @@ export class Route extends BaseView {
   }
 
   checkPath() {
-    if (window.location.pathname === this.props.path || this.matchesPattern()) {
+    if (this.location.pathname === this.props.path || this.matchesPattern()) {
       if (!this.matches) {
         this.matches = true;
         this.update();
@@ -43,7 +52,7 @@ export class Route extends BaseView {
   }
 
   matchesPattern() {
-    const browserPaths = window.location.pathname.split('/').filter((path, index) => {
+    const browserPaths = this.location.pathname.split('/').filter((path, index) => {
       return path !== '';
     });;
     let propsPaths = !!this.props.startWith ? this.props.startWith.split('/') : this.props.path.split('/');
@@ -54,24 +63,28 @@ export class Route extends BaseView {
     if (!!this.props.path && browserPaths.length !== propsPaths.length) {
       return false;
     }
-
-    const paths = propsPaths.filter((path, index) => {
-      if (path === '') return false;
-      if (path.startsWith(':')) return true;
-      return path === browserPaths[index];
-    });
-
+    
     if (this.props.path) {
-      return paths.length === browserPaths.length;
+      return propsPaths.filter((path, index) => {
+        if (path === '') return false;
+        if (path.startsWith(':')) return true;
+        return path === browserPaths[index];
+      }).length === browserPaths.length;
     }
     
     if (this.props.startWith) {
+      const paths = propsPaths.filter((path, index) => {
+        if (path === '') return false;
+        if (path.startsWith(':')) return true;
+        return true;
+      });
       let index = 0;
-      while (index < propsPaths.length) {
-        if (paths[index] !== propsPaths[0]) {
-          return false;
+      while (index < paths.length) {
+        if (paths[index].startsWith(':')) {
+          index++;
+          continue;
         }
-        if (paths[index].startsWith(':') && !!propsPaths[index]) {
+        if (paths[index] !== browserPaths[index]) {
           return false;
         }
         index++;
@@ -83,7 +96,6 @@ export class Route extends BaseView {
   }
 
   render() {
-    console.log('lll');
     if (!this.matches) {
       return '';
     }
