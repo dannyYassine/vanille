@@ -14,10 +14,6 @@ export function observable<T>(data: T): Observable<T> {
 }
 
 function mapObject(obj, data) {
-  if (data === null || data === undefined) {
-    return;
-  }
-
   Object.entries(data).forEach(([key, value]) => {
     if (isObject(value) && !value?.$$subs) {
       obj[key] = observable(value);
