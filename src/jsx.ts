@@ -31,7 +31,8 @@ export function render(jsx: Array<unknown>, document) {
       } catch (e) {}
     });
   }
-  if (children) {
+  
+  if (children.length) {
     children.forEach((child: string | HTMLElement | Array<unknown>) => {
       if (['string', 'number'].includes(typeof child)) {
         return $el.append(child);
@@ -48,7 +49,6 @@ export function render(jsx: Array<unknown>, document) {
 
 function camelize(str) {
   return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function(match, index) {
-    if (+match === 0) return ""; // or if (/\s+/.test(match)) for white spaces
     return index === 0 ? match.toLowerCase() : match.toUpperCase();
   }).replace('-', '');
 }

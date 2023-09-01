@@ -3,7 +3,7 @@ import { mount } from './test-utils';
 
 describe('jsx.tsx', () => {
   describe('function render', () => {
-    test('renders template with no children', () => {
+    test.only('renders template with no children', () => {
       const $component = mount(<div test-id="test"></div>);
 
       const $el = document.querySelector('[test-id="test"');
