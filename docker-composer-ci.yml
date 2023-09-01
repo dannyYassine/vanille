@@ -1,0 +1,28 @@
+version: '3'
+
+networks:
+  vanille:
+    driver: bridge
+
+services:
+  client:
+    container_name: client
+    build:
+      context: .
+      dockerfile: dev-env/client-ci.dockerfile
+    command: tail -f /dev/null
+    ports:      
+      - "3000:3000" # frontend
+      - "4173:4173" # vitepress
+    networks:
+      - vanille
+
+  playwright:
+    container_name: playwright
+    build:
+      context: .
+      dockerfile: dev-env/playwright-ci.dockerfile
+    ports:
+      - "3001:3001"
+    networks:
+      - vanille
