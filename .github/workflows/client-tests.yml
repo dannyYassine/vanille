@@ -15,11 +15,11 @@ jobs:
         with:
           working-directory: .
       - name: Build containers
-        run: docker-compose -f "./docker-compose-ci.yml" build playwright
+        run: docker-compose -f docker-compose-ci.yml build playwright
       - name: Install node_modules
         run: docker-compose run playwright yarn
       - name: Run tests
         run: docker-compose run playwright yarn test
       - name: Stop containers
         if: always()
-        run: docker-compose -f "./docker-compose-ci.yml" down
+        run: docker-compose -f docker-compose-ci.yml down
