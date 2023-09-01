@@ -11,7 +11,9 @@ export function hasJsxTemplate(): (target: Function) => void {
           this.globalStylesheet?.() + this.styles?.();
         this.shadowDom?.appendChild(style);
   
-        this.shadowDom?.appendChild(render(node, window.document));
+        if (node) {
+          this.shadowDom?.appendChild(render(node, window.document));
+        }
       };
     };
   }

@@ -11,10 +11,13 @@ export class Router extends BaseView {
     render() {
         return (
             <section>
-                <v-route path="/dashboard">
+                <v-route path="/app">
+                    Welcome
+                </v-route>
+                <v-route path="/app/dashboard">
                     <v-dashboard></v-dashboard>
                 </v-route>
-                <v-route path="/tables">
+                <v-route path="/app/tables">
                     <v-tables></v-tables>
                 </v-route>
             </section>

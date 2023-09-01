@@ -20,7 +20,7 @@ export class Nav extends BaseView {
                 <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link text-white active bg-gradient-primary" onclick={() => window.history.pushState({}, '', '/dashboard')}>
+                            <a class="nav-link text-white active bg-gradient-primary" onclick={() => window.history.pushState({}, '', '/app/dashboard')}>
                                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                                     <i class="material-icons opacity-10">dashboard</i>
                                 </div>
@@ -28,7 +28,7 @@ export class Nav extends BaseView {
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white " onclick={() => window.history.pushState({}, '', '/tables')}>
+                            <a class="nav-link text-white " onclick={() => window.history.pushState({}, '', '/app/tables')}>
                                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                                     <i class="material-icons opacity-10">table_view</i>
                                 </div>
@@ -79,19 +79,11 @@ export class Nav extends BaseView {
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white " href="/sign-in">
+                            <a class="nav-link text-white " onclick={() => window.history.pushState({}, '', '/login')}>
                                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                                     <i class="material-icons opacity-10">login</i>
                                 </div>
-                                <span class="nav-link-text ms-1">Sign In</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white " href="/sign-up">
-                                <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                                    <i class="material-icons opacity-10">assignment</i>
-                                </div>
-                                <span class="nav-link-text ms-1">Sign Up</span>
+                                <span class="nav-link-text ms-1">Sign out</span>
                             </a>
                         </li>
                     </ul>

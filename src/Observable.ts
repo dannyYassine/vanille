@@ -15,7 +15,7 @@ export function observable<T>(data: T): Observable<T> {
 
 function mapObject(obj, data) {
   Object.entries(data).forEach(([key, value]) => {
-    if (isObject(value) && !value.$$subs) {
+    if (isObject(value) && !value?.$$subs) {
       obj[key] = observable(value);
     } else if (isArray(value) && value.length) {
       const val = value[0];
