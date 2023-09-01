@@ -9,7 +9,7 @@ services:
     container_name: client
     build:
       context: .
-      dockerfile: client-ci.dockerfile
+      dockerfile: dev-env/client.ci.dockerfile
     command: tail -f /dev/null
     ports:      
       - "3000:3000" # frontend
@@ -21,7 +21,7 @@ services:
     container_name: playwright
     build:
       context: .
-      dockerfile: playwright-ci.dockerfile
+      dockerfile: dev-env/playwright.ci.dockerfile
     ports:
       - "3001:3001"
     networks:
