@@ -43,19 +43,47 @@ export class Route extends BaseView {
   }
 
   matchesPattern() {
-    const paths = window.location.pathname.split('/');
-    const propsPaths = this.props.path.split('/');
-
-    if (paths.length !== propsPaths.length) {
+    const browserPaths = window.location.pathname.split('/').filter((path, index) => {
+      return path !== '';
+    });;
+    let propsPaths = !!this.props.startWith ? this.props.startWith.split('/') : this.props.path.split('/');
+    propsPaths = propsPaths.filter((path, index) => {
+        return path !== '';
+    });
+    
+    if (!!this.props.path && browserPaths.length !== propsPaths.length) {
       return false;
     }
-    return propsPaths.filter((path, index) => {
-      if (path === '/' || path.startsWith(':')) return true;
-      return path === paths[index];
-    }).length === paths.length;
+
+    const paths = propsPaths.filter((path, index) => {
+      if (path === '') return false;
+      if (path.startsWith(':')) return true;
+      return path === browserPaths[index];
+    });
+
+    if (this.props.path) {
+      return paths.length === browserPaths.length;
+    }
+    
+    if (this.props.startWith) {
+      let index = 0;
+      while (index < propsPaths.length) {
+        if (paths[index] !== propsPaths[0]) {
+          return false;
+        }
+        if (paths[index].startsWith(':') && !!propsPaths[index]) {
+          return false;
+        }
+        index++;
+      }
+      return true;
+    }
+
+    return false;
   }
 
   render() {
+    console.log('lll');
     if (!this.matches) {
       return '';
     }

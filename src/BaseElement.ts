@@ -32,7 +32,7 @@ export abstract class BaseView extends HTMLElement {
 
   removeAllChildren() {
     while (this.shadowDom.firstChild) {
-      this.shadowDom.removeChild(this.shadowDom.firstChild);
+      this.shadowDom.removeChild(this.shadowDom.lastChild);
     }
   }
 
