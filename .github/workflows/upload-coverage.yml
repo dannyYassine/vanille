@@ -1,0 +1,27 @@
+name: client-tests
+
+defaults:
+ run:
+  working-directory: .
+
+on:
+  workflow_dispatch:
+  
+jobs:
+  vitest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          working-directory: .
+      - name: Build containers
+        run: docker-compose -f docker-compose-ci.yml build playwright
+      - name: Install dependencies
+        run: docker-compose run playwright yarn
+      - name: Run tests with coverage
+        run: docker-compose run playwright yarn test:coverage
+      - name: Upload coverage
+        run: CODECOV_TOKEN=${{secrets.ENV_DEPLOY_CLIENT_URL}} . send-coverage.sh
+      - name: Stop containers
+        if: always()
+        run: docker-compose -f docker-compose-ci.yml down
