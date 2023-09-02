@@ -23,7 +23,7 @@ describe('observables', () => {
 
     test('can build with array of primitives', () => {
       const obj = observable([1, 2, 3]);
- 
+
       expect(obj).toBeTruthy();
       expect([...obj]).toEqual([1, 2, 3]);
       expect(obj.$$listeners).toBeTruthy();
@@ -33,10 +33,21 @@ describe('observables', () => {
 
     test('can build nested array of primitives', async () => {
       const obj = observable({
-        users: [{contact_ids: [1, 2]}]
+        users: [{ contact_ids: [1, 2] }]
       });
 
       expect([...obj.users[0].contact_ids]).toEqual([1, 2]);
+      expect(obj.users[0].contact_ids.$$listeners).toBeTruthy();
+      expect(obj.users[0].contact_ids.$on).toBeTruthy();
+      expect(obj.users[0].contact_ids.$$subs).toBeTruthy();
+    });
+
+    test('can build nested empty ', async () => {
+      const obj = observable({
+        users: [{ contact_ids: [] }]
+      });
+
+      expect([...obj.users[0].contact_ids]).toEqual([]);
       expect(obj.users[0].contact_ids.$$listeners).toBeTruthy();
       expect(obj.users[0].contact_ids.$on).toBeTruthy();
       expect(obj.users[0].contact_ids.$$subs).toBeTruthy();
@@ -53,6 +64,9 @@ describe('observables', () => {
       });
 
       expect(obj.user.contact.firstName).toEqual(name);
+      expect(obj.user.contact.$$listeners).toBeTruthy();
+      expect(obj.user.contact.$on).toBeTruthy();
+      expect(obj.user.contact.$$subs).toBeTruthy();
     });
 
     test('can build with nested arrays', () => {
@@ -60,14 +74,46 @@ describe('observables', () => {
       const obj = observable({
         users: [
           {
-            contact: {
-              firstName: name
-            }
+            contacts: [
+              {
+                firstName: name
+              }
+            ]
           }
         ]
       });
 
-      expect(obj.users[0].contact.firstName).toEqual(name);
+      expect(obj.users.$$listeners).toBeTruthy();
+      expect(obj.users.$on).toBeTruthy();
+      expect(obj.users.$$subs).toBeTruthy();
+
+      expect(obj.users[0].contacts.$$listeners).toBeTruthy();
+      expect(obj.users[0].contacts.$on).toBeTruthy();
+      expect(obj.users[0].contacts.$$subs).toBeTruthy();
+
+      expect(obj.users[0].contacts[0].firstName).toEqual(name);
+      expect(obj.users[0].contacts[0].$$listeners).toBeTruthy();
+      expect(obj.users[0].contacts[0].$on).toBeTruthy();
+      expect(obj.users[0].contacts[0].$$subs).toBeTruthy();
+    });
+
+    test('can build with nested empty arrays', () => {
+      const name: string = 'vanille';
+      const obj = observable({
+        users: [
+          {
+            contacts: []
+          }
+        ]
+      });
+
+      expect(obj.users.$$listeners).toBeTruthy();
+      expect(obj.users.$on).toBeTruthy();
+      expect(obj.users.$$subs).toBeTruthy();
+
+      expect(obj.users[0].contacts.$$listeners).toBeTruthy();
+      expect(obj.users[0].contacts.$on).toBeTruthy();
+      expect(obj.users[0].contacts.$$subs).toBeTruthy();
     });
 
     test('can build with array of objects', () => {
@@ -83,6 +129,9 @@ describe('observables', () => {
       });
 
       expect(obj.users[0].contact.firstName).toEqual(name);
+      expect(obj.users[0].contact.$$listeners).toBeTruthy();
+      expect(obj.users[0].contact.$on).toBeTruthy();
+      expect(obj.users[0].contact.$$subs).toBeTruthy();
     });
   });
 
@@ -181,34 +230,32 @@ describe('observables', () => {
       });
       const promise = new Promise((resolve) => {
         obj.$on('users', (newValue: string, oldValue: string, target) => {
-          expect(newValue).toEqual([
-            {email: 'email'}
-          ]);
+          expect(newValue).toEqual([{ email: 'email' }]);
           expect(oldValue).toEqual([]);
           expect(target).toEqual(obj);
           resolve({});
         });
       });
 
-      obj.users = [
-        { email: 'email' }
-      ];
+      obj.users = [{ email: 'email' }];
 
       await promise;
     });
-
 
     test('triggers when object in array changes', async () => {
       const obj = observable({
         users: [{ email: 'email' }]
       });
       const promise = new Promise((resolve) => {
-        obj.users[0].$on('email', (newValue: string, oldValue: string, target) => {
-          expect(newValue).toEqual('new');
-          expect(oldValue).toEqual('email');
-          expect(target).toEqual(obj.users[0]);
-          resolve({});
-        });
+        obj.users[0].$on(
+          'email',
+          (newValue: string, oldValue: string, target) => {
+            expect(newValue).toEqual('new');
+            expect(oldValue).toEqual('email');
+            expect(target).toEqual(obj.users[0]);
+            resolve({});
+          }
+        );
       });
 
       obj.users[0].email = 'new';
@@ -222,19 +269,15 @@ describe('observables', () => {
       });
       const promise = new Promise((resolve) => {
         obj.$on('users', (newValue: string, oldValue: string, target) => {
-          expect(newValue).toEqual(
-            [{email: 'email'}]
-          );
-          expect(oldValue).toEqual([{email: 'email'}]);
+          expect(newValue).toEqual([{ email: 'email' }]);
+          expect(oldValue).toEqual([{ email: 'email' }]);
           expect(target).toEqual(obj);
           resolve({});
         });
       });
 
       const users = obj.users;
-      users.push(
-        { email: 'email' }
-      );
+      users.push({ email: 'email' });
       obj.users = users;
 
       await promise;
@@ -242,7 +285,7 @@ describe('observables', () => {
 
     test('triggers when object is updated containing an array objects', async () => {
       const obj = observable({
-        users: [{contacts: [{firstName: ''}]}]
+        users: [{ contacts: [{ firstName: '' }] }]
       });
       const promise1 = new Promise((resolve) => {
         obj.$on('users', (newValue: string, oldValue: string) => {
@@ -252,11 +295,14 @@ describe('observables', () => {
         });
       });
       const promise2 = new Promise((resolve) => {
-        obj.users[0].contacts[0].$on('firstName', (newValue: string, oldValue: string) => {
-          expect(newValue).toEqual('newname');
-          expect(oldValue).toEqual('');
-          resolve({});
-        });
+        obj.users[0].contacts[0].$on(
+          'firstName',
+          (newValue: string, oldValue: string) => {
+            expect(newValue).toEqual('newname');
+            expect(oldValue).toEqual('');
+            resolve({});
+          }
+        );
       });
 
       const users = obj.users;
@@ -268,14 +314,14 @@ describe('observables', () => {
 
     test('triggers when non object property is updated inside an array', async () => {
       const obj = observable({
-        users: [{contacts: [], email: ''}]
+        users: [{ contacts: [], email: '' }]
       });
       const promise = new Promise((resolve) => {
         obj.$on('users', (newValue: string, oldValue: string) => {
           expect(newValue[0].email).toEqual('email');
-          expect(newValue[0].contacts).toEqual([]);
+          expect([...newValue[0].contacts]).toEqual([]);
           expect(oldValue[0].email).toEqual('email');
-          expect(oldValue[0].contacts).toEqual([]);
+          expect([...oldValue[0].contacts]).toEqual([]);
           resolve({});
         });
       });
