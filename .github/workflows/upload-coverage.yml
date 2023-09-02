@@ -1,4 +1,4 @@
-name: client-tests
+name: upload-coverage
 
 defaults:
  run:
