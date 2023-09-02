@@ -13,6 +13,7 @@
     "preview": "vite preview",
     "docs:dev": "vitepress dev pages",
     "docs:build": "vitepress build pages",
+    "docs:build:preview": "yarn docs:build && yarn docs:preview",
     "docs:move": "rm -rf docs && cp -r pages/.vitepress/dist docs",
     "docs:preview": "vitepress preview pages"
   },
