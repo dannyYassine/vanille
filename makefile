@@ -12,3 +12,5 @@ test.watch:
 	docker exec -it playwright yarn test:watch
 test.coverage:
 	docker exec -it playwright yarn test:coverage
+test.upload:
+	. send coverage
