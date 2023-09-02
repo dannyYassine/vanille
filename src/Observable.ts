@@ -31,7 +31,8 @@ function mapObject(obj, data) {
       } else {
         const obArray = [];
         initialSetup(obArray);
-          add$on(obArray);
+        add$on(obArray);
+        
         obj[key] = obArray;
       }
     } else {
@@ -109,10 +110,6 @@ function triggerListeners(obj, newObject) {
 
 function isObject(value) {
   return typeof value === 'object' && !Array.isArray(value);
-}
-
-function isOnlyObject(value) {
-  return typeof value === 'object';
 }
 
 function isArray(value) {
