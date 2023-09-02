@@ -9,7 +9,6 @@ describe('observables', () => {
       expect(obj).toBeTruthy();
       expect(obj.$$listeners).toBeTruthy();
       expect(obj.$on).toBeTruthy();
-      expect(obj.$$subs).toBeTruthy();
     });
 
     test('can build with array', () => {
@@ -18,7 +17,6 @@ describe('observables', () => {
       expect(obj).toBeTruthy();
       expect(obj.$$listeners).toBeTruthy();
       expect(obj.$on).toBeTruthy();
-      expect(obj.$$subs).toBeTruthy();
     });
 
     test('can build with array of primitives', () => {
@@ -28,7 +26,6 @@ describe('observables', () => {
       expect([...obj]).toEqual([1, 2, 3]);
       expect(obj.$$listeners).toBeTruthy();
       expect(obj.$on).toBeTruthy();
-      expect(obj.$$subs).toBeTruthy();
     });
 
     test('can build nested array of primitives', async () => {
@@ -39,7 +36,6 @@ describe('observables', () => {
       expect([...obj.users[0].contact_ids]).toEqual([1, 2]);
       expect(obj.users[0].contact_ids.$$listeners).toBeTruthy();
       expect(obj.users[0].contact_ids.$on).toBeTruthy();
-      expect(obj.users[0].contact_ids.$$subs).toBeTruthy();
     });
 
     test('can build nested empty ', async () => {
@@ -50,7 +46,6 @@ describe('observables', () => {
       expect([...obj.users[0].contact_ids]).toEqual([]);
       expect(obj.users[0].contact_ids.$$listeners).toBeTruthy();
       expect(obj.users[0].contact_ids.$on).toBeTruthy();
-      expect(obj.users[0].contact_ids.$$subs).toBeTruthy();
     });
 
     test('can build with nested objects', () => {
@@ -66,7 +61,6 @@ describe('observables', () => {
       expect(obj.user.contact.firstName).toEqual(name);
       expect(obj.user.contact.$$listeners).toBeTruthy();
       expect(obj.user.contact.$on).toBeTruthy();
-      expect(obj.user.contact.$$subs).toBeTruthy();
     });
 
     test('can build with nested arrays', () => {
@@ -85,16 +79,13 @@ describe('observables', () => {
 
       expect(obj.users.$$listeners).toBeTruthy();
       expect(obj.users.$on).toBeTruthy();
-      expect(obj.users.$$subs).toBeTruthy();
 
       expect(obj.users[0].contacts.$$listeners).toBeTruthy();
       expect(obj.users[0].contacts.$on).toBeTruthy();
-      expect(obj.users[0].contacts.$$subs).toBeTruthy();
 
       expect(obj.users[0].contacts[0].firstName).toEqual(name);
       expect(obj.users[0].contacts[0].$$listeners).toBeTruthy();
       expect(obj.users[0].contacts[0].$on).toBeTruthy();
-      expect(obj.users[0].contacts[0].$$subs).toBeTruthy();
     });
 
     test('can build with nested empty arrays', () => {
@@ -109,11 +100,9 @@ describe('observables', () => {
 
       expect(obj.users.$$listeners).toBeTruthy();
       expect(obj.users.$on).toBeTruthy();
-      expect(obj.users.$$subs).toBeTruthy();
 
       expect(obj.users[0].contacts.$$listeners).toBeTruthy();
       expect(obj.users[0].contacts.$on).toBeTruthy();
-      expect(obj.users[0].contacts.$$subs).toBeTruthy();
     });
 
     test('can build with array of objects', () => {
@@ -131,7 +120,6 @@ describe('observables', () => {
       expect(obj.users[0].contact.firstName).toEqual(name);
       expect(obj.users[0].contact.$$listeners).toBeTruthy();
       expect(obj.users[0].contact.$on).toBeTruthy();
-      expect(obj.users[0].contact.$$subs).toBeTruthy();
     });
   });
 
@@ -365,6 +353,48 @@ describe('observables', () => {
       obj.user = { email: name };
 
       expect(cbSpy).not.toHaveBeenCalled();
+    });
+
+    test('should trigger listeners when setting multiple times a primitive type', async () => {
+      const name: string = 'vanille';
+      const obj = observable({
+        user: { email: 'old' }
+      });
+      let count = 0;
+      const promise = new Promise((resolve) => {
+        obj.user.$on('email', (newValue: string, oldValue: string, target) => {
+          count++;
+          if (count === 2) {
+            resolve({});
+          }
+        });
+      });
+
+      obj.user.email = name;
+      obj.user.email = name;
+
+      await promise;
+    });
+
+    test('should trigger listeners when setting multiple times an object', async () => {
+      const name: string = 'vanille';
+      const obj = observable({
+        user: { email: 'old' }
+      });
+      let count = 0;
+      const promise = new Promise((resolve) => {
+        obj.user.$on('email', (newValue: string, oldValue: string, target) => {
+          count++;
+          if (count === 2) {
+            resolve({});
+          }
+        });
+      });
+
+      obj.user = { email: 'yo' };
+      obj.user = { email: 'yo2' };
+
+      await promise;
     });
   });
 });

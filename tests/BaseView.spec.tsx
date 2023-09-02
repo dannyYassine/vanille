@@ -47,7 +47,6 @@ describe('BaseView.tsx', () => {
       expect($el).toBeTruthy();
       expect($el.textContent).toBe(state.user.name);
       expect($component.state.$$listeners).toBeDefined();
-      expect($component.state.$$subs).toBeDefined();
     });
   });
 

@@ -15,12 +15,12 @@ export function observable<T>(data: T): Observable<T> {
 
 function mapObject(obj, data) {
   Object.entries(data).forEach(([key, value]) => {
-    if (isObject(value) && !value?.$$subs) {
+    if (isObject(value) && !value?.$$listeners) {
       obj[key] = observable(value);
     } else if (isArray(value)) {
       if (value.length) {
         const val = value[0];
-        if (isObject(val) && !val.$$subs) {
+        if (isObject(val) && !val.$$listeners) {
           const obArray = value.map((val) => observable(val));
           initialSetup(obArray);
           add$on(obArray);
@@ -32,7 +32,7 @@ function mapObject(obj, data) {
         const obArray = [];
         initialSetup(obArray);
         add$on(obArray);
-        
+
         obj[key] = obArray;
       }
     } else {
@@ -46,7 +46,7 @@ function buildNode(data) {
 
   return new Proxy(data, {
     get: (target, prop, receiver) => {
-      if (prop === '$$listeners' || prop === '$$subs' || prop === '$on') {
+      if (prop === '$$listeners' || prop === '$on') {
         return target[prop];
       }
       const node = target[prop];
@@ -89,6 +89,14 @@ function triggerListeners(obj, newObject) {
   if (!isObject(obj)) {
     return;
   }
+
+  Object.entries(obj.$$listeners).forEach(([key, value]) => {
+    if (!newObject.$$listeners[key]) {
+      newObject.$$listeners[key] = [];
+    }
+    newObject.$$listeners[key] = [...value];
+  });
+
   Object.entries(obj).forEach(([key, value]) => {
     if (obj.$$listeners[key]) {
       if (obj[key] !== newObject[key]) {
@@ -118,13 +126,6 @@ function isArray(value) {
 
 function initialSetup(obj) {
   Object.defineProperty(obj, '$$listeners', {
-    enumerable: false,
-    configurable: false,
-    writable: false,
-    value: {}
-  });
-
-  Object.defineProperty(obj, '$$subs', {
     enumerable: false,
     configurable: false,
     writable: false,
