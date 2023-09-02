@@ -21,7 +21,7 @@ jobs:
       - name: Run tests with coverage
         run: docker-compose run playwright yarn test:coverage
       - name: Upload coverage
-        run: CODECOV_TOKEN=${{secrets.ENV_DEPLOY_CLIENT_URL}} . send-coverage.sh
+        run: CODECOV_TOKEN=${{secrets.CODECOV_TOKEN}} . send-coverage.sh
       - name: Stop containers
         if: always()
         run: docker-compose -f docker-compose-ci.yml down
