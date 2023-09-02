@@ -1,0 +1,23 @@
+name: npm-publish
+
+defaults:
+ run:
+  working-directory: .
+
+on:
+  workflow_dispatch:
+  
+jobs:
+  vitest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          working-directory: .
+    #   - name: Build containers
+    #     run: docker-compose -f docker-compose-ci.yml build playwright
+      - name: Publish
+        run: npm publish
+      - name: Stop containers
+        if: always()
+        run: docker-compose -f docker-compose-ci.yml down
