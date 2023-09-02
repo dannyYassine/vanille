@@ -5,4 +5,6 @@ WORKDIR /usr/src/client
 COPY ./package.json ./
 COPY ./yarn.lock ./
 
+RUN yarn
+
 COPY . .
