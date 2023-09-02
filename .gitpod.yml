@@ -8,6 +8,8 @@ ports:
     onOpen: ignore
   - port: 4173
     onOpen: ignore
+  - port: 5173
+    onOpen: ignore
   - port: 3001
     onOpen: ignore
 

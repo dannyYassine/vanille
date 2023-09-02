@@ -7,10 +7,15 @@
 
 <p align="center">
     <img src="https://codecov.io/github/dannyYassine/vanille/graph/badge.svg?token=KN1KJCPFN3" />
-    <a><img src="https://img.shields.io/bundlephobia/min/vanille.svg" alt="Minified size"></a>
+    <img loading="lazy" alt="Dependencies" src="https://github.com/dannyYassine/vanille/actions/workflows/client-tests.yml/badge.svg" class="img_ev3q">
+</p>
+<p align="center">
+  <a><img src="https://img.shields.io/bundlephobia/min/vanille.svg" alt="Minified size"></a>
     <a href="https://npm-stat.com/charts.html?package=vanille"><img src="https://img.shields.io/npm/dm/vanille.svg" alt="Downloads"></a>
-    <img loading="lazy" alt="Dependencies" src="https://img.shields.io/badge/dependencies-none-pink" class="img_ev3q">
     <img loading="lazy" alt="Dependencies" src="https://img.shields.io/badge/license-MIT-green" class="img_ev3q">
+</p>
+<p align="center">
+  <img loading="lazy" alt="Dependencies" src="https://img.shields.io/badge/dependencies-none-pink" class="img_ev3q">
 </p>
 
 ## web components with JSX
