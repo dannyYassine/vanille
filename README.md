@@ -1,13 +1,19 @@
 <p align="center">
 <img height="auto" style="width: 320px; object-fit: contain;" src="https://github.com/dannyYassine/vanille/blob/main/vanille.png?raw=true" alt="logo.png">
 </p>
-<p align="center">
+<h3 align="center">
   A minimalistic vanilla web component framework
+</h3>
+<p align="center">
+  Using native browser features to maximum performance with a few exceptions
 </p>
+
+<hr />
 
 <p align="center">
     <img src="https://codecov.io/github/dannyYassine/vanille/graph/badge.svg?token=KN1KJCPFN3" />
     <img loading="lazy" alt="Dependencies" src="https://github.com/dannyYassine/vanille/actions/workflows/client-tests.yml/badge.svg" class="img_ev3q">
+    <a href='https://www.npmjs.com/package/@vanille/core' target="_blank"><img src='https://img.shields.io/npm/v/@vanille/core.svg' alt='Library Version' /></a>
 </p>
 <p align="center">
   <a><img src="https://img.shields.io/bundlephobia/min/vanille.svg" alt="Minified size"></a>
@@ -18,7 +24,12 @@
   <img loading="lazy" alt="Dependencies" src="https://img.shields.io/badge/dependencies-none-pink" class="img_ev3q">
 </p>
 
-## web components with JSX
+## Extending web components for performance
+```ts
+export class App extends BaseView {}
+```
+
+## Fast templating web components with JSX
 
 ```ts
 export class App extends BaseView {
@@ -32,7 +43,7 @@ export class App extends BaseView {
 }
 ```
 
-## routing
+## Simple routing
 
 ```jsx
 <v-route path="/">
@@ -46,7 +57,7 @@ export class App extends BaseView {
 </v-route>
 ```
 
-## observables
+## Observables
 
 ```ts
 const object = observable({
@@ -71,7 +82,23 @@ user.contact.firstName = 'vanille';
 // log: 'vanille' '' { contact: { firstName: '' } }
 ```
 
-## objects as observables with `props`
+## Able to pass objects as web components attributes
+
+```ts
+const user = { name: 'vanille' };
+
+<v-app user="user"></v-app>;
+
+export class App extends BaseView {
+  render() {
+    return (
+      <p>{this.props.user.name}</p>
+    )
+  }
+}
+```
+
+## Attributes on web components become observable props
 
 ```ts
 const user = { name: 'vanille' };
@@ -87,7 +114,7 @@ export class App extends BaseView {
 }
 ```
 
-## data as observables with `data()`
+## Private state as observables
 
 ```ts
 export class App extends BaseView {
@@ -105,7 +132,7 @@ export class App extends BaseView {
 }
 ```
 
-## use `refs` to update the DOM
+## Query the DOM with `refs` to update elements
 
 ```ts
 export class App extends BaseView {
@@ -125,26 +152,29 @@ export class App extends BaseView {
 }
 ```
 
-## testing
+## Declarative testing with JSX format
 ```tsx
+import { mount } from './test-utils';
+
+test('can render from jsx', () => {
+  const $shadow = mount(<v-test />)
+
+  const $el = $shadow.querySelector('[data-id="test"');
+
+  expect($el).toBeTruthy();
+});
+```
+
+## Declarative testing with JSX format
+```
 import { mount } from './test-utils';
 import { Test } from './test-utils/Test';
 
-describe('rendering', () => {
-  test('can render from jsx', () => {
-    const $shadow = mount(<v-test />)
+test('can render from web component class', () => {
+  const $shadow = mount(Test)
 
-    const $el = $shadow.querySelector('[data-id="test"');
+  const $el = $shadow.querySelector('[data-id="test"');
 
-    expect($el).toBeTruthy();
-  });
-
-  test('can render from web component class', () => {
-    const $shadow = mount(Test)
-
-    const $el = $shadow.querySelector('[data-id="test"');
-
-    expect($el).toBeTruthy();
-  });
+  expect($el).toBeTruthy();
 });
 ```
