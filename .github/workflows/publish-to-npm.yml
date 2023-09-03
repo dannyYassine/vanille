@@ -1,9 +1,9 @@
-name: Publish Package to npmjs
+name: Publish to npm
 on:
   workflow_dispatch:
 
 jobs:
-  upload-to-npm:
+  publish-to-npm:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
