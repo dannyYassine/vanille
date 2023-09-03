@@ -12,4 +12,4 @@ export { observable } from './Observable';
 export * from './decorators';
 
 // base class that contains all of the above
-export { BaseView } from './BaseElement';
+export { BaseView } from './BaseView';
