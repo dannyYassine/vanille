@@ -24,6 +24,9 @@
   <img loading="lazy" alt="Dependencies" src="https://img.shields.io/badge/dependencies-none-pink" class="img_ev3q">
 </p>
 
+## No dependencies
+All features are in-house implementations to maximize native functionality, with a few exceptions (check out below!)
+
 ## Extending web components for native performance
 ```ts
 import { BaseView } from '@vanille/core';
