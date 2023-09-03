@@ -1,4 +1,4 @@
-import { BaseView } from "./BaseElement";
+import { BaseView } from "./BaseView";
 import { define } from "./decorators";
 
 history.pushState = (f => function pushState() {

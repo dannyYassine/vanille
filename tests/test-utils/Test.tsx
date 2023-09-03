@@ -1,4 +1,4 @@
-import { BaseView } from '../../src/BaseElement';
+import { BaseView } from '../../src/BaseView';
 import { define } from '../../src/decorators';
 
 @define()
