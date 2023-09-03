@@ -7,9 +7,7 @@
 <p align="center">
   Using native browser features to maximum performance with a few exceptions
 </p>
-
 <hr />
-
 <p align="center">
     <img src="https://codecov.io/github/dannyYassine/vanille/graph/badge.svg?token=KN1KJCPFN3" />
     <img loading="lazy" alt="Dependencies" src="https://github.com/dannyYassine/vanille/actions/workflows/client-tests.yml/badge.svg" class="img_ev3q">
@@ -24,17 +22,27 @@
   <img loading="lazy" alt="Dependencies" src="https://img.shields.io/badge/dependencies-none-pink" class="img_ev3q">
 </p>
 
-## No dependencies
+<hr />
+
+### Installation:
+
+```bash
+yarn add @vanille/core
+```
+
+### No dependencies
 All features are in-house implementations to maximize native functionality, with a few exceptions (check out below!)
 
-## Extending web components for native performance
+<hr />
+
+### Extending web components for native performance
 ```ts
 import { BaseView } from '@vanille/core';
 
 export class App extends BaseView {}
 ```
 
-## Fast templating web components with in-house JSX
+### Fast templating web components with in-house JSX
 
 ```ts
 export class App extends BaseView {
@@ -48,7 +56,7 @@ export class App extends BaseView {
 }
 ```
 
-## Simple routing
+### Simple routing
 
 ```jsx
 <v-route path="/">
@@ -62,7 +70,7 @@ export class App extends BaseView {
 </v-route>
 ```
 
-## Observables
+### Observables
 
 ```ts
 const object = observable({
@@ -87,7 +95,7 @@ user.contact.firstName = 'vanille';
 // log: 'vanille' '' { contact: { firstName: '' } }
 ```
 
-## Pass objects in web component attributes
+### Pass objects in web component attributes
 
 ```ts
 const user = { name: 'vanille' };
@@ -103,7 +111,7 @@ export class App extends BaseView {
 }
 ```
 
-## Web component attributes become observable props
+### Web component attributes become observable props
 
 ```ts
 const user: User = { name: 'vanille' };
@@ -122,7 +130,7 @@ export class App extends BaseView {
 }
 ```
 
-## Private state as observables
+### Private state as observables
 
 ```ts
 export class App extends BaseView {
@@ -140,7 +148,7 @@ export class App extends BaseView {
 }
 ```
 
-## Query the DOM with `refs` to update elements
+### Query the DOM with `refs` to update elements
 
 ```ts
 export class App extends BaseView {
@@ -160,7 +168,7 @@ export class App extends BaseView {
 }
 ```
 
-## Declarative testing with JSX
+### Declarative testing with JSX
 ```tsx
 import { mount } from './test-utils';
 // load the component
