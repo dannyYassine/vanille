@@ -24,12 +24,14 @@
   <img loading="lazy" alt="Dependencies" src="https://img.shields.io/badge/dependencies-none-pink" class="img_ev3q">
 </p>
 
-## Extending web components for performance
+## Extending web components for native performance
 ```ts
+import { BaseView } from '@vanille/core';
+
 export class App extends BaseView {}
 ```
 
-## Fast templating web components with JSX
+## Fast templating web components with in-house JSX
 
 ```ts
 export class App extends BaseView {
@@ -82,7 +84,7 @@ user.contact.firstName = 'vanille';
 // log: 'vanille' '' { contact: { firstName: '' } }
 ```
 
-## Able to pass objects as web components attributes
+## Pass objects in web component attributes
 
 ```ts
 const user = { name: 'vanille' };
@@ -98,16 +100,19 @@ export class App extends BaseView {
 }
 ```
 
-## Attributes on web components become observable props
+## Web component attributes become observable props
 
 ```ts
-const user = { name: 'vanille' };
+const user: User = { name: 'vanille' };
 
 <v-app user="user"></v-app>;
 
 export class App extends BaseView {
   setBindings() {
-    this.props.user.$on('name', (newValue) => {
+    this.props.$on('user', (newValue: User) => {
+      // user changed
+    });
+    this.props.user.$on('name', (newValue: string) => {
       // name changed
     });
   }
@@ -152,26 +157,14 @@ export class App extends BaseView {
 }
 ```
 
-## Declarative testing with JSX format
+## Declarative testing with JSX
 ```tsx
 import { mount } from './test-utils';
+// load the component
+import './test-utils/Test';
 
 test('can render from jsx', () => {
-  const $shadow = mount(<v-test />)
-
-  const $el = $shadow.querySelector('[data-id="test"');
-
-  expect($el).toBeTruthy();
-});
-```
-
-## Declarative testing with JSX format
-```
-import { mount } from './test-utils';
-import { Test } from './test-utils/Test';
-
-test('can render from web component class', () => {
-  const $shadow = mount(Test)
+  const $shadow = mount(<v-test />) <---- JSX!
 
   const $el = $shadow.querySelector('[data-id="test"');
 
