@@ -10,7 +10,9 @@ export function mount(
 ): typeof ShadowRoot | null {
   let $el = null;
   try {
-    template = new template();
+    if (!(template instanceof HTMLElement)) {
+      template = new template();
+    }
     template.props = { ...renderingOptions?.props };
     document.body.appendChild(template);
 

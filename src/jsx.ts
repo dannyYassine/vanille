@@ -1,3 +1,5 @@
+import { makeID } from './helpers/makeId';
+
 export function h(...args: any[]): any[] {
   return [...args];
 }
@@ -5,6 +7,7 @@ export function h(...args: any[]): any[] {
 window.h = h;
 
 export function render(jsx: Array<unknown>, document) {
+  const $scopedId = jsx.$scopedId ?? makeID();
   const el: string = jsx[0] as string;
   const attrs: null | object = jsx[1] as null | object;
   const children: Array<string | HTMLElement | Array<unknown>> = (() => {
@@ -31,12 +34,18 @@ export function render(jsx: Array<unknown>, document) {
       } catch (e) {}
     });
   }
-  
+
+  $el.$scopedId = $scopedId;
+  $el.setAttribute($el.$scopedId, '');
+
   if (children.length) {
     children.forEach((child: string | HTMLElement | Array<unknown>) => {
       if (['string', 'number'].includes(typeof child)) {
         return $el.append(child);
       }
+
+      child.$scopedId = $el.$scopedId;
+
       if ('nodeName' in child || child instanceof HTMLElement) {
         return $el.append(child);
       }
@@ -48,7 +57,9 @@ export function render(jsx: Array<unknown>, document) {
 }
 
 function camelize(str) {
-  return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function(match, index) {
-    return index === 0 ? match.toLowerCase() : match.toUpperCase();
-  }).replace('-', '');
+  return str
+    .replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function (match, index) {
+      return index === 0 ? match.toLowerCase() : match.toUpperCase();
+    })
+    .replace('-', '');
 }

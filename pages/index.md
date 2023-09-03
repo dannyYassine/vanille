@@ -3,8 +3,8 @@
 layout: home
 
 hero:
-  name: "vanille"
-  text: "A minimalistic vanilla web component framework"
+  name: 'vanille'
+  text: 'A minimalistic vanilla web component framework'
   tagline: Using native browser features with a few exceptions
   image:
     src: /logo.png
@@ -27,6 +27,4 @@ features:
   - title: No virtual DOM
     details: With observables, you are in charge of what and when gets updated on the UI
     icon: 🛠
-    
 ---
-
