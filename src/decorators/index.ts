@@ -4,3 +4,4 @@ export { hasObservableState } from './hasObservableState';
 export { hasRefs } from './hasRefs';
 export { hasShadowDom } from './hasShadowDom';
 export { define } from './define';
+export { hasEmit } from './hasEmit';

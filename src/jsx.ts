@@ -22,7 +22,12 @@ export function render(jsx: Array<unknown>, document) {
   if (attrs) {
     Object.entries(attrs).forEach(([key, value]) => {
       if (key.startsWith('on') && value instanceof Function) {
-        $el[key.toLowerCase()] = value;
+        if (key in $el) {
+          $el[key.toLowerCase()] = value;
+        } else {
+          const event = key.substring(2);
+          $el.addEventListener(event, value);
+        }
         return;
       }
       if (!$el.props) {

@@ -1,9 +1,16 @@
-import { hasJsxTemplate, hasObservableState, hasRefs, hasObservableProps } from './decorators';
+import {
+  hasJsxTemplate,
+  hasObservableState,
+  hasRefs,
+  hasObservableProps,
+  hasEmit
+} from './decorators';
 
 @hasRefs()
 @hasJsxTemplate()
 @hasObservableProps()
 @hasObservableState()
+@hasEmit()
 export abstract class BaseView extends HTMLElement {
   props: unknown = {};
   state: unknown = {};
@@ -16,7 +23,7 @@ export abstract class BaseView extends HTMLElement {
   //   return `@import url("${window.location.origin}/style.css");`;
   // }
 
-  setBindings() { }
+  setBindings() {}
 
   protected connectedCallback() {
     this.buildProps();
