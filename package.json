@@ -1,8 +1,18 @@
 {
-  "name": "vanille",
-  "version": "0.0.1",
+  "name": "@vanille/core",
+  "version": "0.0.10",
   "type": "module",
   "main": "src/index.ts",
+  "homepage": "https://dannyyassine.github.io/vanille/",
+  "author": {
+    "name": "Danny Yassine",
+    "url": "https://github.com/dannyyassine"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:dannyYassine/vanille.git"
+  },
+  "license": "MIT",
   "scripts": {
     "dev": "vite --host",
     "test": "vitest --segfault-retry=3 run",
@@ -11,8 +21,9 @@
     "test:watch:coverage": "vitest watch --coverage",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "docs:dev": "vitepress dev pages",
+    "docs:dev": "vitepress dev pages --host",
     "docs:build": "vitepress build pages",
+    "docs:build:move": "yarn docs:build && yarn docs:move",
     "docs:build:preview": "yarn docs:build && yarn docs:preview",
     "docs:move": "rm -rf docs && cp -r pages/.vitepress/dist docs",
     "docs:preview": "vitepress preview pages"
@@ -20,12 +31,20 @@
   "devDependencies": {
     "@vitest/browser": "^0.34.3",
     "@vitest/coverage-istanbul": "^0.34.3",
-    "coveralls": "^3.1.0",
     "jsdom": "^22.1.0",
     "playwright": "^1.37.1",
     "typescript": "^5.0.2",
     "vite": "^4.4.9",
     "vitepress": "^1.0.0-rc.10",
     "vitest": "^0.34.3"
-  }
+  },
+  "keywords": [
+    "vanille",
+    "vanilla",
+    "js",
+    "javascript",
+    "web components",
+    "web component",
+    "native"
+  ]
 }

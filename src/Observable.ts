@@ -9,22 +9,31 @@ export function observable<T>(data: T): Observable<T> {
   initialSetup(obj);
 
   mapObject(obj, data);
-  
+
   return buildNode(obj);
 }
 
 function mapObject(obj, data) {
   Object.entries(data).forEach(([key, value]) => {
-    if (isObject(value) && !value?.$$subs) {
+    if (isObject(value) && !value?.$$listeners) {
       obj[key] = observable(value);
-    } else if (isArray(value) && value.length) {
-      const val = value[0];
-      if (isObject(val) && !val.$$subs) {
-        const obArray = value.map((val) => observable(val));
+    } else if (isArray(value)) {
+      if (value.length) {
+        const val = value[0];
+        if (isObject(val) && !val.$$listeners) {
+          const obArray = value.map((val) => observable(val));
+          initialSetup(obArray);
+          add$on(obArray);
+          obj[key] = obArray;
+        } else if (!isObject(val) && !isArray(val)) {
+          obj[key] = observable(value);
+        }
+      } else {
+        const obArray = [];
         initialSetup(obArray);
+        add$on(obArray);
+
         obj[key] = obArray;
-      } else if (!isObject(val) && !isArray(val)) {
-        obj[key] = observable(value);
       }
     } else {
       obj[key] = value;
@@ -33,16 +42,11 @@ function mapObject(obj, data) {
 }
 
 function buildNode(data) {
-  data.$on = (event, cb) => {
-    if (!data.$$listeners[event]) {
-      data.$$listeners[event] = [];
-    }
-    data.$$listeners[event].push(cb);
-  };
+  add$on(data);
 
   return new Proxy(data, {
     get: (target, prop, receiver) => {
-      if (prop === '$$listeners' || prop === '$$subs' || prop === '$on') {
+      if (prop === '$$listeners' || prop === '$on') {
         return target[prop];
       }
       const node = target[prop];
@@ -50,7 +54,7 @@ function buildNode(data) {
     },
     set: (obj, prop, value) => {
       const oldValue = obj[prop];
-      
+
       if (!value.$$listeners && isObject(value)) {
         value = observable(value);
         triggerListeners(obj[prop], value);
@@ -67,12 +71,33 @@ function buildNode(data) {
   }) as Observable<T>;
 }
 
+function add$on(data: Object) {
+  Object.defineProperty(data, '$on', {
+    enumerable: false,
+    configurable: false,
+    writable: false,
+    value(event: string, cb: () => void) {
+      if (!this.$$listeners[event]) {
+        this.$$listeners[event] = [];
+      }
+      this.$$listeners[event].push(cb);
+    }
+  });
+}
+
 function triggerListeners(obj, newObject) {
   if (!isObject(obj)) {
     return;
   }
+
+  Object.entries(obj.$$listeners).forEach(([key, value]) => {
+    if (!newObject.$$listeners[key]) {
+      newObject.$$listeners[key] = [];
+    }
+    newObject.$$listeners[key] = [...value];
+  });
+
   Object.entries(obj).forEach(([key, value]) => {
-    
     if (obj.$$listeners[key]) {
       if (obj[key] !== newObject[key]) {
         obj.$$listeners[key].forEach((cb) => {
@@ -86,7 +111,7 @@ function triggerListeners(obj, newObject) {
     //     triggerListeners(val, newObject[key]);
     //   });
     // } else {
-      triggerListeners(obj[key], newObject[key]);
+    triggerListeners(obj[key], newObject[key]);
     // }
   });
 }
@@ -101,13 +126,6 @@ function isArray(value) {
 
 function initialSetup(obj) {
   Object.defineProperty(obj, '$$listeners', {
-    enumerable: false,
-    configurable: false,
-    writable: false,
-    value: {}
-  });
-
-  Object.defineProperty(obj, '$$subs', {
     enumerable: false,
     configurable: false,
     writable: false,

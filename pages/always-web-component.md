@@ -1,85 +1,42 @@
-# Markdown Extension Examples
+# Always web components
 
-This page demonstrates some of the built-in markdown extensions provided by VitePress.
+## Basic usage
 
-## Syntax Highlighting
+`vanille` will use native browser features to improve performance. The core functionality behind this is leveraging web components.
 
-VitePress provides Syntax Highlighting powered by [Shiki](https://github.com/shikijs/shiki), with additional features like line-highlighting:
-
-**Input**
-
-````
-```js{4}
-export default {
-  data () {
-    return {
-      msg: 'Highlighted!'
-    }
-  }
-}
-```
-````
-
-**Output**
-
-```js{4}
-export default {
-  data () {
-    return {
-      msg: 'Highlighted!'
-    }
-  }
-}
+```ts
+import { BaseView } from '@vanille/core';
 ```
 
-## Custom Containers
+Then start building your components:
 
-**Input**
+```ts
+import { BaseView, define } from '@vanille/core';
 
-```md
-::: info
-This is an info box.
-:::
-
-::: tip
-This is a tip.
-:::
-
-::: warning
-This is a warning.
-:::
-
-::: danger
-This is a dangerous warning.
-:::
-
-::: details
-This is a details block.
-:::
+@define()
+export class Application extends BaseView {}
 ```
 
-**Output**
+The decorator `define` is syntactic sugar over:
 
-::: info
-This is an info box.
-:::
+```ts
+const prefix: string = 'v';
+customElements.define(`${prefix}-${application}', Application);
+```
 
-::: tip
-This is a tip.
-:::
+`vanille` comes pack with syntactic sugar decorators, all of which are already sprinkled on the base web component class `BaseView`.
 
-::: warning
-This is a warning.
-:::
+```ts
+import {
+  define,
+  hasJsxTemplate,
+  hasObservableProps,
+  hasObservableState,
+  hasRefs,
+  hasShadowDom,
+  define,
+  hasEmit
+} from '@vanille/core';
+```
 
-::: danger
-This is a dangerous warning!
-:::
-
-::: details
-This is a details block!
-:::
-
-## More
-
-Check out the documentation for the [full list of markdown extensions](https://vitepress.dev/guide/markdown).
+More in depth in [Decorators](./decorators.md).

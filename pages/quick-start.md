@@ -1,85 +1,31 @@
-# Markdown Extension Examples
+# Getting started
 
-This page demonstrates some of the built-in markdown extensions provided by VitePress.
+## Installation
 
-## Syntax Highlighting
+`vanille` is available to download from all popular package managers.
 
-VitePress provides Syntax Highlighting powered by [Shiki](https://github.com/shikijs/shiki), with additional features like line-highlighting:
+**npm**
 
-**Input**
-
-````
-```js{4}
-export default {
-  data () {
-    return {
-      msg: 'Highlighted!'
-    }
-  }
-}
-```
-````
-
-**Output**
-
-```js{4}
-export default {
-  data () {
-    return {
-      msg: 'Highlighted!'
-    }
-  }
-}
+```bash
+npm install @vanille/core
 ```
 
-## Custom Containers
+**yarn**
 
-**Input**
-
-```md
-::: info
-This is an info box.
-:::
-
-::: tip
-This is a tip.
-:::
-
-::: warning
-This is a warning.
-:::
-
-::: danger
-This is a dangerous warning.
-:::
-
-::: details
-This is a details block.
-:::
+```bash
+yarn add @vanille/core
 ```
 
-**Output**
+**CDN**
 
-::: info
-This is an info box.
-:::
+```html
+<script src="https://unpkg.com/@vanille/core"></script>
+```
 
-::: tip
-This is a tip.
-:::
+## Usage
 
-::: warning
-This is a warning.
-:::
+Import the package in your `.ts` or `.js` file and use the default behavior:
 
-::: danger
-This is a dangerous warning.
-:::
-
-::: details
-This is a details block.
-:::
-
-## More
-
-Check out the documentation for the [full list of markdown extensions](https://vitepress.dev/guide/markdown).
+```ts
+import { BaseView } from '@vanille/core';
+```

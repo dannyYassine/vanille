@@ -9,14 +9,12 @@ export function mount(
   renderingOptions?: RenderingOptions
 ): typeof ShadowRoot | null {
   let $el = null;
-  try {
-    template = new template();
-    template.props = { ...renderingOptions?.props };
-    document.body.appendChild(template);
 
-    return template;
-  } catch (e) {
+  if (Array.isArray(template)) {
     $el = render(template, document);
+  } else {
+    $el = typeof template === 'function' ? new template() : template;
+    $el.props = { ...$el.props, ...renderingOptions?.props };
   }
 
   document.body.appendChild($el);
