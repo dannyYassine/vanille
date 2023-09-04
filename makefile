@@ -1,3 +1,6 @@
+install:
+	docker exec -it client yarn && \
+	docker exec -it playwright yarn
 ssh-client:
 	docker exec -it client /bin/bash
 ssh-playwright:

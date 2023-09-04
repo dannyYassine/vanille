@@ -38,6 +38,10 @@ export default defineConfig({
         items: [{ text: 'Simple routes', link: '/simple-routes' }]
       },
       {
+        text: 'Digging deeper',
+        items: [{ text: 'Decorators', link: '/decorators' }]
+      },
+      {
         text: 'Recipes',
         items: [{ text: 'State management', link: '/state-management' }]
       }
