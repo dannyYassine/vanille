@@ -12,9 +12,9 @@ services:
       dockerfile: dev-env/client.dockerfile
     command: tail -f /dev/null
     ports:
-      - "3000:3000" # frontend
-      - "4173:4173" # vitepress
-      - "5173:5173" # vitepress
+      - '3000:3000' # frontend
+      - '4173:4173' # vitepress
+      - '5173:5173' # vitepress dev
     volumes:
       - .:/usr/src/client
     networks:
@@ -27,7 +27,7 @@ services:
       dockerfile: dev-env/playwright.dockerfile
     command: tail -f /dev/null
     ports:
-      - "3001:3001"
+      - '3001:3001'
     volumes:
       - .:/usr/src/client
     networks:
