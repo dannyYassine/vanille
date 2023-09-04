@@ -18,7 +18,7 @@ export function hasJsxTemplate(): (target: Function) => void {
           `$1[${this.$scopedId}]$2 `
         );
       }
-      style.textContent = this.globalStylesheet?.() + this.styles?.();
+      style.textContent = this.globalStylesheet?.() ?? '' + styles;
       this.shadowDom?.appendChild(style);
 
       if (node) {
