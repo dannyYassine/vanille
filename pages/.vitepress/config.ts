@@ -25,8 +25,11 @@ export default defineConfig({
       {
         text: 'Component',
         items: [
-          { text: 'Always web component', link: '/always-web-component' },
-          { text: 'JSX', link: '/jsx' }
+          { text: 'Web components', link: '/always-web-component' },
+          { text: 'JSX', link: '/jsx' },
+          { text: 'Props', link: '/props' },
+          { text: 'State', link: '/state' },
+          { text: 'Events', link: '/events' }
         ]
       },
       {

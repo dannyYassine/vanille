@@ -1,7 +1,5 @@
 # Simple routes
 
-Coming soon
-
 ```jsx
 <v-route path="/">
   Home

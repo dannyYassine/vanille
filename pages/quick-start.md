@@ -22,10 +22,17 @@ yarn add @vanille/core
 <script src="https://unpkg.com/@vanille/core"></script>
 ```
 
-## Usage
+## Basic usage
 
 Import the package in your `.ts` or `.js` file and use the default behavior:
 
 ```ts
-import { BaseView } from '@vanille/core';
+import { BaseView, define } from '@vanille/core';
+
+@define()
+export class Application extends BaseView {
+  render() {
+    return <div>Hello world!</div>;
+  }
+}
 ```
