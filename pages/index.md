@@ -18,7 +18,7 @@ hero:
       link: https://github.com/dannyYassine/vanille
 
 features:
-  - title: Everything web components
+  - title: Web components as first class citizens
     details: Leveraging native functionalities to maximize performance
     icon: 🕸
   - title: JSX templates
@@ -28,6 +28,6 @@ features:
     details: React to recursive changes with observable objects
     icon: ⚡️
   - title: No virtual DOM
-    details: With observables, you are in charge of what and when gets updated on the UI
+    details: With observables, you are in charge of what gets updated and when on the UI
     icon: 🛠
 ---

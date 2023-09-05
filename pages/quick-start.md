@@ -24,7 +24,7 @@ yarn add @vanille/core
 
 ## Basic usage
 
-Import the package in your `.ts` or `.js` file and use the default behavior:
+Import `vanille` in your `.tsx` or `.jsx` file and use the default behaviour:
 
 ```ts
 import { BaseView, define } from '@vanille/core';
