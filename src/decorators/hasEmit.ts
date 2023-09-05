@@ -1,6 +1,6 @@
 export function hasEmit(): (target: Function) => void {
   return (target: Function) => {
-    target.prototype.emit = function (name: string, data = undefined) {
+    target.prototype.emit = function (name: string, data?: unknown) {
       setTimeout(() => {
         let options = { bubbles: true };
         if (data) {

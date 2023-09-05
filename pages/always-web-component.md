@@ -1,4 +1,4 @@
-# Always web components
+# Native web components
 
 ## Basic usage
 
@@ -10,13 +10,19 @@ Import the base web component:
 import { BaseView } from '@vanille/core';
 ```
 
+::: info
+`BaseView` extends the `HTMLElement` class
+:::
+
 Then start building your components:
 
 ```ts
 import { BaseView, define } from '@vanille/core';
 
 @define()
-export class Application extends BaseView {}
+export class Application extends BaseView {
+  [...]
+}
 ```
 
 ::: tip
@@ -29,7 +35,7 @@ customElements.define(`${prefix}-${application}', Application);
 
 :::
 
-Next, start building your UI for in-house JSX:
+Next, start building your UI with in-house JSX:
 
 ```ts
 import { BaseView, define } from '@vanille/core';
@@ -52,7 +58,6 @@ import {
   hasObservableState,
   hasRefs,
   hasShadowDom,
-  define,
   hasEmit
 } from '@vanille/core';
 ```

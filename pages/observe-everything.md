@@ -2,7 +2,7 @@
 
 ## Built-in observables
 
-`vanille` comes with an in-house `observable` function in order to listen at any given level in the object tree:
+`vanille` comes with an in-house `observable` function in order to listen to any level in the object tree:
 
 ```ts
 import { observable } from '@vanille/core';
@@ -51,7 +51,7 @@ Inspired by the `EventEmitter` class from the `nodejs` ecosystem, the `$on` func
 $on<T: Value>(eventName: string, callback: (oldValue: Value, newValue: Value, object: Object<Value>) => void)
 ```
 
-Allow us to listen to any changes:
+Allowing us to listen to any changes:
 
 ```ts
 const object = observable({
