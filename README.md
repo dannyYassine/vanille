@@ -24,6 +24,11 @@
 
 <hr />
 
+### Features:
+- Templating with JSX
+- Pass `objects` to custom element attributes
+- Observable `props` and `state`
+
 ### Installation:
 
 ```bash
