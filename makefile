@@ -13,6 +13,8 @@ docs.gen:
 	docker exec -it client yarn docs:build:move
 client.dev:
 	docker exec -it client yarn dev
+test:
+	docker exec -it playwright yarn test
 test.watch:
 	docker exec -it playwright yarn test:watch
 test.coverage:
