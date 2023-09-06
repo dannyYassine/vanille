@@ -4,7 +4,11 @@ export interface ObservableEvent {
 
 export type Observable<T> = T & ObservableEvent;
 
-export function observable<T>(data: T): Observable<T> {
+export function observable<T>(data: T): Observable<T> | null {
+  if (!data) {
+    return null;
+  }
+
   const obj = isArray(data) ? [] : {};
   initialSetup(obj);
 

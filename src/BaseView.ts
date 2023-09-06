@@ -1,10 +1,4 @@
-import {
-  hasJsxTemplate,
-  hasObservableState,
-  hasRefs,
-  hasObservableProps,
-  hasEmit
-} from './decorators';
+import { hasJsxTemplate, hasObservableState, hasRefs, hasObservableProps, hasEmit } from './decorators';
 
 @hasRefs()
 @hasJsxTemplate()
@@ -15,13 +9,9 @@ export abstract class BaseView extends HTMLElement {
   props: unknown = {};
   state: unknown = {};
   refs: typeof Proxy;
-  shadowDom: ShadowRoot;
+  shadowDom: ShadowRoot;a
 
   abstract render(): any;
-
-  // globalStylesheet() {
-  //   return `@import url("${window.location.origin}/style.css");`;
-  // }
 
   setBindings() {}
 

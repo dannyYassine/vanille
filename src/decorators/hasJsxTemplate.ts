@@ -13,7 +13,7 @@ export function hasJsxTemplate(): (target: Function) => void {
         if (!this.$scopedId) {
           this.$scopedId = makeID();
         }
-        styles = styles.replaceAll(/^\s+(\S+)(h*.*\{)/gm, `$1[${this.$scopedId}]$2 `);
+        styles = styles.trim().replaceAll(/(\S+)(h*.*\{)/gm, `$1[${this.$scopedId}]$2 `);
       }
       style.textContent = `${this.globalStylesheet?.() ?? ''}${styles}`;
       this.shadowDom?.appendChild(style);
