@@ -9,7 +9,7 @@ export class LoginView extends DevView {
   }
 
   updateButtonEnabled() {
-    const isEnabled = this.props.form.email && this.props.form.password && this.props.form.rememberMe;
+    const isEnabled = this.props.form.email && this.props.form.password;
     !isEnabled ? this.refs.loginButton.setAttribute('disabled', '') : this.refs.loginButton.removeAttribute('disabled');
   }
 
@@ -18,9 +18,6 @@ export class LoginView extends DevView {
       this.updateButtonEnabled();
     });
     this.props.form.$on('password', (nv) => {
-      this.updateButtonEnabled();
-    });
-    this.props.form.$on('rememberMe', (nv) => {
       this.updateButtonEnabled();
     });
   }
@@ -63,7 +60,11 @@ export class LoginView extends DevView {
                     <form role="form" class="text-start">
                       <div class="input-group input-group-outline my-3">
                         <label class="form-label">Email</label>
-                        <input type="email" class="form-control" oninput={(e) => (this.props.form.email = e.target.value)} />
+                        <input
+                          type="email"
+                          class="form-control"
+                          oninput={(e) => (this.props.form.email = e.target.value)}
+                        />
                       </div>
                       <div class="input-group input-group-outline mb-3">
                         <label class="form-label">Password</label>
