@@ -17,6 +17,10 @@ export class Login extends DevView {
       return;
     }
 
+    if (this.state.rememberMe) {
+      console.log('need to remember me');
+    }
+
     window.history.pushState({}, '', '/app/dashboard');
   }
 

@@ -1,11 +1,16 @@
-import { BaseView, define } from '@vanille/core';
+import { BaseView, define } from '../../src';
 import { DevView } from './DevView';
 
 @define()
 export class LoginView extends DevView {
   updateButtonEnabled() {
-    const isEnabled = this.props.form.email && this.props.form.password;
-    !isEnabled ? this.refs.loginButton.setAttribute('disabled', '') : this.refs.loginButton.removeAttribute('disabled');
+    this.isSignInEnabled
+      ? this.refs.loginButton.removeAttribute('disabled')
+      : this.refs.loginButton.setAttribute('disabled', '');
+  }
+
+  get isSignInEnabled() {
+    return this.props.form.email && this.props.form.password;
   }
 
   setBindings(): void {
@@ -74,7 +79,6 @@ export class LoginView extends DevView {
                           class="form-check-input"
                           type="checkbox"
                           id="rememberMe"
-                          disabled
                           oninput={(e) => (this.props.form.rememberMe = e.target.checked)}
                         />
                         <label class="form-check-label mb-0 ms-3" for="rememberMe">
@@ -85,6 +89,7 @@ export class LoginView extends DevView {
                         <button
                           ref="loginButton"
                           type="button"
+                          disabled
                           class="btn bg-gradient-primary w-100 my-4 mb-2"
                           onclick={() => this.emit('LoginClicked')}
                         >
