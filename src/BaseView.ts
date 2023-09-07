@@ -9,7 +9,7 @@ export abstract class BaseView extends HTMLElement {
   props: unknown = {};
   state: unknown = {};
   refs: typeof Proxy;
-  shadowDom: ShadowRoot;a
+  shadowDom: ShadowRoot;
 
   abstract render(): any;
 
