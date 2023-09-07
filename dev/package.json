@@ -10,6 +10,9 @@
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
+  "dependencies": {
+    "@vanille/core": "^0.0.11"
+  },
   "devDependencies": {
     "@vitest/browser": "^0.34.3",
     "jsdom": "^22.1.0",

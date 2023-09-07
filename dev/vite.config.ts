@@ -10,7 +10,7 @@ export default defineConfig({
       provider: 'playwright',
       name: 'chromium',
       headless: true
-    },
+    }
   },
   esbuild: {
     jsxFactory: 'h',

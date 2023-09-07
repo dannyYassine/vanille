@@ -5,6 +5,8 @@ ssh-client:
 	docker exec -it client /bin/bash
 ssh-playwright:
 	docker exec -it playwright /bin/bash
+dev.dev:
+	docker exec -it client cd dev; yarn dev
 docs.preview:
 	docker exec -it client yarn docs:preview
 docs.dev:

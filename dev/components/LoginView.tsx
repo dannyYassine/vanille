@@ -1,13 +1,8 @@
-import { BaseView, define } from '../../src/index';
+import { BaseView, define } from '@vanille/core';
 import { DevView } from './DevView';
 
 @define()
 export class LoginView extends DevView {
-  protected connectedCallback(): void {
-    super.connectedCallback();
-    this.updateButtonEnabled();
-  }
-
   updateButtonEnabled() {
     const isEnabled = this.props.form.email && this.props.form.password;
     !isEnabled ? this.refs.loginButton.setAttribute('disabled', '') : this.refs.loginButton.removeAttribute('disabled');
@@ -79,6 +74,7 @@ export class LoginView extends DevView {
                           class="form-check-input"
                           type="checkbox"
                           id="rememberMe"
+                          disabled
                           oninput={(e) => (this.props.form.rememberMe = e.target.checked)}
                         />
                         <label class="form-check-label mb-0 ms-3" for="rememberMe">

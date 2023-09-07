@@ -1,4 +1,4 @@
-import { define } from '../../src/index';
+import { define } from '@vanille/core';
 import { DevView } from './DevView';
 import './Nav';
 
@@ -736,11 +736,9 @@ export class Dashboard extends DevView {
                 datasets: [{
                     label: "Mobile apps",
                     tension: 0,
-                    borderWidth: 0,
                     pointRadius: 5,
                     pointBackgroundColor: "rgba(255, 255, 255, .8)",
                     pointBorderColor: "transparent",
-                    borderColor: "rgba(255, 255, 255, .8)",
                     borderColor: "rgba(255, 255, 255, .8)",
                     borderWidth: 4,
                     backgroundColor: "transparent",
@@ -819,7 +817,6 @@ export class Dashboard extends DevView {
                 datasets: [{
                     label: "Mobile apps",
                     tension: 0,
-                    borderWidth: 0,
                     pointRadius: 5,
                     pointBackgroundColor: "rgba(255, 255, 255, .8)",
                     pointBorderColor: "transparent",

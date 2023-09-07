@@ -1,6 +1,7 @@
-import { define } from '../../src/index';
+import { define } from '@vanille/core';
 import { DevView } from './DevView';
 import { LoginView } from './LoginView';
+
 @define()
 export class Login extends DevView {
   data() {
