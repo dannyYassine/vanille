@@ -1,7 +1,6 @@
-import { hasJsxTemplate, hasObservableState, hasRefs, hasObservableProps, hasEmit } from './decorators';
+import { hasJsxTemplate, hasObservableState, hasObservableProps, hasEmit } from './decorators';
 import { makeID } from './helpers/makeId';
 
-@hasRefs()
 @hasJsxTemplate()
 @hasObservableProps()
 @hasObservableState()
