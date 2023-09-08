@@ -185,10 +185,10 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-20.5.7.tgz#4b8ecac87fbefbc92f431d09c30e176fc0a7c377"
   integrity sha512-dP7f3LdZIysZnmvP3ANJYTSwg+wLLl8p7RqniVlV7j+oXSXAbt9h0WIBFmJy5inWZoX9wZN6eXx+YXd9Rh3RBA==
 
-"@vanille/core@^0.0.23":
-  version "0.0.23"
-  resolved "https://registry.yarnpkg.com/@vanille/core/-/core-0.0.23.tgz#4b0a82a3077f58b908b33ba93019ad369eb2278c"
-  integrity sha512-Wlzha4+/dyp5XPPlH0/EPQ1CliPS66EcQT/zlu9uTlseQBWyxtNtCNz97fa+L9XuBgiRp6di9AHY2j0NNH+aRw==
+"@vanille/core@^0.0.24":
+  version "0.0.24"
+  resolved "https://registry.yarnpkg.com/@vanille/core/-/core-0.0.24.tgz#1cb9a66f6fe99a3a7faad135baaf58c1f0a7463c"
+  integrity sha512-80CXdTD7nfS7VEc8a5EeTzZca+uB0+t1E/ClpbXrhN8lOgskny65evhy2cKGLBPx8Oe1CITTJVjmrK1OlL8t/Q==
 
 "@vitest/browser@^0.34.3":
   version "0.34.3"
