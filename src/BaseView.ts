@@ -1,6 +1,5 @@
 import { hasJsxTemplate, hasObservableState, hasRefs, hasObservableProps, hasEmit } from './decorators';
 
-@hasRefs()
 @hasJsxTemplate()
 @hasObservableProps()
 @hasObservableState()
@@ -14,6 +13,18 @@ export abstract class BaseView extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
+    Object.defineProperty(this, 'refs', {
+      get(): typeof Proxy {
+        return new Proxy(
+          {},
+          {
+            get: (_, prop: string) => {
+              return this.shadowRoot.querySelector(`[${this.$scopedId}][ref=${prop}]`);
+            }
+          }
+        ) as typeof Proxy;
+      }
+    });
   }
 
   abstract render(): any;
