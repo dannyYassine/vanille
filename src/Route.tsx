@@ -1,5 +1,6 @@
 import { BaseView } from "./BaseView";
 import { define } from "./decorators";
+import { h } from "./jsx";
 
 history.pushState = (f => function pushState() {
   var ret = f.apply(this, arguments);
@@ -96,10 +97,10 @@ export class Route extends BaseView {
 
   render() {
     if (!this.matches) {
-      return ('');
+      return '';
     }
 
-    return (
+    return h(
       <slot ref="slot"></slot>
     );
   }
