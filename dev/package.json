@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@vanille/core": "^0.0.22"
+    "@vanille/core": "^0.0.23"
   },
   "devDependencies": {
     "@vitest/browser": "^0.34.3",
