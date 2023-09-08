@@ -1,30 +1,31 @@
 import { hasJsxTemplate, hasObservableState, hasRefs, hasObservableProps, hasEmit } from './decorators';
+import { makeID } from './helpers/makeId';
 
+@hasRefs()
 @hasJsxTemplate()
 @hasObservableProps()
 @hasObservableState()
 @hasEmit()
 export abstract class BaseView extends HTMLElement {
-  props: unknown = {};
-  state: unknown = {};
   refs: typeof Proxy;
-  shadowDom: ShadowRoot;
-
+  $scopedId: string;
+  
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
-    Object.defineProperty(this, 'refs', {
-      get(): typeof Proxy {
-        return new Proxy(
-          {},
-          {
-            get: (_, prop: string) => {
-              return this.shadowRoot.querySelector(`[${this.$scopedId}][ref=${prop}]`);
-            }
-          }
-        ) as typeof Proxy;
+    this.$scopedId = makeID()
+    // @ts-ignore
+    this.props = {};
+    // @ts-ignore
+    this.state = {};
+    this.refs = new Proxy(
+      {},
+      {
+        get: (_, prop: string) => {
+          return this.shadowRoot.querySelector(`[${this.$scopedId}][ref=${prop}]`);
+        }
       }
-    });
+    ) as typeof Proxy;
   }
 
   abstract render(): any;
@@ -32,8 +33,11 @@ export abstract class BaseView extends HTMLElement {
   setBindings() {}
 
   protected connectedCallback() {
+    // @ts-ignore
     this.buildProps();
+    // @ts-ignore
     this.buildState();
+    // @ts-ignore
     this.renderTemplate();
     this.setBindings();
   }
@@ -46,6 +50,7 @@ export abstract class BaseView extends HTMLElement {
 
   update() {
     this.removeAllChildren();
+    // @ts-ignore
     this.renderTemplate();
   }
 }

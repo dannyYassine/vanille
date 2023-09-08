@@ -2,7 +2,15 @@
   "name": "@vanille/core",
   "version": "0.0.24",
   "type": "module",
-  "main": "src/index.ts",
+  "main": "./src/dist/vanille.umd.cjs",
+  "module": "./src/dist/vanille.js",
+  "types": "./src/dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./src/dist/vanille.js",
+      "require": "./src/dist/vanille.umd.cjs"
+    }
+  },
   "homepage": "https://dannyyassine.github.io/vanille/",
   "author": {
     "name": "Danny Yassine",
@@ -20,6 +28,7 @@
     "test:coverage": "vitest run --coverage",
     "test:watch:coverage": "vitest watch --coverage",
     "build": "tsc && vite build",
+    "compile": "tsc",
     "preview": "vite preview",
     "docs:dev": "vitepress dev pages --host",
     "docs:build": "vitepress build pages",
@@ -29,12 +38,14 @@
     "docs:preview": "vitepress preview pages"
   },
   "devDependencies": {
+    "@types/node": "^20.5.9",
     "@vitest/browser": "^0.34.3",
     "@vitest/coverage-istanbul": "^0.34.3",
     "jsdom": "^22.1.0",
     "playwright": "^1.37.1",
     "typescript": "^5.0.2",
     "vite": "^4.4.9",
+    "vite-plugin-dts": "^3.5.3",
     "vitepress": "^1.0.0-rc.10",
     "vitest": "^0.34.3"
   },

@@ -1,5 +1,6 @@
 /// <reference types="vitest" />
 import { defineConfig } from 'vite';
+import * as path from 'path';
 
 export default defineConfig({
   esbuild: {
@@ -8,5 +9,13 @@ export default defineConfig({
   },
   server: {
     port: 3000
+  },
+  resolve: {
+    alias: [
+      {
+        find: '@vanille/core',
+        replacement: path.resolve(__dirname, '..', '.')
+      }
+    ]
   }
 });

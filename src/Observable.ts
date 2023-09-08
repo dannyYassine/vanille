@@ -1,4 +1,5 @@
 export interface ObservableEvent {
+  $$listeners: { string: unknown };
   $on<T>(event: string, cb: (nv: T, ov: T, obj: object) => void): void;
 }
 
@@ -19,13 +20,14 @@ export function observable<T>(data: T): Observable<T> | null {
 
 function mapObject(obj, data) {
   Object.entries(data).forEach(([key, value]) => {
-    if (isObject(value) && !value?.$$listeners) {
+    if (value && isObject(value) && !('$$listeners' in (value as object))) {
       obj[key] = observable(value);
     } else if (isArray(value)) {
-      if (value.length) {
-        const val = value[0];
-        if (isObject(val) && !val.$$listeners) {
-          const obArray = value.map((val) => observable(val));
+      const valueArray: Array<unknown> = value as Array<unknown>;
+      if (valueArray.length) {
+        const val = valueArray[0];
+        if (isObject(val) && !('$$listeners' in (val as object))) {
+          const obArray = valueArray.map((val) => observable(val));
           initialSetup(obArray);
           add$on(obArray);
           obj[key] = obArray;
@@ -49,7 +51,7 @@ function buildNode(data) {
   add$on(data);
 
   return new Proxy(data, {
-    get: (target, prop, receiver) => {
+    get: (target, prop) => {
       if (prop === '$$listeners' || prop === '$on') {
         return target[prop];
       }
@@ -72,7 +74,7 @@ function buildNode(data) {
       }
       return true;
     }
-  }) as Observable<T>;
+  });
 }
 
 function add$on(data: Object) {
@@ -98,10 +100,10 @@ function triggerListeners(obj, newObject) {
     if (!newObject.$$listeners[key]) {
       newObject.$$listeners[key] = [];
     }
-    newObject.$$listeners[key] = [...value];
+    newObject.$$listeners[key] = [...(value as unknown[])];
   });
 
-  Object.entries(obj).forEach(([key, value]) => {
+  Object.entries(obj).forEach(([key]) => {
     if (obj.$$listeners[key]) {
       if (obj[key] !== newObject[key]) {
         obj.$$listeners[key].forEach((cb) => {

@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "ES5",
+    "target": "ESNext",
     "module": "commonjs",
-
+    "outDir": "src/dist",
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
@@ -12,7 +12,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "skipLibCheck": true,
-    "strict": true,
+    "strict": false,
     "strictPropertyInitialization": false,
     "experimentalDecorators": true,
 
@@ -20,5 +20,5 @@
     "jsxFactory": "h",
     "jsxFragmentFactory": "Fragment"
   },
-  "include": ["src"]
+  "include": ["src/**/*"]
 }
