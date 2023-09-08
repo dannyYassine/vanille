@@ -4,9 +4,6 @@ import { makeID } from '../helpers/makeId';
 export function hasJsxTemplate(): (target: Function) => void {
   return (target: Function) => {
     target.prototype.renderTemplate = function () {
-      if (!this.shadowRoot) {
-        this.attachShadow({ mode: 'open' });
-      }
       if (!this.$scopedId) {
         this.$scopedId = makeID();
       }
