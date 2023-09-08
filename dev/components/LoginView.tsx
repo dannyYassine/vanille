@@ -1,4 +1,4 @@
-import { BaseView, define } from '../../src';
+import { define } from '@vanille/core';
 import { DevView } from './DevView';
 
 @define()

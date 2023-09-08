@@ -1,4 +1,4 @@
-import { BaseView } from '../../src';
+import { BaseView } from '@vanille/core';
 
 export abstract class DevView extends BaseView {
   globalStylesheet() {

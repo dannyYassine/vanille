@@ -1,4 +1,4 @@
-import { Route, define } from '../../src';
+import { Route, define } from '@vanille/core';
 import { Nav } from './Nav';
 import { Main } from './Main';
 import { DevView } from './DevView';

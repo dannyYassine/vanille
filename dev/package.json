@@ -2,7 +2,6 @@
   "name": "vanille-dev",
   "version": "0.0.1",
   "type": "module",
-  "main": "src/index.ts",
   "scripts": {
     "dev": "vite --host",
     "test": "vitest run",
@@ -11,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@vanille/core": "^0.0.14"
+    "@vanille/core": "^0.0.20"
   },
   "devDependencies": {
     "@vitest/browser": "^0.34.3",

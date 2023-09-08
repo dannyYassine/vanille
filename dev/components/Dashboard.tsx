@@ -1,6 +1,5 @@
-import { define } from '../../src';
+import { define } from '@vanille/core';
 import { DevView } from './DevView';
-import './Nav';
 
 @define()
 export class Dashboard extends DevView {
