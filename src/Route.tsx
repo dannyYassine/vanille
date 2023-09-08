@@ -96,7 +96,7 @@ export class Route extends BaseView {
 
   render() {
     if (!this.matches) {
-      return '';
+      return ('');
     }
 
     return (
