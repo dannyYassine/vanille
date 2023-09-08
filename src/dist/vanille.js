@@ -1,127 +1,127 @@
-var y = Object.defineProperty;
-var C = (t, e, s) => e in t ? y(t, e, { enumerable: !0, configurable: !0, writable: !0, value: s }) : t[e] = s;
-var c = (t, e, s) => (C(t, typeof e != "symbol" ? e + "" : e, s), s);
-function m(t = 8) {
-  let e = "";
-  const s = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", n = s.length;
+var C = Object.defineProperty;
+var y = (e, s, t) => s in e ? C(e, s, { enumerable: !0, configurable: !0, writable: !0, value: t }) : e[s] = t;
+var c = (e, s, t) => (y(e, typeof s != "symbol" ? s + "" : s, t), t);
+function m(e = 8) {
+  let s = "";
+  const t = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", n = t.length;
   let r = 0;
-  for (; r < t; )
-    e += s.charAt(Math.floor(Math.random() * n)), r += 1;
-  return `v${e}`;
+  for (; r < e; )
+    s += t.charAt(Math.floor(Math.random() * n)), r += 1;
+  return `v${s}`;
 }
-function b(t) {
-  return t.split(/(?=[A-Z])/).join("-").toLowerCase();
+function b(e) {
+  return e.split(/(?=[A-Z])/).join("-").toLowerCase();
 }
-function R(...t) {
-  return [...t];
+function A(...e) {
+  return [...e];
 }
-window.h = R;
-function P(t, e) {
-  const s = t.$scopedId ?? m(), n = t[0], r = t[1], i = (() => (delete t[0], delete t[1], [...t].filter((a) => !!a)))(), o = n.name ? customElements.get(`v-${b(n.name)}`) : null, h = o ? new o() : e.createElement(n);
+window.h = A;
+function v(e, s) {
+  const t = e.$scopedId ?? m(), n = e[0], r = e[1], i = (() => (delete e[0], delete e[1], [...e].filter((a) => !!a)))(), o = n.name ? customElements.get(`v-${b(n.name)}`) : null, h = o ? new o() : s.createElement(n);
   return r && Object.entries(r).forEach(([a, p]) => {
     if (a.startsWith("on") && p instanceof Function) {
       if (a in h)
         h[a.toLowerCase()] = p;
       else {
-        const g = a.substring(2);
-        h.addEventListener(g, p);
+        const E = a.substring(2);
+        h.addEventListener(E, p);
       }
       return;
     }
     h.props = {
-      [S(a)]: p
+      [I(a)]: p
     };
     try {
       h.setAttribute(a, p);
     } catch {
     }
-  }), h.$scopedId = s, h.setAttribute(h.$scopedId, ""), i.length && i.forEach((a) => {
+  }), h.$scopedId = t, h.setAttribute(h.$scopedId, ""), i.length && i.forEach((a) => {
     if (["string", "number"].includes(typeof a) || (a.$scopedId = h.$scopedId, "nodeName" in a || a instanceof HTMLElement))
       return h.append(a);
-    h.appendChild(P(a, e));
+    h.appendChild(v(a, s));
   }), h;
 }
-function S(t) {
-  return t.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function(e, s) {
-    return s === 0 ? e.toLowerCase() : e.toUpperCase();
+function I(e) {
+  return e.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function(s, t) {
+    return t === 0 ? s.toLowerCase() : s.toUpperCase();
   }).replace("-", "");
 }
-function A() {
-  return (t) => {
-    t.prototype.renderTemplate = function() {
+function S() {
+  return (e) => {
+    e.prototype.renderTemplate = function() {
       var r, i, o;
       this.$scopedId || (this.$scopedId = m());
-      const e = (r = this.render) == null ? void 0 : r.call(this), s = document.createElement("style");
+      const s = (r = this.render) == null ? void 0 : r.call(this), t = document.createElement("style");
       let n = ((i = this.styles) == null ? void 0 : i.call(this)) ?? "";
-      n !== "" && (n = n.trim().replaceAll(/(\S+)(h*.*\{)/gm, `$1[${this.$scopedId}]$2 `)), s.textContent = `${((o = this.globalStylesheet) == null ? void 0 : o.call(this)) ?? ""}${n}`, this.shadowRoot.appendChild(s), e && (e.$scopedId = this.$scopedId, this.shadowRoot.appendChild(P(e, window.document)));
+      n !== "" && (n = n.trim().replaceAll(/(\S+)(h*.*\{)/gm, `$1[${this.$scopedId}]$2 `)), t.textContent = `${((o = this.globalStylesheet) == null ? void 0 : o.call(this)) ?? ""}${n}`, this.shadowRoot.appendChild(t), s && (s.$scopedId = this.$scopedId, this.shadowRoot.appendChild(v(s, window.document)));
     };
   };
 }
-function l(t) {
-  if (!t)
+function l(e) {
+  if (!e)
     return null;
-  const e = d(t) ? [] : {};
-  return $(e), I(e, t), O(e);
+  const s = d(e) ? [] : {};
+  return $(s), R(s, e), O(s);
 }
-function I(t, e) {
-  Object.entries(e).forEach(([s, n]) => {
+function R(e, s) {
+  Object.entries(s).forEach(([t, n]) => {
     if (n && f(n) && !("$$listeners" in n))
-      t[s] = l(n);
+      e[t] = l(n);
     else if (d(n)) {
       const r = n;
       if (r.length) {
         const i = r[0];
         if (f(i) && !("$$listeners" in i)) {
           const o = r.map((h) => l(h));
-          $(o), u(o), t[s] = o;
+          $(o), u(o), e[t] = o;
         } else
-          !f(i) && !d(i) && (t[s] = l(n));
+          !f(i) && !d(i) && (e[t] = l(n));
       } else {
         const i = [];
-        $(i), u(i), t[s] = i;
+        $(i), u(i), e[t] = i;
       }
     } else
-      t[s] = n;
+      e[t] = n;
   });
 }
-function O(t) {
-  return u(t), new Proxy(t, {
-    get: (e, s) => e[s],
-    set: (e, s, n) => {
-      const r = e[s];
-      return !n.$$listeners && f(n) && (n = l(n), v(e[s], n)), e[s] = n, e.$$listeners[s] && e.$$listeners[s].forEach((i) => {
-        i(n, r, e);
+function O(e) {
+  return u(e), new Proxy(e, {
+    get: (s, t) => s[t],
+    set: (s, t, n) => {
+      const r = s[t];
+      return !n.$$listeners && f(n) && (n = l(n), P(s[t], n)), s[t] = n, s.$$listeners[t] && s.$$listeners[t].forEach((i) => {
+        i(n, r, s);
       }), !0;
     }
   });
 }
-function u(t) {
-  Object.defineProperty(t, "$on", {
+function u(e) {
+  Object.defineProperty(e, "$on", {
     enumerable: !1,
     configurable: !1,
     writable: !1,
-    value(e, s) {
-      this.$$listeners[e] || (this.$$listeners[e] = []), this.$$listeners[e].push(s);
+    value(s, t) {
+      this.$$listeners[s] || (this.$$listeners[s] = []), this.$$listeners[s].push(t);
     }
   });
 }
-function v(t, e) {
-  f(t) && (Object.entries(t.$$listeners).forEach(([s, n]) => {
-    e.$$listeners[s] || (e.$$listeners[s] = []), e.$$listeners[s] = [...n];
-  }), Object.entries(t).forEach(([s]) => {
-    t.$$listeners[s] && t[s] !== e[s] && t.$$listeners[s].forEach((n) => {
-      n(e[s], t[s], e);
-    }), v(t[s], e[s]);
+function P(e, s) {
+  f(e) && (Object.entries(e.$$listeners).forEach(([t, n]) => {
+    s.$$listeners[t] || (s.$$listeners[t] = []), s.$$listeners[t] = [...n];
+  }), Object.entries(e).forEach(([t]) => {
+    e.$$listeners[t] && e[t] !== s[t] && e.$$listeners[t].forEach((n) => {
+      n(s[t], e[t], s);
+    }), P(e[t], s[t]);
   }));
 }
-function f(t) {
-  return typeof t == "object" && !Array.isArray(t);
+function f(e) {
+  return typeof e == "object" && !Array.isArray(e);
 }
-function d(t) {
-  return typeof t == "object" && Array.isArray(t);
+function d(e) {
+  return typeof e == "object" && Array.isArray(e);
 }
-function $(t) {
-  Object.defineProperty(t, "$$listeners", {
+function $(e) {
+  Object.defineProperty(e, "$$listeners", {
     enumerable: !1,
     configurable: !1,
     writable: !1,
@@ -129,59 +129,40 @@ function $(t) {
   });
 }
 function _() {
-  return (t) => {
-    t.prototype.buildProps = function() {
+  return (e) => {
+    e.prototype.buildProps = function() {
       this.props = l(this.props);
     };
   };
 }
 function L() {
-  return (t) => {
-    t.prototype.buildState = function() {
-      var e;
-      this.data && (this.state = l((e = this.data) == null ? void 0 : e.call(this)));
+  return (e) => {
+    e.prototype.buildState = function() {
+      var s;
+      this.data && (this.state = l((s = this.data) == null ? void 0 : s.call(this)));
     };
   };
 }
-function D() {
-  return (t) => {
-    t.prototype.refs = new Proxy(
-      {},
-      {
-        get: (e, s) => this.shadowRoot.querySelector(`[${this.$scopedId}][ref=${s}]`)
-      }
-    );
-  };
-}
-function Z(t = "open") {
-  return (e) => {
-    "shadowDom" in e.prototype || Object.defineProperty(e.prototype, "shadowDom", {
-      get() {
-        return this.shadowRoot || this.attachShadow({ mode: t }), this.shadowRoot;
-      }
-    });
-  };
-}
-function T(t) {
-  return (e) => {
-    const s = t ?? b(e.name);
-    customElements.get(`v-${s}`) || customElements.define(`v-${s}`, e);
+function T(e) {
+  return (s) => {
+    const t = e ?? b(s.name);
+    customElements.get(`v-${t}`) || customElements.define(`v-${t}`, s);
   };
 }
 function W() {
-  return (t) => {
-    t.prototype.emit = function(e, s) {
+  return (e) => {
+    e.prototype.emit = function(s, t) {
       setTimeout(() => {
         let n = { bubbles: !0 };
-        s && (n = { ...n }, typeof s == "object" ? n.detail = { ...s } : n.detail = s), this.dispatchEvent(new CustomEvent(e, n));
+        t && (n = { ...n }, typeof t == "object" ? n.detail = { ...t } : n.detail = t), this.dispatchEvent(new CustomEvent(s, n));
       }, 0);
     };
   };
 }
-var x = Object.defineProperty, B = Object.getOwnPropertyDescriptor, M = (t, e, s, n) => {
-  for (var r = n > 1 ? void 0 : n ? B(e, s) : e, i = t.length - 1, o; i >= 0; i--)
-    (o = t[i]) && (r = (n ? o(e, s, r) : o(r)) || r);
-  return n && r && x(e, s, r), r;
+var D = Object.defineProperty, B = Object.getOwnPropertyDescriptor, M = (e, s, t, n) => {
+  for (var r = n > 1 ? void 0 : n ? B(s, t) : s, i = e.length - 1, o; i >= 0; i--)
+    (o = e[i]) && (r = (n ? o(s, t, r) : o(r)) || r);
+  return n && r && D(s, t, r), r;
 };
 let w = class extends HTMLElement {
   constructor() {
@@ -191,7 +172,7 @@ let w = class extends HTMLElement {
     this.attachShadow({ mode: "open" }), this.$scopedId = m(), this.props = {}, this.state = {}, this.refs = new Proxy(
       {},
       {
-        get: (e, s) => this.shadowRoot.querySelector(`[${this.$scopedId}][ref=${s}]`)
+        get: (s, t) => this.shadowRoot.querySelector(`[${this.$scopedId}][ref=${t}]`)
       }
     );
   }
@@ -209,30 +190,29 @@ let w = class extends HTMLElement {
   }
 };
 w = M([
-  D(),
-  A(),
+  S(),
   _(),
   L(),
   W()
 ], w);
-var q = Object.defineProperty, H = Object.getOwnPropertyDescriptor, N = (t, e, s, n) => {
-  for (var r = n > 1 ? void 0 : n ? H(e, s) : e, i = t.length - 1, o; i >= 0; i--)
-    (o = t[i]) && (r = (n ? o(e, s, r) : o(r)) || r);
-  return n && r && q(e, s, r), r;
+var x = Object.defineProperty, H = Object.getOwnPropertyDescriptor, N = (e, s, t, n) => {
+  for (var r = n > 1 ? void 0 : n ? H(s, t) : s, i = e.length - 1, o; i >= 0; i--)
+    (o = e[i]) && (r = (n ? o(s, t, r) : o(r)) || r);
+  return n && r && x(s, t, r), r;
 };
-history.pushState = ((t) => function() {
-  var s = t.apply(this, arguments);
-  return window.dispatchEvent(new Event("pushstate")), window.dispatchEvent(new Event("locationchange")), s;
+history.pushState = ((e) => function() {
+  var t = e.apply(this, arguments);
+  return window.dispatchEvent(new Event("pushstate")), window.dispatchEvent(new Event("locationchange")), t;
 })(history.pushState);
-history.replaceState = ((t) => function() {
-  var s = t.apply(this, arguments);
-  return window.dispatchEvent(new Event("replacestate")), window.dispatchEvent(new Event("locationchange")), s;
+history.replaceState = ((e) => function() {
+  var t = e.apply(this, arguments);
+  return window.dispatchEvent(new Event("replacestate")), window.dispatchEvent(new Event("locationchange")), t;
 })(history.replaceState);
 window.addEventListener("popstate", () => {
   window.dispatchEvent(new Event("locationchange"));
 });
 window.$location = window.location;
-let E = class extends w {
+let g = class extends w {
   constructor() {
     super();
     c(this, "props", {});
@@ -251,20 +231,20 @@ let E = class extends w {
   matchesPattern() {
     if (!this.props.startWith && !this.props.path)
       return !1;
-    const e = this.location.pathname.split("/").filter((i) => i !== "");
-    let s = this.props.startWith ? this.props.startWith.split("/") : this.props.path.split("/");
-    if (s = s.filter((i) => i !== ""), this.props.path && e.length !== s.length)
+    const s = this.location.pathname.split("/").filter((i) => i !== "");
+    let t = this.props.startWith ? this.props.startWith.split("/") : this.props.path.split("/");
+    if (t = t.filter((i) => i !== ""), this.props.path && s.length !== t.length)
       return !1;
     if (this.props.path)
-      return s.filter((i, o) => i.startsWith(":") ? !0 : i === e[o]).length === e.length;
-    const n = s.filter((i) => (i.startsWith(":"), !0));
+      return t.filter((i, o) => i.startsWith(":") ? !0 : i === s[o]).length === s.length;
+    const n = t.filter((i) => (i.startsWith(":"), !0));
     let r = 0;
     for (; r < n.length; ) {
       if (n[r].startsWith(":")) {
         r++;
         continue;
       }
-      if (n[r] !== e[r])
+      if (n[r] !== s[r])
         return !1;
       r++;
     }
@@ -274,20 +254,18 @@ let E = class extends w {
     return this.matchesRoute ? ["slot", { ref: "slot" }] : "";
   }
 };
-E = N([
+g = N([
   T()
-], E);
+], g);
 export {
   w as BaseView,
-  E as Route,
+  g as Route,
   T as define,
-  R as h,
+  A as h,
   W as hasEmit,
-  A as hasJsxTemplate,
+  S as hasJsxTemplate,
   _ as hasObservableProps,
   L as hasObservableState,
-  D as hasRefs,
-  Z as hasShadowDom,
   l as observable,
-  P as render
+  v as render
 };

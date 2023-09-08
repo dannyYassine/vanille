@@ -1,1 +1,1 @@
-{"version":3,"file":"BaseView.d.ts","sourceRoot":"","sources":["../BaseView.ts"],"names":[],"mappings":"AAGA,8BAKsB,QAAS,SAAQ,WAAW;IAChD,IAAI,EAAE,OAAO,KAAK,CAAC;IACnB,SAAS,EAAE,MAAM,CAAC;;IAoBlB,QAAQ,CAAC,MAAM,IAAI,GAAG;IAEtB,WAAW;IAEX,SAAS,CAAC,iBAAiB;IAU3B,iBAAiB;IAMjB,MAAM;CAKP"}
+{"version":3,"file":"BaseView.d.ts","sourceRoot":"","sources":["../BaseView.ts"],"names":[],"mappings":"AAGA,8BAIsB,QAAS,SAAQ,WAAW;IAChD,IAAI,EAAE,OAAO,KAAK,CAAC;IACnB,SAAS,EAAE,MAAM,CAAC;;IAoBlB,QAAQ,CAAC,MAAM,IAAI,GAAG;IAEtB,WAAW;IAEX,SAAS,CAAC,iBAAiB;IAU3B,iBAAiB;IAMjB,MAAM;CAKP"}

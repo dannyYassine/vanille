@@ -19,7 +19,6 @@ import {
 The base class `BaseView` has all these decorators to create the base flavour of `vanille` to get started:
 
 ```ts
-@hasRefs()
 @hasShadowDom()
 @hasJsxTemplate()
 @hasObservableProps()
