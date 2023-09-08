@@ -1,4 +1,5 @@
 import { makeID } from './helpers/makeId';
+import { snakeCase } from './helpers/snakeCase';
 
 export function h(...args: any[]): any[] {
   return [...args];
@@ -17,7 +18,8 @@ export function render(jsx: Array<unknown>, document) {
     return [...jsx].filter((a) => !!a);
   })() as Array<string | HTMLElement | Array<unknown>>;
 
-  const $el: HTMLElement = document.createElement(el);
+  const $elConstructor = el.name ? customElements.get(`v-${snakeCase(el.name)}`) : null;
+  const $el: HTMLElement = $elConstructor ? new $elConstructor() : document.createElement(el);
 
   if (attrs) {
     Object.entries(attrs).forEach(([key, value]) => {

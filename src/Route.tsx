@@ -1,22 +1,24 @@
-import { BaseView } from "./BaseView";
-import { define } from "./decorators";
+import { BaseView } from './BaseView';
+import { define } from './decorators';
 
-history.pushState = (f => function pushState() {
-  var ret = f.apply(this, arguments);
-  window.dispatchEvent(new Event('pushstate'));
-  window.dispatchEvent(new Event('locationchange'));
-  return ret;
-})(history.pushState);
+history.pushState = ((f) =>
+  function pushState() {
+    var ret = f.apply(this, arguments);
+    window.dispatchEvent(new Event('pushstate'));
+    window.dispatchEvent(new Event('locationchange'));
+    return ret;
+  })(history.pushState);
 
-history.replaceState = (f => function replaceState() {
-  var ret = f.apply(this, arguments);
-  window.dispatchEvent(new Event('replacestate'));
-  window.dispatchEvent(new Event('locationchange'));
-  return ret;
-})(history.replaceState);
+history.replaceState = ((f) =>
+  function replaceState() {
+    var ret = f.apply(this, arguments);
+    window.dispatchEvent(new Event('replacestate'));
+    window.dispatchEvent(new Event('locationchange'));
+    return ret;
+  })(history.replaceState);
 
 window.addEventListener('popstate', () => {
-  window.dispatchEvent(new Event('locationchange'))
+  window.dispatchEvent(new Event('locationchange'));
 });
 
 window.$location = window.location;
@@ -33,7 +35,7 @@ export class Route extends BaseView {
   }
 
   setBindings(): void {
-    window.addEventListener("locationchange", () => {
+    window.addEventListener('locationchange', () => {
       this.checkPath();
     });
     this.checkPath();
@@ -58,23 +60,25 @@ export class Route extends BaseView {
 
     const browserPaths = this.location.pathname.split('/').filter((path, index) => {
       return path !== '';
-    });;
+    });
     let propsPaths = !!this.props.startWith ? this.props.startWith.split('/') : this.props.path.split('/');
     propsPaths = propsPaths.filter((path, index) => {
-        return path !== '';
+      return path !== '';
     });
-    
+
     if (!!this.props.path && browserPaths.length !== propsPaths.length) {
       return false;
     }
-    
+
     if (this.props.path) {
-      return propsPaths.filter((path, index) => {
-        if (path.startsWith(':')) return true;
-        return path === browserPaths[index];
-      }).length === browserPaths.length;
+      return (
+        propsPaths.filter((path, index) => {
+          if (path.startsWith(':')) return true;
+          return path === browserPaths[index];
+        }).length === browserPaths.length
+      );
     }
-    
+
     // startWith
     const paths = propsPaths.filter((path, index) => {
       if (path.startsWith(':')) return true;
@@ -99,8 +103,6 @@ export class Route extends BaseView {
       return '';
     }
 
-    return (
-      <slot ref="slot"></slot>
-    );
+    return ['slot', { ref: 'slot' }];
   }
 }

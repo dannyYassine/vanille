@@ -1,12 +1,8 @@
-import { BaseView, define } from '../../src/index';
-import './Nav';
+import { define } from '@vanille/core';
+import { DevView } from './DevView';
 
 @define()
-export class Dashboard extends BaseView {
-    globalStylesheet() {
-        return `@import url("${window.location.origin}/assets/css/material-dashboard.css?v=3.1.0");`;
-    }
-
+export class Dashboard extends DevView {
     render() {
         return (
             <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
@@ -739,11 +735,9 @@ export class Dashboard extends BaseView {
                 datasets: [{
                     label: "Mobile apps",
                     tension: 0,
-                    borderWidth: 0,
                     pointRadius: 5,
                     pointBackgroundColor: "rgba(255, 255, 255, .8)",
                     pointBorderColor: "transparent",
-                    borderColor: "rgba(255, 255, 255, .8)",
                     borderColor: "rgba(255, 255, 255, .8)",
                     borderWidth: 4,
                     backgroundColor: "transparent",
@@ -822,7 +816,6 @@ export class Dashboard extends BaseView {
                 datasets: [{
                     label: "Mobile apps",
                     tension: 0,
-                    borderWidth: 0,
                     pointRadius: 5,
                     pointBackgroundColor: "rgba(255, 255, 255, .8)",
                     pointBorderColor: "transparent",

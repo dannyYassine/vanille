@@ -19,6 +19,19 @@ describe('observables', () => {
       expect(obj.$on).toBeTruthy();
     });
 
+    test('can build an object with null values', () => {
+      const obj = observable({
+        user: {
+          name: null
+        }
+      });
+
+      expect(obj.user.name).toBe(null);
+      expect(obj.user).toBeTruthy();
+      expect(obj.user.$$listeners).toBeTruthy();
+      expect(obj.user.$on).toBeTruthy();
+    });
+
     test('can build with array of primitives', () => {
       const obj = observable([1, 2, 3]);
 
@@ -196,15 +209,12 @@ describe('observables', () => {
         user: { email: '', contact: { firstName: 'old' } }
       });
       const promise = new Promise((resolve) => {
-        obj.user.contact.$on(
-          'firstName',
-          (newValue: string, oldValue: string, target) => {
-            expect(newValue).toBe(name);
-            expect(oldValue).toBe('old');
-            expect(target).toEqual(obj.user.contact);
-            resolve({});
-          }
-        );
+        obj.user.contact.$on('firstName', (newValue: string, oldValue: string, target) => {
+          expect(newValue).toBe(name);
+          expect(oldValue).toBe('old');
+          expect(target).toEqual(obj.user.contact);
+          resolve({});
+        });
       });
 
       obj.user.contact.firstName = name;
@@ -235,15 +245,12 @@ describe('observables', () => {
         users: [{ email: 'email' }]
       });
       const promise = new Promise((resolve) => {
-        obj.users[0].$on(
-          'email',
-          (newValue: string, oldValue: string, target) => {
-            expect(newValue).toEqual('new');
-            expect(oldValue).toEqual('email');
-            expect(target).toEqual(obj.users[0]);
-            resolve({});
-          }
-        );
+        obj.users[0].$on('email', (newValue: string, oldValue: string, target) => {
+          expect(newValue).toEqual('new');
+          expect(oldValue).toEqual('email');
+          expect(target).toEqual(obj.users[0]);
+          resolve({});
+        });
       });
 
       obj.users[0].email = 'new';
@@ -283,14 +290,11 @@ describe('observables', () => {
         });
       });
       const promise2 = new Promise((resolve) => {
-        obj.users[0].contacts[0].$on(
-          'firstName',
-          (newValue: string, oldValue: string) => {
-            expect(newValue).toEqual('newname');
-            expect(oldValue).toEqual('');
-            resolve({});
-          }
-        );
+        obj.users[0].contacts[0].$on('firstName', (newValue: string, oldValue: string) => {
+          expect(newValue).toEqual('newname');
+          expect(oldValue).toEqual('');
+          resolve({});
+        });
       });
 
       const users = obj.users;

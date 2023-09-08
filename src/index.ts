@@ -1,9 +1,9 @@
+// jsx rendering
+export { render, h } from './jsx';
+window.h = h;
 
 // routing components
 export { Route } from './Route';
-
-// jsx rendering
-export { render } from './jsx';
 
 // observables
 export { observable } from './Observable';

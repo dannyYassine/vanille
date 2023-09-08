@@ -1,11 +1,8 @@
-import { BaseView, define } from "../../src";
+import { define } from '@vanille/core';
+import { DevView } from "./DevView";
 
 @define()
-export class Tables extends BaseView {
-    globalStylesheet() {
-        return `@import url("${window.location.origin}/assets/css/material-dashboard.css?v=3.1.0");`;
-    }
-
+export class Tables extends DevView {
     render() {
         return (
             <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">

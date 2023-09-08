@@ -1,12 +1,5 @@
-import {
-  hasJsxTemplate,
-  hasObservableState,
-  hasRefs,
-  hasObservableProps,
-  hasEmit
-} from './decorators';
+import { hasJsxTemplate, hasObservableState, hasRefs, hasObservableProps, hasEmit } from './decorators';
 
-@hasRefs()
 @hasJsxTemplate()
 @hasObservableProps()
 @hasObservableState()
@@ -17,11 +10,24 @@ export abstract class BaseView extends HTMLElement {
   refs: typeof Proxy;
   shadowDom: ShadowRoot;
 
-  abstract render(): any;
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+    Object.defineProperty(this, 'refs', {
+      get(): typeof Proxy {
+        return new Proxy(
+          {},
+          {
+            get: (_, prop: string) => {
+              return this.shadowRoot.querySelector(`[${this.$scopedId}][ref=${prop}]`);
+            }
+          }
+        ) as typeof Proxy;
+      }
+    });
+  }
 
-  // globalStylesheet() {
-  //   return `@import url("${window.location.origin}/style.css");`;
-  // }
+  abstract render(): any;
 
   setBindings() {}
 
@@ -33,8 +39,8 @@ export abstract class BaseView extends HTMLElement {
   }
 
   removeAllChildren() {
-    while (this.shadowDom.firstChild) {
-      this.shadowDom.removeChild(this.shadowDom.lastChild);
+    while (this.shadowRoot.firstChild) {
+      this.shadowRoot.removeChild(this.shadowRoot.lastChild);
     }
   }
 

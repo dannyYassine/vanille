@@ -25,14 +25,14 @@ describe('function hasJsxTemplate', () => {
     const $div = $component.shadowRoot.querySelector('div');
     const $a = $component.shadowRoot.querySelector('div a');
 
-    expect($component.shadowRoot.firstChild.textContent)
-      .toBe(`div[${$component.$scopedId}] { 
+    expect($component.shadowRoot.firstChild.textContent).toBe(
+      `div[${$component.$scopedId}] { 
       color: red;
     }
-div[${$component.$scopedId}] a { 
+    div[${$component.$scopedId}] a { 
       color: red;
-    }
-    `);
+    }`
+    );
   });
 });
 

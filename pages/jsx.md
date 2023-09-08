@@ -21,6 +21,7 @@ export class App extends BaseView {
 ```
 
 ## `render` function
+
 `BaseView` already has the `hasJsxTemplate` decorator so you can quickly get started. You will need to implement the `render` funtion
 
 ## `hasJsxTemplate` decorator
@@ -31,7 +32,6 @@ Since `vanille` exposes all decorators, you can create your own flavours of web 
 import { define, hasShadowDom, hasJsxTemplate } from '@vanille/core';
 
 @define()
-@hasShadowDom()
 @hasJsxTemplate()
 export class AnotherFlavour extends HTMLElement {
   connectedCallback() {
