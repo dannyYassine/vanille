@@ -27,6 +27,7 @@ yarn add @vanille/core
 Import `vanille` in your `.tsx` or `.jsx` file and use the default behaviour:
 
 ```ts
+// Application.ts
 import { BaseView, define } from '@vanille/core';
 
 @define()
@@ -35,4 +36,16 @@ export class Application extends BaseView {
     return <div>Hello world!</div>;
   }
 }
+```
+
+Then in your `index.html`:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <body>
+    <v-application></v-application> // [!code focus:2]
+    <script type="module" src="./Application.ts"></script>
+  </body>
+</html>
 ```

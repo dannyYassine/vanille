@@ -12,12 +12,6 @@ export function hasJsxTemplate(): (target: Function) => void {
       }
       const node = this.render?.();
 
-      if (typeof node === 'string' && node.startsWith('<slot')) {
-        node.replace('<slot', `<slot ${this.$scopedId}`);
-        this.shadowRoot.innerHTML = node;
-        return;
-      }
-
       const style = document.createElement('style');
       let styles = this.styles?.() ?? '';
       if (styles !== '') {
