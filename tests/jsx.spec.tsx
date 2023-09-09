@@ -2,6 +2,7 @@ import { describe, expect, test, vi } from 'vitest';
 import { mount } from './test-utils';
 import { BaseView } from './../src/BaseView';
 import { define } from './../src/decorators/define';
+import { Test, TestWithClassComponents } from './test-utils/Test';
 
 describe('jsx.tsx', () => {
   describe('function render', () => {
@@ -14,14 +15,20 @@ describe('jsx.tsx', () => {
       expect($el).toBeTruthy();
     });
 
+    test.only('able to render jsx with class', () => {
+      const $component = mount(<TestWithClassComponents />);
+
+      const $el = $component.refs.test.shadowRoot.querySelector('[data-id="test"]');
+
+      expect($el).toBeTruthy();
+    });
+
     test('able to listen to custom events using "on" at beginning of the event name', async () => {
       const spyFn = vi.fn();
       const spyFunction = () => {
         spyFn();
       };
-      const $component = mount(
-        <v-emit-test onEmit={() => spyFunction()}></v-emit-test>
-      );
+      const $component = mount(<v-emit-test onEmit={() => spyFunction()}></v-emit-test>);
 
       const $button = $component.refs.button;
 
@@ -41,9 +48,7 @@ describe('jsx.tsx', () => {
         expect(e.detail).toEqual({ customData: '' });
         spyFn();
       };
-      const $component = mount(
-        <v-parent-test onParentEvent={(e) => spyFunction(e)}></v-parent-test>
-      );
+      const $component = mount(<v-parent-test onParentEvent={(e) => spyFunction(e)}></v-parent-test>);
 
       const $button = $component.refs.child.refs.button;
 
@@ -89,12 +94,7 @@ describe('jsx.tsx', () => {
 @define()
 class ParentTest extends BaseView {
   render() {
-    return (
-      <v-child-test
-        ref="child"
-        onTestEvent={(e) => this.onEvent(e)}
-      ></v-child-test>
-    );
+    return <v-child-test ref="child" onTestEvent={(e) => this.onEvent(e)}></v-child-test>;
   }
 
   onEvent(e) {
@@ -105,12 +105,7 @@ class ParentTest extends BaseView {
 @define()
 class ChildTest extends BaseView {
   render() {
-    return (
-      <button
-        ref="button"
-        onclick={() => this.emit('TestEvent', { customData: '' })}
-      ></button>
-    );
+    return <button ref="button" onclick={() => this.emit('TestEvent', { customData: '' })}></button>;
   }
 }
 

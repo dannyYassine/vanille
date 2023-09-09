@@ -7,7 +7,9 @@ export class Test extends BaseView {
     return (
       <div>
         <div data-id="test"></div>
-        <div ref="name" data-id="name">{this.props.name}</div>
+        <div ref="name" data-id="name">
+          {this.props.name}
+        </div>
         <div data-id="user.name">{this.props.user?.name}</div>
         <slot></slot>
       </div>
@@ -16,11 +18,18 @@ export class Test extends BaseView {
 }
 
 @define()
+export class TestWithClassComponents extends BaseView {
+  render() {
+    return <Test ref="test" />;
+  }
+}
+
+@define()
 export class TestWithData extends BaseView {
   data() {
     return {
       user: {
-        name: 'vanille' 
+        name: 'vanille'
       }
     };
   }
@@ -48,8 +57,12 @@ export class TestWithPropListeners extends BaseView {
   render() {
     return (
       <div>
-        <div ref="username" data-id="user.name">{this.props.user.name}</div>
-        <div ref="user" data-id="user.name">{this.props.user.name}</div>
+        <div ref="username" data-id="user.name">
+          {this.props.user.name}
+        </div>
+        <div ref="user" data-id="user.name">
+          {this.props.user.name}
+        </div>
       </div>
     );
   }
