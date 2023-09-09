@@ -2,6 +2,7 @@ import { describe, expect, test, vi } from 'vitest';
 import { mount } from './test-utils';
 import { BaseView } from './../src/BaseView';
 import { define } from './../src/decorators/define';
+import {Test} from './test-utils/Test';
 
 describe('jsx.tsx', () => {
   describe('function render', () => {
@@ -11,6 +12,14 @@ describe('jsx.tsx', () => {
       const $el = document.querySelector('[test-id="test"');
 
       expect($component).toBeTruthy();
+      expect($el).toBeTruthy();
+    });
+
+    test('able to render jsx with class', ()=>{
+      const $component = mount(<Test />);
+
+      const $el = $component.shadowRoot.querySelector('[data-id="test"]');
+
       expect($el).toBeTruthy();
     });
 
