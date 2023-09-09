@@ -7,7 +7,7 @@ type RenderingOptions = {
 export function mount(
   template,
   renderingOptions?: RenderingOptions
-): typeof ShadowRoot | null {
+): typeof HTMLElement | null {
   let $el = null;
 
   if (Array.isArray(template)) {

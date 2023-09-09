@@ -22,6 +22,14 @@ export class LoginView extends DevView {
     });
   }
 
+  onInputEnterPressed(e) {
+    if (e.key !== 'Enter') {
+      return;
+    }
+    e.preventDefault();
+    this.emit('LoginClicked');
+  }
+
   render() {
     return (
       <main class="main-content  mt-0">
@@ -62,7 +70,9 @@ export class LoginView extends DevView {
                         <label class="form-label">Email</label>
                         <input
                           type="email"
+                          ref="email"
                           class="form-control"
+                          onkeypress={(e) => this.onInputEnterPressed(e)}
                           oninput={(e) => (this.props.form.email = e.target.value)}
                         />
                       </div>
@@ -70,7 +80,9 @@ export class LoginView extends DevView {
                         <label class="form-label">Password</label>
                         <input
                           type="password"
+                          ref="password"
                           class="form-control"
+                          onkeypress={(e) => this.onInputEnterPressed(e)}
                           oninput={(e) => (this.props.form.password = e.target.value)}
                         />
                       </div>

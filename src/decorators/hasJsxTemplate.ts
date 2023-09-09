@@ -1,12 +1,8 @@
 import { render } from '../jsx';
-import { makeID } from '../helpers/makeId';
 
 export function hasJsxTemplate(): (target: Function) => void {
   return (target: Function) => {
     target.prototype.renderTemplate = function () {
-      if (!this.$scopedId) {
-        this.$scopedId = makeID();
-      }
       const node = this.render?.();
 
       const style = document.createElement('style');
