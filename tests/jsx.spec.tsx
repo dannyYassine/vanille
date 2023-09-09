@@ -15,7 +15,7 @@ describe('jsx.tsx', () => {
       expect($el).toBeTruthy();
     });
 
-    test.only('able to render jsx with class', () => {
+    test('able to render jsx with class', () => {
       const $component = mount(<TestWithClassComponents />);
 
       const $el = $component.refs.test.shadowRoot.querySelector('[data-id="test"]');
