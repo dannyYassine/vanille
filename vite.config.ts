@@ -16,7 +16,8 @@ export default defineConfig({
       provider: 'playwright',
       name: 'chromium',
       headless: true
-    }
+    },
+    include: ['./tests/*']
   },
   plugins: [dts()],
   build: {
