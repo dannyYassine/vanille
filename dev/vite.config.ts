@@ -12,10 +12,10 @@ export default defineConfig({
   },
   resolve: {
     alias: [
-      // {
-      //   find: '@vanille/core',
-      //   replacement: path.resolve(__dirname, '..', '.')
-      // }
+      {
+        find: '@vanille/core',
+        replacement: path.resolve(__dirname, '..', '.')
+      }
     ]
   }
 });
