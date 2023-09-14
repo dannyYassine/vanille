@@ -17,29 +17,27 @@ function O(...s) {
 }
 window.h = O;
 function P(s, t) {
-  const e = s.$scopedId ?? E(), r = s[0], n = s[1], i = (() => (delete s[0], delete s[1], [...s].filter((a) => !!a)))(), o = r.name ? customElements.get(`v-${b(r.name)}`) : null, h = o ? new o() : t.createElement(r);
-  return n && Object.entries(n).forEach(([a, p]) => {
-    if (a.startsWith("on") && p instanceof Function) {
-      if (a in h)
-        h[a.toLowerCase()] = p;
+  const e = s.$scopedId ?? E(), r = s[0], n = s[1], i = (() => (delete s[0], delete s[1], [...s].filter((h) => !!h)))(), o = r.name ? customElements.get(`v-${b(r.name)}`) : null, a = o ? new o() : t.createElement(r);
+  return a.props = {}, n && Object.entries(n).forEach(([h, p]) => {
+    if (h.startsWith("on") && p instanceof Function) {
+      if (h in a)
+        a[h.toLowerCase()] = p;
       else {
-        const m = a.substring(2);
-        h.addEventListener(m, p);
+        const m = h.substring(2);
+        a.addEventListener(m, p);
       }
       return;
     }
-    h.props = {
-      [I(a)]: p
-    };
+    a.props[I(h)] = p;
     try {
-      h.setAttribute(a, p);
+      a.setAttribute(h, p);
     } catch {
     }
-  }), h.$scopedId = e, h.setAttribute(h.$scopedId, ""), i.length && i.forEach((a) => {
-    if (["string", "number"].includes(typeof a) || (a.$scopedId = h.$scopedId, "nodeName" in a || a instanceof HTMLElement))
-      return h.append(a);
-    h.appendChild(P(a, t));
-  }), h;
+  }), a.$scopedId = e, a.setAttribute(a.$scopedId, ""), i.length && i.forEach((h) => {
+    if (["string", "number"].includes(typeof h) || (h.$scopedId = a.$scopedId, "nodeName" in h || h instanceof HTMLElement))
+      return a.append(h);
+    a.appendChild(P(h, t));
+  }), a;
 }
 function I(s) {
   return s.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function(t, e) {
@@ -69,7 +67,7 @@ function R(s, t) {
       if (n.length) {
         const i = n[0];
         if (f(i) && !("$$listeners" in i)) {
-          const o = n.map((h) => c(h));
+          const o = n.map((a) => c(a));
           w(o), d(o), s[e] = o;
         } else
           !f(i) && !$(i) && (s[e] = c(r));

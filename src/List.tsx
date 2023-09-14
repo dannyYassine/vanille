@@ -4,7 +4,7 @@ import { define } from './decorators';
 
 @define()
 export class List extends BaseView {
-  props: Observable<{ value: boolean; key?: string; item: (i: any) => any }>;
+  props: Observable<{ value: any[]; key?: string; item: (i: any) => any }>;
 
   setBindings(): void {
     this.props.$on('value', () => {
