@@ -26,6 +26,8 @@ export function render(jsx: Array<unknown>, document: Document) {
   const $el: HTMLElement & HasScopedId & HasProps = $elConstructor
     ? (new $elConstructor() as HTMLElement & HasScopedId & HasProps)
     : (document.createElement(el) as HTMLElement & HasScopedId & HasProps);
+  // @ts-ignore
+  $el.props = {};
 
   if (attrs) {
     Object.entries(attrs).forEach(([key, value]) => {
@@ -39,10 +41,7 @@ export function render(jsx: Array<unknown>, document: Document) {
         }
         return;
       }
-      // @ts-ignore
-      $el.props = {
-        [camelize(key)]: value
-      };
+      $el.props[camelize(key)] = value;
       try {
         $el.setAttribute(key, value);
       } catch (e) {}
