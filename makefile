@@ -1,6 +1,10 @@
 install:
 	docker exec -it client yarn && \
 	docker exec -it playwright yarn
+up:
+	docker compose up
+down:
+	docker compose down
 ssh-client:
 	docker exec -it client /bin/bash
 ssh-playwright:

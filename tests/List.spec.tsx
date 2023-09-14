@@ -1,18 +1,13 @@
 import { afterEach, describe, expect, test } from 'vitest';
 import { mount } from './test-utils';
 import '../src/List';
+import { List } from '../src/List';
 
 describe('List.tsx', () => {
   describe('props value', () => {
     test('does render slot when value is empty', () => {
       const array = [];
-      const $component = mount(
-        <v-list
-          value={array}
-          item={(i) => <div index={i}>{i}</div>
-          }
-        ></v-list>
-      );
+      const $component = mount(<List value={array} item={(i) => <div index={i}>{i}</div>} />);
 
       const $el = $component.shadowRoot.childNodes[1];
       expect($el).toBeFalsy();
@@ -20,13 +15,7 @@ describe('List.tsx', () => {
 
     test('does render slot when value has entries', () => {
       const array = [1, 2];
-      const $component = mount(
-        <v-list
-          value={array}
-          item={(i) => <div index={i}>{i}</div>
-          }
-        ></v-list>
-      );
+      const $component = mount(<List value={array} item={(i) => <div index={i}>{i}</div>} />);
 
       const $el = $component.shadowRoot.childNodes[1];
       expect($el).toBeTruthy();
@@ -37,13 +26,7 @@ describe('List.tsx', () => {
 
     test('does full update list when setting value', () => {
       let array = [1, 2];
-      const $component = mount(
-        <v-list
-          value={array}
-          item={(i) => <div index={i}>{i}</div>
-          }
-        ></v-list>
-      );
+      const $component = mount(<List value={array} item={(i) => <div index={i}>{i}</div>} />);
 
       const $el = $component.shadowRoot.childNodes[1];
       expect($el).toBeTruthy();

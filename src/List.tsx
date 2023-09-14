@@ -3,8 +3,8 @@ import { Observable } from './Observable';
 import { define } from './decorators';
 
 @define()
-class List extends BaseView {
-  props: Observable<{ value: boolean; item: (i: any) => any }>;
+export class List extends BaseView {
+  props: Observable<{ value: boolean; key?: string; item: (i: any) => any }>;
 
   setBindings(): void {
     this.props.$on('value', () => {
