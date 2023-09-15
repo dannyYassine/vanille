@@ -8,11 +8,13 @@ import { makeID } from './helpers/makeId';
 export abstract class BaseView extends HTMLElement {
   refs: typeof Proxy;
   $scopedId: string;
-  
-  constructor() {
+
+  constructor(config: Partial<{noShadow: boolean}>) {
     super();
-    this.attachShadow({ mode: 'open' });
-    this.$scopedId = makeID()
+    if (!config?.noShadow) {
+      this.attachShadow({ mode: 'open' });
+    }
+    this.$scopedId = makeID();
     // @ts-ignore
     this.props = {};
     // @ts-ignore
@@ -42,8 +44,9 @@ export abstract class BaseView extends HTMLElement {
   }
 
   removeAllChildren() {
-    while (this.shadowRoot.firstChild) {
-      this.shadowRoot.removeChild(this.shadowRoot.lastChild);
+    const root = this.shadowRoot ? this.shadowRoot : this;
+    while (root.firstChild) {
+      root.removeChild(root.lastChild);
     }
   }
 

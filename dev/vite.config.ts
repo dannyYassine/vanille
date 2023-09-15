@@ -14,7 +14,7 @@ export default defineConfig({
     alias: [
       {
         find: '@vanille/core',
-        replacement: path.resolve(__dirname, '..', '.')
+        replacement: path.resolve(__dirname, '..', './src/index.ts')
       }
     ]
   }
