@@ -6,6 +6,7 @@ export { Route } from './Route';
 
 // core components
 export { If } from './If';
+export { List } from './List';
 
 // observables
 export { observable } from './Observable';

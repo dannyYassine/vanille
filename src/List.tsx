@@ -1,10 +1,16 @@
 import { BaseView } from './BaseView';
 import { Observable } from './Observable';
 import { define } from './decorators';
+import { render } from './jsx';
 
 @define()
 export class List extends BaseView {
   props: Observable<{ value: any[]; key?: string; item: (i: any) => any }>;
+
+  constructor() {
+    super({ noShadow: true });
+    this.style.display = 'contents';
+  }
 
   setBindings(): void {
     this.props.$on('value', () => {
@@ -17,6 +23,6 @@ export class List extends BaseView {
       return this.props.item(item);
     });
 
-    return elements.length ? ['template', {}, ...elements] : '';
+    elements.map((el) => this.appendChild(render(el, document)));
   }
 }
