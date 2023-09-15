@@ -23,6 +23,6 @@ export class List extends BaseView {
       return this.props.item(item);
     });
 
-    elements.map((el) => this.appendChild(render(el, document)));
+    elements.map((el) => this.appendChild(render(el, window.document)));
   }
 }

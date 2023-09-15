@@ -9,7 +9,7 @@ describe('List.tsx', () => {
       const array = [];
       const $component = mount(<List value={array} item={(i) => <div index={i}>{i}</div>} />);
 
-      const $el = $component.shadowRoot.childNodes[1];
+      const $el = $component.childNodes[1];
       expect($el).toBeFalsy();
     });
 
@@ -17,10 +17,10 @@ describe('List.tsx', () => {
       const array = [1, 2];
       const $component = mount(<List value={array} item={(i) => <div index={i}>{i}</div>} />);
 
-      const $el = $component.shadowRoot.childNodes[1];
+      const $el = $component.childNodes[1];
       expect($el).toBeTruthy();
 
-      const $elDiv = $component.shadowRoot.querySelector('div[index="1"]');
+      const $elDiv = $component.querySelector('div[index="1"]');
       expect($elDiv).toBeTruthy();
     });
 
@@ -28,24 +28,24 @@ describe('List.tsx', () => {
       let array = [1, 2];
       const $component = mount(<List value={array} item={(i) => <div index={i}>{i}</div>} />);
 
-      const $el = $component.shadowRoot.childNodes[1];
+      const $el = $component.childNodes[1];
       expect($el).toBeTruthy();
 
-      let $elDiv = $component.shadowRoot.querySelector('div[index="1"]');
+      let $elDiv = $component.querySelector('div[index="1"]');
       expect($elDiv).toBeTruthy();
-      $elDiv = $component.shadowRoot.querySelector('div[index="2"]');
+      $elDiv = $component.querySelector('div[index="2"]');
       expect($elDiv).toBeTruthy();
 
       $component.props.value = [3, 4];
 
-      $elDiv = $component.shadowRoot.querySelector('div[index="1"]');
+      $elDiv = $component.querySelector('div[index="1"]');
       expect($elDiv).toBeFalsy();
-      $elDiv = $component.shadowRoot.querySelector('div[index="2"]');
+      $elDiv = $component.querySelector('div[index="2"]');
       expect($elDiv).toBeFalsy();
 
-      $elDiv = $component.shadowRoot.querySelector('div[index="3"]');
+      $elDiv = $component.querySelector('div[index="3"]');
       expect($elDiv).toBeTruthy();
-      $elDiv = $component.shadowRoot.querySelector('div[index="4"]');
+      $elDiv = $component.querySelector('div[index="4"]');
       expect($elDiv).toBeTruthy();
     });
   });

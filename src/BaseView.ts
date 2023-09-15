@@ -44,8 +44,9 @@ export abstract class BaseView extends HTMLElement {
   }
 
   removeAllChildren() {
-    while (this.shadowRoot.firstChild) {
-      this.shadowRoot.removeChild(this.shadowRoot.lastChild);
+    const root = this.shadowRoot ? this.shadowRoot : this;
+    while (root.firstChild) {
+      root.removeChild(root.lastChild);
     }
   }
 
