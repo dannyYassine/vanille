@@ -6,7 +6,8 @@ export declare class List extends BaseView {
         key?: string;
         item: (i: any) => any;
     }>;
+    constructor();
     setBindings(): void;
-    render(): any[] | "";
+    render(): void;
 }
 //# sourceMappingURL=List.d.ts.map

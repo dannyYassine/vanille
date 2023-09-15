@@ -1,7 +1,9 @@
 export declare abstract class BaseView extends HTMLElement {
     refs: typeof Proxy;
     $scopedId: string;
-    constructor();
+    constructor(config: Partial<{
+        noShadow: boolean;
+    }>);
     abstract render(): any;
     setBindings(): void;
     protected connectedCallback(): void;

@@ -1,0 +1,1 @@
+{"version":3,"file":"hasObservableProps.js","sourceRoot":"","sources":["../../decorators/hasObservableProps.ts"],"names":[],"mappings":";;;AAAA,8CAA2C;AAE3C,SAAgB,kBAAkB;IAC9B,OAAO,CAAC,MAAgB,EAAE,EAAE;QAC1B,MAAM,CAAC,SAAS,CAAC,UAAU,GAAG;YAC5B,IAAI,CAAC,KAAK,GAAG,IAAA,uBAAU,EAAC,IAAI,CAAC,KAAK,CAAC,CAAC;QACtC,CAAC,CAAA;IACH,CAAC,CAAC;AACJ,CAAC;AANH,gDAMG"}
