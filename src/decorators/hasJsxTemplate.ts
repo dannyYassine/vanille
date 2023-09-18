@@ -16,7 +16,10 @@ export function hasJsxTemplate(): (target: Function) => void {
 
       if (node) {
         node.$scopedId = this.$scopedId;
-        this.shadowRoot.appendChild(render(node, window.document));
+
+        const content = render(node, window.document);
+
+        this.shadowRoot ? this.shadowRoot.appendChild(content) : this.appendChild(content);
       }
     };
   };

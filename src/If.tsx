@@ -6,6 +6,10 @@ import { define } from './decorators';
 export class If extends BaseView {
   props: Observable<{ value: boolean }>;
 
+  constructor() {
+    super({ noShadow: true });
+  }
+
   setBindings(): void {
     this.props.$on('value', () => {
       this.update();

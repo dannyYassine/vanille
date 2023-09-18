@@ -11,7 +11,7 @@ describe('If.tsx', () => {
         </v-if>
       );
 
-      const $el = $component.shadowRoot.querySelector('slot');
+      const $el = $component.querySelector('slot');
 
       expect($el).toBeTruthy();
     });
@@ -23,7 +23,7 @@ describe('If.tsx', () => {
         </v-if>
       );
 
-      const $el = $component.shadowRoot.querySelector('slot');
+      const $el = $component.querySelector('slot');
 
       expect($el).toBeFalsy();
     });
@@ -37,12 +37,12 @@ describe('If.tsx', () => {
         </v-if>
       );
 
-      let $el = $component.shadowRoot.querySelector('slot');
+      let $el = $component.querySelector('slot');
       expect($el).toBeFalsy();
 
       $component.props.value = true;
 
-      $el = $component.shadowRoot.querySelector('slot');
+      $el = $component.querySelector('slot');
       expect($el).toBeTruthy();
     });
 
@@ -53,12 +53,12 @@ describe('If.tsx', () => {
         </v-if>
       );
 
-      let $el = $component.shadowRoot.querySelector('slot');
+      let $el = $component.querySelector('slot');
       expect($el).toBeTruthy();
 
       $component.props.value = false;
 
-      $el = $component.shadowRoot.querySelector('slot');
+      $el = $component.querySelector('slot');
       expect($el).toBeFalsy();
     });
   });
