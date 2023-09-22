@@ -1,8 +1,12 @@
 import { define } from '@vanille/core';
 import { DevView } from './DevView';
+import { Observable } from '@vanille/core/src/dist/Observable';
+import { LoginForm } from './Login';
 
 @define()
 export class Home extends DevView {
+  props: Observable<{form: LoginForm}>;
+
   updateButtonEnabled() {
     this.isSignInEnabled
       ? this.refs.loginButton.removeAttribute('disabled')
@@ -31,7 +35,7 @@ export class Home extends DevView {
                 <div class="card z-index-0 fadeIn3 fadeInBottom">
                   <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                     <div class="bg-gradient-primary shadow-primary border-radius-lg py-3 pe-1">
-                      <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">Welcome</h4>
+                      <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">Welcome Sachin!</h4>
                       <div class="row mt-3">
                         <p style="text-align: center; color: white">Click the button below to log in</p>
                       </div>

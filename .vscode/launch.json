@@ -1,0 +1,20 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "vitest",
+      "autoAttachChildProcesses": true,
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"],
+      "program": "sudo docker exec -i playwright yarn",
+      "args": ["test", "${relativeFile}"],
+      "smartStep": true,
+      "console": "integratedTerminal",
+      "runtimeExecutable": "node"
+    }
+  ]
+}

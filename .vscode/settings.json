@@ -15,5 +15,5 @@
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "vitest.commandLine": "run"
+  "vitest.commandLine": "sudo docker exec -i playwright /usr/bin/node node_modules/.bin/vitest"
 }

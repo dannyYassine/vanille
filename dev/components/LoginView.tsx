@@ -1,9 +1,11 @@
 import { define, Observable, If } from '@vanille/core';
 import { DevView } from './DevView';
+import { LoginForm } from './Login';
 
 @define()
 export class LoginView extends DevView {
-  props: Observable<{ form: {} }>;
+  props: Observable<{ form: LoginForm }>;
+
   updateButtonEnabled() {
     this.isSignInEnabled
       ? this.refs.loginButton.removeAttribute('disabled')
@@ -23,6 +25,7 @@ export class LoginView extends DevView {
     this.props.form.$on('password', (nv) => {
       this.updateButtonEnabled();
     });
+    this.updateButtonEnabled();
   }
 
   onInputEnterPressed(e) {
@@ -94,6 +97,7 @@ export class LoginView extends DevView {
                           class="form-check-input"
                           type="checkbox"
                           id="rememberMe"
+                          onkeypress={(e) => this.onInputEnterPressed(e)}
                           oninput={(e) => (this.props.form.rememberMe = e.target.checked)}
                         />
                         <label class="form-check-label mb-0 ms-3" for="rememberMe">
