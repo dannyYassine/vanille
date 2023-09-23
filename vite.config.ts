@@ -17,7 +17,7 @@ export default defineConfig({
       name: 'chromium',
       headless: true
     },
-    include: ['**/tests/**']
+    include: ['**/tests/**/*.spec.*']
   },
   plugins: [dts()],
   build: {
