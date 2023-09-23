@@ -5,7 +5,7 @@ import { render } from './jsx';
 
 @define()
 export class List extends BaseView {
-  props: Observable<{ value: any[]; key?: string; item: (i: any) => any }>;
+  props: Observable<{ value: Observable<any[]>; key?: string; item: (i: any) => any }>;
 
   constructor() {
     super({ noShadow: true });
@@ -14,6 +14,27 @@ export class List extends BaseView {
 
   setBindings(): void {
     this.props.$on('value', () => {
+      this.update();
+    });
+    this.props.value.$on('push', () => {
+      this.update();
+    });
+    this.props.value.$on('pop', () => {
+      this.update();
+    });
+    this.props.value.$on('shift', () => {
+      this.update();
+    });
+    this.props.value.$on('unshift', () => {
+      this.update();
+    });
+    this.props.value.$on('splice', () => {
+      this.update();
+    });
+    this.props.value.$on('sort', () => {
+      this.update();
+    });
+    this.props.value.$on('reverse', () => {
       this.update();
     });
   }
