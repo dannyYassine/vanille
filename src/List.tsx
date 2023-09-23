@@ -16,6 +16,28 @@ export class List extends BaseView {
     this.props.$on('value', () => {
       this.update();
     });
+    this.props.value.$on('push', () => {
+      this.update();
+    });
+    this.props.value.$on('pop', () => {
+      console.log('123');
+      this.update();
+    });
+    this.props.value.$on('shift', () => {
+      this.update();
+    });
+    this.props.value.$on('unshift', () => {
+      this.update();
+    });
+    this.props.value.$on('splice', () => {
+      this.update();
+    });
+    this.props.value.$on('sort', () => {
+      this.update();
+    });
+    this.props.value.$on('reverse', () => {
+      this.update();
+    });
   }
 
   render() {

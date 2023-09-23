@@ -6,7 +6,7 @@ export interface ObservableEvent {
 export type Observable<T> = T & ObservableEvent;
 
 export function observable<T>(data: T): Observable<T> | null {
-  const obj = isArray(data) ? [] : {};
+  const obj = isArray(data) ? wrapArrayMethods([]) : {};
   initialSetup(obj);
 
   mapObject(obj, data);
@@ -23,9 +23,7 @@ function mapObject(obj, data) {
       if (valueArray.length) {
         const val = valueArray[0];
         if (isObject(val) && !('$$listeners' in (val as object))) {
-          const obArray = valueArray.map((val) => observable(val));
-          initialSetup(obArray);
-          add$on(obArray);
+          const obArray = observable(valueArray.map((val) => observable(val)));
           obj[key] = obArray;
         } else if (!isObject(val) && !isArray(val)) {
           obj[key] = observable(value);
@@ -133,4 +131,71 @@ function initialSetup(obj) {
     writable: false,
     value: {}
   });
+}
+
+function wrapArrayMethods(newArray) {
+  newArray.push = ((f) =>
+    function push() {
+      var ret = f.apply(this, arguments);
+      this.$$listeners['push'].forEach((cb) => {
+        cb(arguments, this, this);
+      });
+      return ret;
+    })(newArray.push);
+
+  newArray.pop = ((f) =>
+    function pop() {
+      var ret = f.apply(this, arguments);
+      this.$$listeners['pop'].forEach((cb) => {
+        cb(ret, this, this);
+      });
+      return ret;
+    })(newArray.pop);
+
+  newArray.shift = ((f) =>
+    function shift() {
+      var ret = f.apply(this, arguments);
+      this.$$listeners['shift'].forEach((cb) => {
+        cb(ret, this, this);
+      });
+      return ret;
+    })(newArray.shift);
+
+  newArray.unshift = ((f) =>
+    function unshift() {
+      var ret = f.apply(this, arguments);
+      this.$$listeners['unshift'].forEach((cb) => {
+        cb(arguments, this, this);
+      });
+      return ret;
+    })(newArray.unshift);
+
+  newArray.splice = ((f) =>
+    function splice() {
+      var ret = f.apply(this, arguments);
+      this.$$listeners['splice'].forEach((cb) => {
+        cb(ret, this, this);
+      });
+      return ret;
+    })(newArray.splice);
+
+  newArray.sort = ((f) =>
+    function sort() {
+      var ret = f.apply(this, arguments);
+      this.$$listeners['sort'].forEach((cb) => {
+        cb(ret, this, this);
+      });
+      return ret;
+    })(newArray.sort);
+
+  newArray.reverse = ((f) =>
+    function reverse() {
+      var ret = f.apply(this, arguments);
+      this.$$listeners['reverse'].forEach((cb) => {
+        cb(ret, this, this);
+      });
+      return ret;
+    })(newArray.reverse);
+
+  return newArray;
 }

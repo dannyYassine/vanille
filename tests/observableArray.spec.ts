@@ -1,10 +1,10 @@
 import { describe, expect, test, vi } from 'vitest';
-import { observableArray } from '../src/ObservableArray';
+import { observable } from '../src/Observable';
 
 describe('observables', () => {
-  describe('function observableArray', () => {
+  describe('function observable', () => {
     test('can build with empty array', () => {
-      const obj = observableArray([]);
+      const obj = observable([]);
 
       expect(obj).toBeTruthy();
       expect(obj.$$listeners).toBeTruthy();
@@ -12,7 +12,7 @@ describe('observables', () => {
     });
 
     test('can build with primitive', () => {
-      const obj = observableArray([1, 2, 3]);
+      const obj = observable([1, 2, 3]);
 
       expect(obj).toBeTruthy();
       expect(obj.$$listeners).toBeTruthy();
@@ -20,7 +20,7 @@ describe('observables', () => {
     });
 
     test('can build with objects', () => {
-      const obj = observableArray([{}, {}, {}]);
+      const obj = observable([{}, {}, {}]);
 
       expect(obj).toBeTruthy();
       expect(obj.$$listeners).toBeTruthy();
@@ -30,7 +30,7 @@ describe('observables', () => {
 
   describe('function push', () => {
     test('emits push event when pushing elements', async () => {
-      const obj = observableArray([]);
+      const obj = observable([]);
 
       const promise = new Promise((resolve) => {
         obj.$on('push', (newValue: string, oldValue: string, target) => {
@@ -45,7 +45,7 @@ describe('observables', () => {
     });
 
     test('emits push event when pushing multiple elements', async () => {
-      const obj = observableArray([]);
+      const obj = observable([]);
 
       const promise = new Promise((resolve) => {
         obj.$on('push', (newValue: string, oldValue: string, target) => {
@@ -60,7 +60,7 @@ describe('observables', () => {
     });
 
     test('emits push event when pushing multiple elements', async () => {
-      const obj = observableArray([]);
+      const obj = observable([]);
 
       const promise = new Promise((resolve) => {
         obj.$on('push', (newValue: string, oldValue: string, target) => {
@@ -77,7 +77,7 @@ describe('observables', () => {
 
   describe('function pop', () => {
     test('emits on pop event', async () => {
-      const obj = observableArray([1, 2]);
+      const obj = observable([1, 2]);
 
       const promise = new Promise((resolve) => {
         obj.$on('pop', (newValue: string, oldValue: string, target) => {
@@ -96,7 +96,7 @@ describe('observables', () => {
 
   describe('function shift', () => {
     test('emits on shift event', async () => {
-      const obj = observableArray([1, 2]);
+      const obj = observable([1, 2]);
 
       const promise = new Promise((resolve) => {
         obj.$on('shift', (newValue: string, oldValue: string, target) => {
@@ -115,7 +115,7 @@ describe('observables', () => {
 
   describe('function unshift', () => {
     test('emits on unshift event', async () => {
-      const obj = observableArray([1, 2]);
+      const obj = observable([1, 2]);
 
       const promise = new Promise((resolve) => {
         obj.$on('unshift', (newValue: string, oldValue: string, target) => {
@@ -134,7 +134,7 @@ describe('observables', () => {
 
   describe('function splice', () => {
     test('emits on splice event', async () => {
-      const obj = observableArray([1, 2]);
+      const obj = observable([1, 2]);
 
       const promise = new Promise((resolve) => {
         obj.$on('splice', (newValue: string, oldValue: string, target) => {
@@ -153,7 +153,7 @@ describe('observables', () => {
 
   describe('function sort', () => {
     test('emits on sort event with compareFn', async () => {
-      const obj = observableArray([1, 2]);
+      const obj = observable([1, 2]);
 
       const promise = new Promise((resolve) => {
         obj.$on('sort', (newValue: string, oldValue: string, target) => {
@@ -171,7 +171,7 @@ describe('observables', () => {
     });
 
     test('emits on sort event', async () => {
-      const obj = observableArray([2, 1]);
+      const obj = observable([2, 1]);
 
       const promise = new Promise((resolve) => {
         obj.$on('sort', (newValue: string, oldValue: string, target) => {
@@ -190,7 +190,7 @@ describe('observables', () => {
 
   describe('function reverse', () => {
     test('emits on reverse event', async () => {
-      const obj = observableArray([1, 2]);
+      const obj = observable([1, 2]);
 
       const promise = new Promise((resolve) => {
         obj.$on('reverse', (newValue: string, oldValue: string, target) => {
