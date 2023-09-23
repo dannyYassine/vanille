@@ -2,7 +2,7 @@ import { BaseView } from './BaseView';
 import { Observable } from './Observable';
 export declare class List extends BaseView {
     props: Observable<{
-        value: any[];
+        value: Observable<any[]>;
         key?: string;
         item: (i: any) => any;
     }>;

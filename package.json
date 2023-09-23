@@ -1,6 +1,6 @@
 {
   "name": "@vanille/core",
-  "version": "0.0.32",
+  "version": "0.0.33",
   "type": "module",
   "main": "./src/dist/vanille.umd.cjs",
   "module": "./src/dist/vanille.js",

@@ -9,7 +9,7 @@ export abstract class BaseView extends HTMLElement {
   refs: typeof Proxy;
   $scopedId: string;
 
-  constructor(config: Partial<{ noShadow: boolean }>) {
+  constructor(config: Partial<{ noShadow: boolean }> = {}) {
     super();
     if (!config?.noShadow) {
       this.attachShadow({ mode: 'open' });
