@@ -5,7 +5,7 @@ import { render } from './jsx';
 
 @define()
 export class List extends BaseView {
-  props: Observable<{ value: any[]; key?: string; item: (i: any) => any }>;
+  props: Observable<{ value: Observable<any[]>; key?: string; item: (i: any) => any }>;
 
   constructor() {
     super({ noShadow: true });
@@ -20,7 +20,6 @@ export class List extends BaseView {
       this.update();
     });
     this.props.value.$on('pop', () => {
-      console.log('123');
       this.update();
     });
     this.props.value.$on('shift', () => {
