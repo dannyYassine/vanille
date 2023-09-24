@@ -225,13 +225,7 @@ export class Dashboard extends DevView {
         </nav>
         <div class="container-fluid py-4">
           <div class="row">
-            {/* <List
-              class="row"
-              value={this.widgets}
-              item={(widget) => (
-                <DashboardHeaderWidget widget={widget} />
-              )}
-            /> */}
+            <List class="row" value={this.widgets} item={(widget) => <DashboardHeaderWidget widget={widget} />} />
           </div>
           <div class="row mt-4">
             <div class="col-lg-4 col-md-6 mt-4 mb-4">
