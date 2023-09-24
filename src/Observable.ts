@@ -27,6 +27,8 @@ function mapObject(obj, data) {
           obj[key] = obArray;
         } else if (!isObject(val) && !isArray(val)) {
           obj[key] = observable(value);
+        } else {
+          obj[key] = value;
         }
       } else {
         const obArray = [];
@@ -138,7 +140,7 @@ function wrapArrayMethods(newArray) {
     function push() {
       var ret = f.apply(this, arguments);
       this.$$listeners['push'].forEach((cb) => {
-        cb(arguments, this, this);
+        cb([...arguments], this, this);
       });
       return ret;
     })(newArray.push);
@@ -165,7 +167,7 @@ function wrapArrayMethods(newArray) {
     function unshift() {
       var ret = f.apply(this, arguments);
       this.$$listeners['unshift'].forEach((cb) => {
-        cb(arguments, this, this);
+        cb([...arguments], this, this);
       });
       return ret;
     })(newArray.unshift);

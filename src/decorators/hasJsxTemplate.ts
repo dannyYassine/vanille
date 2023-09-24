@@ -3,8 +3,6 @@ import { render } from '../jsx';
 export function hasJsxTemplate(): (target: Function) => void {
   return (target: Function) => {
     target.prototype.renderTemplate = function () {
-      const node = this.render?.();
-
       const style = document.createElement('style');
       let styles = this.styles?.() ?? '';
       if (styles !== '') {
@@ -14,6 +12,7 @@ export function hasJsxTemplate(): (target: Function) => void {
 
       this.shadowRoot ? this.shadowRoot.appendChild(style) : this.appendChild(style);
 
+      const node = this.render?.();
       if (node) {
         node.$scopedId = this.$scopedId;
 

@@ -2,6 +2,7 @@ import { define, Route } from '@vanille/core';
 import { Tables } from './Tables';
 import { Dashboard } from './Dashboard';
 import { DevView } from './DevView';
+import { ListExample } from './ListExample';
 
 @define()
 export class Router extends DevView {
@@ -14,6 +15,9 @@ export class Router extends DevView {
         </Route>
         <Route path="/app/tables">
           <Tables />
+        </Route>
+        <Route path="/app/list-example">
+          <ListExample />
         </Route>
       </section>
     );
