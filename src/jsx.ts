@@ -22,7 +22,7 @@ export function render(jsx: Array<unknown>, document: Document) {
   })() as Array<(string | HTMLElement | Array<unknown>) & HasScopedId>;
 
   // @ts-ignore
-  const $elConstructor = el.name ? customElements.get(`v-${snakeCase(el.name)}`) : null;
+  const $elConstructor = el?.name ? customElements.get(`v-${snakeCase(el.name)}`) : null;
   const $el: HTMLElement & HasScopedId & HasProps = $elConstructor
     ? (new $elConstructor() as HTMLElement & HasScopedId & HasProps)
     : (document.createElement(el) as HTMLElement & HasScopedId & HasProps);

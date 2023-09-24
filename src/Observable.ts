@@ -57,7 +57,7 @@ function buildNode(data) {
     set: (obj, prop, value) => {
       const oldValue = obj[prop];
 
-      if (!value.$$listeners && isObject(value)) {
+      if (!value.$$listeners && (isObject(value) || isArray(value))) {
         value = observable(value);
         triggerListeners(obj[prop], value);
       }
@@ -88,7 +88,7 @@ function add$on(data: Object) {
 }
 
 function triggerListeners(obj, newObject) {
-  if (!isObject(obj)) {
+  if (!obj || !(isObject(obj) || isArray(obj))) {
     return;
   }
 
@@ -100,7 +100,7 @@ function triggerListeners(obj, newObject) {
   });
 
   Object.entries(obj).forEach(([key]) => {
-    if (obj.$$listeners[key]) {
+    if (obj.$$listeners[key] && !isNativeArrayFunctions(key)) {
       if (obj[key] !== newObject[key]) {
         obj.$$listeners[key].forEach((cb) => {
           cb(newObject[key], obj[key], newObject);
@@ -124,6 +124,10 @@ function isObject(value) {
 
 function isArray(value) {
   return typeof value === 'object' && Array.isArray(value);
+}
+
+function isNativeArrayFunctions(key: string) {
+  return ['push', 'pop', 'shift', 'unshift', 'splice', 'sort', 'reverse'].includes(key);
 }
 
 function initialSetup(obj) {

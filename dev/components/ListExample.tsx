@@ -110,7 +110,7 @@ export class ListExample extends DevView {
     this.state.widgets.push(this.choose[this.index]);
   }
 
-  onRemoveClicked() {
+  onPopClicked() {
     this.state.widgets.pop();
   }
 
@@ -122,18 +122,39 @@ export class ListExample extends DevView {
     this.state.widgets.unshift(this.choose[this.index]);
   }
 
+  onResetClicked() {
+    this.state.widgets = [
+      this.choose[this.index],
+      this.choose[this.index],
+      this.choose[this.index],
+      this.choose[this.index]
+    ];
+  }
+
+  setBindings(): void {
+    this.state.$on('widgets', (newValue: any[]) => {
+      this.refs.list.props.value = newValue;
+    });
+  }
+
   render() {
     return (
       <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
         <div class="container-fluid py-4">
           <div class="row">
             <button onclick={() => this.onAddClicked()}>Add</button>{' '}
-            <button onclick={() => this.onRemoveClicked()}>Remove</button>
+            <button onclick={() => this.onPopClicked()}>Remove</button>
             <button onclick={() => this.onShiftClicked()}>shift</button>
             <button onclick={() => this.onUnshiftClicked()}>unshift</button>
+            <button onclick={() => this.onResetClicked()}>reset</button>
           </div>
-          <div class="row">
-            <List class="row" value={this.state.widgets} item={(widget) => <DashboardHeaderWidget widget={widget} />} />
+          <div class="row" style="margin-top: 100px">
+            <List
+              ref="list"
+              class="row"
+              value={this.state.widgets}
+              item={(widget) => <DashboardHeaderWidget widget={widget} />}
+            />
           </div>
           <footer class="footer py-4  ">
             <div class="container-fluid">
