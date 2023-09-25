@@ -228,8 +228,8 @@ describe('observables', () => {
       });
       const promise = new Promise((resolve) => {
         obj.$on('users', (newValue: string, oldValue: string, target) => {
-          expect(newValue).toEqual([{ email: 'email' }]);
-          expect(oldValue).toEqual([]);
+          expect([...newValue]).toEqual([{ email: 'email' }]);
+          expect([...oldValue]).toEqual([]);
           expect(target).toEqual(obj);
           resolve({});
         });

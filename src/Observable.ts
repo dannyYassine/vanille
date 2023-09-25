@@ -27,6 +27,8 @@ function mapObject(obj, data) {
           obj[key] = obArray;
         } else if (!isObject(val) && !isArray(val)) {
           obj[key] = observable(value);
+        } else {
+          obj[key] = value;
         }
       } else {
         const obArray = [];
@@ -55,7 +57,7 @@ function buildNode(data) {
     set: (obj, prop, value) => {
       const oldValue = obj[prop];
 
-      if (!value.$$listeners && isObject(value)) {
+      if (!value.$$listeners && (isObject(value) || isArray(value))) {
         value = observable(value);
         triggerListeners(obj[prop], value);
       }
@@ -86,7 +88,7 @@ function add$on(data: Object) {
 }
 
 function triggerListeners(obj, newObject) {
-  if (!isObject(obj)) {
+  if (!obj || !(isObject(obj) || isArray(obj))) {
     return;
   }
 
@@ -98,7 +100,7 @@ function triggerListeners(obj, newObject) {
   });
 
   Object.entries(obj).forEach(([key]) => {
-    if (obj.$$listeners[key]) {
+    if (obj.$$listeners[key] && !isNativeArrayFunctions(key)) {
       if (obj[key] !== newObject[key]) {
         obj.$$listeners[key].forEach((cb) => {
           cb(newObject[key], obj[key], newObject);
@@ -111,7 +113,11 @@ function triggerListeners(obj, newObject) {
     //     triggerListeners(val, newObject[key]);
     //   });
     // } else {
-    triggerListeners(obj[key], newObject[key]);
+
+    // this is when we are upadting an array with less values than the orignial
+    if (obj && newObject) {
+      triggerListeners(obj[key], newObject[key]);
+    }
     // }
   });
 }
@@ -122,6 +128,10 @@ function isObject(value) {
 
 function isArray(value) {
   return typeof value === 'object' && Array.isArray(value);
+}
+
+function isNativeArrayFunctions(key: string) {
+  return ['push', 'pop', 'shift', 'unshift', 'splice', 'sort', 'reverse'].includes(key);
 }
 
 function initialSetup(obj) {
@@ -138,7 +148,7 @@ function wrapArrayMethods(newArray) {
     function push() {
       var ret = f.apply(this, arguments);
       this.$$listeners['push'].forEach((cb) => {
-        cb(arguments, this, this);
+        cb([...arguments], this, this);
       });
       return ret;
     })(newArray.push);
@@ -165,7 +175,7 @@ function wrapArrayMethods(newArray) {
     function unshift() {
       var ret = f.apply(this, arguments);
       this.$$listeners['unshift'].forEach((cb) => {
-        cb(arguments, this, this);
+        cb([...arguments], this, this);
       });
       return ret;
     })(newArray.unshift);

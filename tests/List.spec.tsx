@@ -100,19 +100,19 @@ describe('List.tsx', () => {
 
       $component.props.value.sort();
 
-      expect($component.querySelector('div[index="1"]')).toEqual($component.children[0]);
-      expect($component.querySelector('div[index="2"]')).toEqual($component.children[1]);
+      expect($component.querySelector('div[index="1"]')).toEqual($component.children[1]);
+      expect($component.querySelector('div[index="2"]')).toEqual($component.children[2]);
     });
 
-    test('does re-render when using sort', () => {
+    test('does re-render when using reverse', () => {
       const array = [1, 3, 2];
       const $component = mount(<List value={array} item={(i) => <div index={i}>{i}</div>} />);
 
       $component.props.value.reverse();
 
-      expect($component.querySelector('div[index="2"]')).toEqual($component.children[0]);
-      expect($component.querySelector('div[index="3"]')).toEqual($component.children[1]);
-      expect($component.querySelector('div[index="1"]')).toEqual($component.children[2]);
+      expect($component.querySelector('div[index="2"]')).toEqual($component.children[1]);
+      expect($component.querySelector('div[index="3"]')).toEqual($component.children[2]);
+      expect($component.querySelector('div[index="1"]')).toEqual($component.children[3]);
     });
   });
 });

@@ -16,7 +16,7 @@ export class DashboardHeaderWidget extends DevView {
 
   render() {
     return (
-      <div class="card">
+      <div class="card mt-4">
         <div class="card-header p-3 pt-2">
           <div
             class={`icon icon-lg icon-shape shadow-dark text-center border-radius-xl mt-n4 position-absolute ${this.props.widget.color}`}
@@ -34,5 +34,17 @@ export class DashboardHeaderWidget extends DevView {
         </div>
       </div>
     );
+  }
+
+  styles() {
+    return `
+      div.card {
+        opacity: 0;
+        animation-name: fade-in;
+        animation-duration: 0.3s;
+        animation-fill-mode: forwards;
+        animation-timing-function: ease-out;
+      }
+    `;
   }
 }
