@@ -113,7 +113,11 @@ function triggerListeners(obj, newObject) {
     //     triggerListeners(val, newObject[key]);
     //   });
     // } else {
-    triggerListeners(obj[key], newObject[key]);
+
+    // this is when we are upadting an array with less values than the orignial
+    if (obj && newObject) {
+      triggerListeners(obj[key], newObject[key]);
+    }
     // }
   });
 }

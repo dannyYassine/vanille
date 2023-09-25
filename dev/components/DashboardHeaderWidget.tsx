@@ -43,7 +43,7 @@ export class DashboardHeaderWidget extends DevView {
         animation-name: fade-in;
         animation-duration: 0.3s;
         animation-fill-mode: forwards;
-        animation-timing-function: ease-in;
+        animation-timing-function: ease-out;
       }
     `;
   }
