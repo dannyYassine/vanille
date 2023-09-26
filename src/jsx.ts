@@ -1,5 +1,6 @@
 import { makeID } from './helpers/makeId';
 import { snakeCase } from './helpers/snakeCase';
+import { camelize } from './helpers/camelize';
 
 export function h(...args: any[]): any[] {
   return [...args];
@@ -32,12 +33,24 @@ export function render(jsx: Array<unknown>, document: Document) {
   if (attrs) {
     Object.entries(attrs).forEach(([key, value]) => {
       if (key.startsWith('on') && value instanceof Function) {
+        let mods = undefined;
+        if (key.includes(':')) {
+          mods = key.split(':');
+          key = mods[0];
+          delete mods[0];
+          mods = mods[1].split('-');
+        }
         if (key in $el) {
-          // @ts-ignore
-          $el[key.toLowerCase()] = value;
+          if (mods?.includes('outside')) {
+            mods = mods.filter((mod) => mod !== 'outside');
+            handleClickOutside($el, value, mods);
+          } else {
+            // @ts-ignore
+            $el[key.toLowerCase()] = buildFn($el, value, mods);
+          }
         } else {
           const event = key.substring(2);
-          $el.addEventListener(event, value);
+          $el.addEventListener(event, buildFn($el, value, mods));
         }
         return;
       }
@@ -69,10 +82,54 @@ export function render(jsx: Array<unknown>, document: Document) {
   return $el;
 }
 
-function camelize(str: string): string {
-  return str
-    .replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function (match: string, index: number) {
-      return index === 0 ? match.toLowerCase() : match.toUpperCase();
-    })
-    .replace('-', '');
-}
+const buildFn = ($el, value, mods: string[] = []) => {
+  return function (e): Function {
+    if (mods.length) {
+      const results = mods.filter((mod: string) => {
+        return !eventMap[mod]($el, value)(e);
+      });
+      if (results.length) {
+        return;
+      }
+    }
+
+    return value(arguments);
+  };
+};
+
+const handleClickOutside = ($el, value, mods = []) => {
+  document.addEventListener('click', function (e) {
+    const rects = $el.getBoundingClientRect();
+    if (
+      e.clientX < rects.x ||
+      e.clientX > rects.x + rects.width ||
+      e.clientY < rects.y ||
+      e.clientY > rects.y + rects.height
+    ) {
+      buildFn($el, value, mods)(e);
+    }
+  });
+};
+
+const eventMap = {
+  prevent: ($el) => {
+    return (e: Event) => {
+      e.preventDefault();
+      return true;
+    };
+  },
+  stop: ($el) => {
+    return (e: Event) => {
+      e.stopPropagation();
+      return true;
+    };
+  },
+  once: ($el, value) => {
+    let count = 0;
+    return function (e: Event) {
+      const result = !!count;
+      count++;
+      return !result;
+    };
+  }
+};
