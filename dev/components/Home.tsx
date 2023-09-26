@@ -18,8 +18,7 @@ export class Home extends DevView {
   }
 
   onButtonClicked() {
-    console.log('12');
-    // window.history.pushState({}, '', '/login');
+    window.history.pushState({}, '', '/login');
   }
 
   render() {

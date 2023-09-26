@@ -86,14 +86,14 @@ const buildFn = ($el, value, mods: string[] = []) => {
   return function (e): Function {
     if (mods.length) {
       const results = mods.filter((mod: string) => {
-        return !eventMap[mod]($el, value)(e);
+        return !eventModifiersMap[mod]($el)(e);
       });
       if (results.length) {
         return;
       }
     }
 
-    return value(arguments);
+    return value(...arguments);
   };
 };
 
@@ -111,7 +111,7 @@ const handleClickOutside = ($el, value, mods = []) => {
   });
 };
 
-const eventMap = {
+const eventModifiersMap = {
   prevent: ($el) => {
     return (e: Event) => {
       e.preventDefault();
@@ -124,11 +124,10 @@ const eventMap = {
       return true;
     };
   },
-  once: ($el, value) => {
-    let count = 0;
+  once: function ($el) {
     return function (e: Event) {
-      const result = !!count;
-      count++;
+      const result = !!$el._clicked;
+      $el._clicked = true;
       return !result;
     };
   }
