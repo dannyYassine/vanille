@@ -6,7 +6,7 @@ networks:
 
 services:
   client:
-    container_name: client
+    container_name: vanille-client
     build:
       context: .
       dockerfile: dev-env/client.dockerfile
@@ -21,7 +21,7 @@ services:
       - vanille
 
   playwright:
-    container_name: playwright
+    container_name: vanille-playwright
     build:
       context: .
       dockerfile: dev-env/playwright.dockerfile

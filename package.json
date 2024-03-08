@@ -1,8 +1,16 @@
 {
   "name": "@vanille/core",
-  "version": "0.0.23",
+  "version": "0.0.35",
   "type": "module",
-  "main": "src/index.ts",
+  "main": "./src/dist/vanille.umd.cjs",
+  "module": "./src/dist/vanille.js",
+  "types": "./src/dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./src/dist/vanille.js",
+      "require": "./src/dist/vanille.umd.cjs"
+    }
+  },
   "homepage": "https://dannyyassine.github.io/vanille/",
   "author": {
     "name": "Danny Yassine",
@@ -14,12 +22,16 @@
   },
   "license": "MIT",
   "scripts": {
-    "dev": "vite --host",
+    "port:http": "lt --port 3000 --subdomain vanille-client-app",
+    "ngrok-edit": "ngrok config edit",
+    "ngrok-setup": "ngrok config add-authtoken",
+    "dev": "yarn port:http & cd dev && yarn dev",
     "test": "vitest --segfault-retry=3 run",
     "test:watch": "vitest watch",
     "test:coverage": "vitest run --coverage",
     "test:watch:coverage": "vitest watch --coverage",
     "build": "tsc && vite build",
+    "compile": "tsc",
     "preview": "vite preview",
     "docs:dev": "vitepress dev pages --host",
     "docs:build": "vitepress build pages",
@@ -29,12 +41,16 @@
     "docs:preview": "vitepress preview pages"
   },
   "devDependencies": {
+    "@types/node": "^20.5.9",
     "@vitest/browser": "^0.34.3",
     "@vitest/coverage-istanbul": "^0.34.3",
     "jsdom": "^22.1.0",
+    "localtunnel": "^2.0.2",
     "playwright": "^1.37.1",
+    "prettier": "^3.0.3",
     "typescript": "^5.0.2",
     "vite": "^4.4.9",
+    "vite-plugin-dts": "^3.5.3",
     "vitepress": "^1.0.0-rc.10",
     "vitest": "^0.34.3"
   },

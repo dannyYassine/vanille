@@ -1,12 +1,17 @@
-import { define } from '@vanille/core';
+import { define, Observable, If } from '@vanille/core';
 import { DevView } from './DevView';
+import { LoginForm } from './Login';
 
 @define()
 export class LoginView extends DevView {
+  props: Observable<{ form: LoginForm }>;
+
   updateButtonEnabled() {
     this.isSignInEnabled
       ? this.refs.loginButton.removeAttribute('disabled')
       : this.refs.loginButton.setAttribute('disabled', '');
+
+    this.refs.loading.props.value = this.isSignInEnabled;
   }
 
   get isSignInEnabled() {
@@ -20,6 +25,15 @@ export class LoginView extends DevView {
     this.props.form.$on('password', (nv) => {
       this.updateButtonEnabled();
     });
+    this.updateButtonEnabled();
+  }
+
+  onInputEnterPressed(e) {
+    if (e.key !== 'Enter') {
+      return;
+    }
+    e.preventDefault();
+    this.emit('LoginClicked');
   }
 
   render() {
@@ -62,7 +76,9 @@ export class LoginView extends DevView {
                         <label class="form-label">Email</label>
                         <input
                           type="email"
+                          ref="email"
                           class="form-control"
+                          onkeypress={(e) => this.onInputEnterPressed(e)}
                           oninput={(e) => (this.props.form.email = e.target.value)}
                         />
                       </div>
@@ -70,7 +86,9 @@ export class LoginView extends DevView {
                         <label class="form-label">Password</label>
                         <input
                           type="password"
+                          ref="password"
                           class="form-control"
+                          onkeypress={(e) => this.onInputEnterPressed(e)}
                           oninput={(e) => (this.props.form.password = e.target.value)}
                         />
                       </div>
@@ -79,11 +97,17 @@ export class LoginView extends DevView {
                           class="form-check-input"
                           type="checkbox"
                           id="rememberMe"
+                          onkeypress={(e) => this.onInputEnterPressed(e)}
                           oninput={(e) => (this.props.form.rememberMe = e.target.checked)}
                         />
                         <label class="form-check-label mb-0 ms-3" for="rememberMe">
                           Remember me
                         </label>
+                      </div>
+                      <div>
+                        <If ref="loading" value={false}>
+                          Appeared because of "v-if"
+                        </If>
                       </div>
                       <div class="text-center">
                         <button

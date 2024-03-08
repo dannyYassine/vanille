@@ -1,30 +1,32 @@
-import { hasJsxTemplate, hasObservableState, hasRefs, hasObservableProps, hasEmit } from './decorators';
+import { hasJsxTemplate, hasObservableState, hasObservableProps, hasEmit } from './decorators';
+import { makeID } from './helpers/makeId';
 
 @hasJsxTemplate()
 @hasObservableProps()
 @hasObservableState()
 @hasEmit()
 export abstract class BaseView extends HTMLElement {
-  props: unknown = {};
-  state: unknown = {};
   refs: typeof Proxy;
-  shadowDom: ShadowRoot;
+  $scopedId: string;
 
-  constructor() {
+  constructor(config: Partial<{ noShadow: boolean }> = {}) {
     super();
-    this.attachShadow({ mode: 'open' });
-    Object.defineProperty(this, 'refs', {
-      get(): typeof Proxy {
-        return new Proxy(
-          {},
-          {
-            get: (_, prop: string) => {
-              return this.shadowRoot.querySelector(`[${this.$scopedId}][ref=${prop}]`);
-            }
-          }
-        ) as typeof Proxy;
+    if (!config?.noShadow) {
+      this.attachShadow({ mode: 'open' });
+    }
+    this.$scopedId = makeID();
+    // @ts-ignore
+    this.props = {};
+    // @ts-ignore
+    this.state = {};
+    this.refs = new Proxy(
+      {},
+      {
+        get: (_, prop: string) => {
+          return this.shadowRoot.querySelector(`[${this.$scopedId}][ref=${prop}]`);
+        }
       }
-    });
+    ) as typeof Proxy;
   }
 
   abstract render(): any;
@@ -32,20 +34,25 @@ export abstract class BaseView extends HTMLElement {
   setBindings() {}
 
   protected connectedCallback() {
+    // @ts-ignore
     this.buildProps();
+    // @ts-ignore
     this.buildState();
+    // @ts-ignore
     this.renderTemplate();
     this.setBindings();
   }
 
   removeAllChildren() {
-    while (this.shadowRoot.firstChild) {
-      this.shadowRoot.removeChild(this.shadowRoot.lastChild);
+    const root = this.shadowRoot ? this.shadowRoot : this;
+    while (root.firstChild) {
+      root.removeChild(root.lastChild);
     }
   }
 
   update() {
     this.removeAllChildren();
+    // @ts-ignore
     this.renderTemplate();
   }
 }

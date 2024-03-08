@@ -1,12 +1,16 @@
 // jsx rendering
 export { render, h } from './jsx';
-window.h = h;
 
 // routing components
 export { Route } from './Route';
 
+// core components
+export { If } from './If';
+export { List } from './List';
+
 // observables
 export { observable } from './Observable';
+export type { Observable } from './Observable';
 
 // all decorators
 export * from './decorators';

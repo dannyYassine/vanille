@@ -21,16 +21,20 @@ window.addEventListener('popstate', () => {
   window.dispatchEvent(new Event('locationchange'));
 });
 
+// @ts-ignore
 window.$location = window.location;
 
 @define()
 export class Route extends BaseView {
-  matches: boolean = false;
+  props: { startWith?: string; path?: string } = {};
+
+  matchesRoute: boolean = false;
 
   location: Location;
 
   constructor() {
     super();
+    // @ts-ignore
     this.location = window.$location;
   }
 
@@ -43,12 +47,12 @@ export class Route extends BaseView {
 
   checkPath() {
     if (this.location.pathname === this.props.path || this.matchesPattern()) {
-      if (!this.matches) {
-        this.matches = true;
+      if (!this.matchesRoute) {
+        this.matchesRoute = true;
         this.update();
       }
-    } else if (this.matches) {
-      this.matches = false;
+    } else if (this.matchesRoute) {
+      this.matchesRoute = false;
       this.update();
     }
   }
@@ -58,11 +62,11 @@ export class Route extends BaseView {
       return false;
     }
 
-    const browserPaths = this.location.pathname.split('/').filter((path, index) => {
+    const browserPaths = this.location.pathname.split('/').filter((path) => {
       return path !== '';
     });
     let propsPaths = !!this.props.startWith ? this.props.startWith.split('/') : this.props.path.split('/');
-    propsPaths = propsPaths.filter((path, index) => {
+    propsPaths = propsPaths.filter((path) => {
       return path !== '';
     });
 
@@ -80,7 +84,7 @@ export class Route extends BaseView {
     }
 
     // startWith
-    const paths = propsPaths.filter((path, index) => {
+    const paths = propsPaths.filter((path) => {
       if (path.startsWith(':')) return true;
       return true;
     });
@@ -99,7 +103,7 @@ export class Route extends BaseView {
   }
 
   render() {
-    if (!this.matches) {
+    if (!this.matchesRoute) {
       return '';
     }
 
