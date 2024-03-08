@@ -35,6 +35,25 @@
 yarn add @vanille/core
 ```
 
+### Prerequisites
+
+#### `vite.config.ts`
+Using `vite`, please specify the `esbuild` options:
+
+```js
+  esbuild: {
+    jsxFactory: 'h',
+    jsxFragment: 'Fragment',
+  }
+```
+
+#### `tsconfig.json`
+To use `decorators`, enable `experimentalDecorators`:
+
+```json
+    "experimentalDecorators": true
+```
+
 ### No dependencies
 All features are in-house implementations to maximize native functionality, with a few exceptions (check out below!)
 
