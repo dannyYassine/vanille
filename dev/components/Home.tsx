@@ -5,7 +5,7 @@ import { LoginForm } from './Login';
 
 @define()
 export class Home extends DevView {
-  props: Observable<{form: LoginForm}>;
+  props: Observable<{ form: LoginForm }>;
 
   updateButtonEnabled() {
     this.isSignInEnabled
@@ -48,7 +48,7 @@ export class Home extends DevView {
                           ref="loginButton"
                           type="button"
                           class="btn bg-gradient-primary w-100 my-4 mb-2"
-                          onclick={() => this.onButtonClicked()}
+                          onclick:once={() => this.onButtonClicked()}
                         >
                           Log in
                         </button>
