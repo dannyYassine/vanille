@@ -1,7 +1,6 @@
 import { render } from './jsx';
 import { generateRandomString } from './helpers/random';
 import { effect } from './signals';
-import './style.css';
 
 export class View<P extends Record<string, unknown>> extends HTMLElement {
   props?: P;
@@ -24,7 +23,11 @@ export class View<P extends Record<string, unknown>> extends HTMLElement {
   }
 
   styles(): string {
-    return '';
+    // temp, optimize
+    return `
+    @import url("${window.location.origin}/assets/css/material-dashboard.css?v=3.1.0");
+    @import url("${window.location.origin}/assets/css/app.css");
+    `;
   }
 
   def(): object {
@@ -48,7 +51,7 @@ export class View<P extends Record<string, unknown>> extends HTMLElement {
   }
 
   protected link(): string {
-    return '/src/style.css';
+    return ``;
   }
 
   protected createLink(): void {
@@ -82,11 +85,15 @@ export class View<P extends Record<string, unknown>> extends HTMLElement {
   }
 
   updateRender() {
+    // temp, optimize
+    this.shadowRoot.innerHTML = '';
+
     const node = this.render?.(this.props);
 
     if (node) {
       this.createLink();
       this.createStyle();
+
       // for root only
       if (!this.$scopedId) {
         this.$scopedId = `v${generateRandomString(8)}`;
@@ -94,6 +101,7 @@ export class View<P extends Record<string, unknown>> extends HTMLElement {
       }
       node.$scopedId = this.$scopedId;
       const content = render(node, window.document);
+
       this.shadowRoot
         ? this.shadowRoot.appendChild(content)
         : this.appendChild(content);

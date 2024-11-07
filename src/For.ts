@@ -1,7 +1,7 @@
 import { render } from './jsx';
 import { View } from './View';
 
-export class AppFor extends View<{
+export class For extends View<{
   items: any[];
   key?: string;
   template: (item: any, index: number) => any;
@@ -109,3 +109,4 @@ export class AppFor extends View<{
     this.itemsByKey.delete(key);
   }
 }
+customElements.define('v-for', For);

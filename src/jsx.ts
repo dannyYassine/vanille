@@ -48,7 +48,7 @@ function createElement(
       return new Constructor();
     }
 
-    if (tagName instanceof Function && tagName.__proto__.name !== 'View') {
+    if (tagName instanceof Function && tagName.__proto__.name === '') {
       const view = new View();
       view.render = tagName.bind(view);
 

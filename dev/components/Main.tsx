@@ -1,10 +1,8 @@
-import { define } from '@vanille/core';
-import { DevView } from './DevView';
-import './Router';
+import { View } from '@vanille/core';
+import { Router } from './Router';
 
-@define()
-export class Main extends DevView {
+export class Main extends View {
   render() {
-    return <v-router></v-router>;
+    return <Router />
   }
 }

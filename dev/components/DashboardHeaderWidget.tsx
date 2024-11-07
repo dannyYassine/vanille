@@ -1,10 +1,6 @@
-import { Observable, define } from '@vanille/core';
-import { DevView } from './DevView';
+import { View } from '@vanille/core';
 
-@define()
-export class DashboardHeaderWidget extends DevView {
-  props: Observable<{ widget: object }>;
-
+export class DashboardHeaderWidget extends View {
   constructor() {
     super();
 

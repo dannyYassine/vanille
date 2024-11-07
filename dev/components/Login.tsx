@@ -1,7 +1,5 @@
-import { define } from '@vanille/core';
-import { DevView } from './DevView';
+import { state, View } from '@vanille/core';
 import { LoginView } from './LoginView';
-import { Observable } from '@vanille/core/src/dist/Observable';
 
 export class LoginForm {
   email: string = '';
@@ -9,29 +7,20 @@ export class LoginForm {
   rememberMe: boolean = false;
 }
 
-@define()
-export class Login extends DevView {
-  state: Observable<{form: LoginForm}>
+export function Login() {
+  const form = state(new LoginForm());
   
-  data() {
-    return {
-      form: new LoginForm()
-    };
-  }
-
-  onSignInClicked() {
-    if (!this.state.form.email || !this.state.form.password) {
+  this.onSignInClicked = () => {
+    if (!form.get().email || !form.get().password) {
       return;
     }
 
-    if (this.state.form.rememberMe) {
+    if (form.rememberMe) {
       console.log('need to remember me');
     }
 
     window.history.pushState({}, '', '/app/dashboard');
   }
 
-  render() {
-    return <LoginView form={this.state.form} onLoginClicked={() => this.onSignInClicked()} />;
-  }
+  return <LoginView form={form} onLoginClicked={() => this.onSignInClicked()} />;
 }

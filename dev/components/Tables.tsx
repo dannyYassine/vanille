@@ -1,8 +1,6 @@
-import { define } from '@vanille/core';
-import { DevView } from "./DevView";
+import { View } from '@vanille/core';
 
-@define()
-export class Tables extends DevView {
+export class Tables extends View {
     render() {
         return (
             <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">

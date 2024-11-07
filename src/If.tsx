@@ -1,26 +1,21 @@
-import { BaseView } from './BaseView';
-import { Observable } from './Observable';
-import { define } from './decorators';
+import { View } from './View';
 
-@define()
-export class If extends BaseView {
-  props: Observable<{ value: boolean }>;
+export class If extends View {
+  static observedAttributes = ['value'];
 
-  constructor() {
-    super({ noShadow: true });
-  }
-
-  setBindings(): void {
-    this.props.$on('value', () => {
-      this.update();
-    });
+  attributeChangedCallback(name) {
+    if (name === 'value') {
+      this.updateRender();
+      return;
+    }
   }
 
   render() {
-    if (this.props.value) {
-      return ['slot', { ref: 'slot' }];
+    if (this.value) {
+      return <slot></slot>;
     }
-
+    
     return '';
   }
 }
+customElements.define('v-if', If);

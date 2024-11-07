@@ -1,9 +1,7 @@
-import { define, List } from '@vanille/core';
-import { DevView } from './DevView';
+import { View, List } from '@vanille/core';
 import { DashboardHeaderWidget } from './DashboardHeaderWidget';
 
-@define()
-export class ListExample extends DevView {
+export class ListExample extends View {
   choose = [
     {
       color: 'bg-gradient-dark',
@@ -149,12 +147,12 @@ export class ListExample extends DevView {
             <button onclick={() => this.onResetClicked()}>reset</button>
           </div>
           <div class="row" style="margin-top: 100px">
-            <List
+            {/* <List
               ref="list"
               class="row"
               value={this.state.widgets}
               item={(widget) => <DashboardHeaderWidget widget={widget} />}
-            />
+            /> */}
           </div>
           <footer class="footer py-4  ">
             <div class="container-fluid">
