@@ -1,11 +1,10 @@
-import { Route, View, state } from '@vanille/core';
+import { Route, View } from '@vanille/core';
 import { Nav } from './Nav';
 import { Main } from './Main';
-import { DevView } from './DevView';
 import { Login } from './Login';
 import { Home } from './Home';
 
-export class App extends View {
+customElements.define('v-app', class extends View {
   render() {
     return (
       <section>
@@ -26,5 +25,4 @@ export class App extends View {
       </section>
     );
   }
-}
-customElements.define('v-app', App);
+});
