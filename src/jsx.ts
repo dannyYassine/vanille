@@ -39,7 +39,9 @@ function createElement(
   const isCustomElement = tagName?.name;
 
   if (isCustomElement) {
-    if (tagName instanceof Function && tagName.__proto__.name === 'View') {
+
+    // class component
+    if (tagName instanceof Function && tagName.__proto__.name !== '') {
       let Constructor = customElements.get(`v-${tagName.name.toLowerCase()}`);
       if (!Constructor) {
         customElements.define(`v-${tagName.name.toLowerCase()}`, tagName);
@@ -48,6 +50,7 @@ function createElement(
       return new Constructor();
     }
 
+    // functional component
     if (tagName instanceof Function && tagName.__proto__.name === '') {
       const view = new View();
       view.render = tagName.bind(view);

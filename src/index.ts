@@ -13,3 +13,7 @@ export { Route } from './Route';
 // core components
 export { If } from './If';
 export { For } from './For';
+
+import Vanille from './Vanille';
+
+export default Vanille;

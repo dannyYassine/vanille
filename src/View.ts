@@ -1,10 +1,14 @@
 import { render } from './jsx';
 import { generateRandomString } from './helpers/random';
-import { effect } from './signals';
+import { Signal, effect } from './signals';
+import Vanille from './Vanille';
 
-export class View<P extends Record<string, unknown>> extends HTMLElement {
+export class View<P = {}> extends HTMLElement {
   props?: P;
-  styleTag: StyleSheet;
+  styleTag?: HTMLStyleElement;
+  refs: ProxyConstructor;
+  $c: Signal[];
+  $scopedId: string;
 
   constructor(mode = 'open') {
     super();
@@ -23,11 +27,7 @@ export class View<P extends Record<string, unknown>> extends HTMLElement {
   }
 
   styles(): string {
-    // temp, optimize
-    return `
-    @import url("${window.location.origin}/assets/css/material-dashboard.css?v=3.1.0");
-    @import url("${window.location.origin}/assets/css/app.css");
-    `;
+    return '';
   }
 
   def(): object {
@@ -50,34 +50,24 @@ export class View<P extends Record<string, unknown>> extends HTMLElement {
     this.updateRender();
   }
 
-  protected link(): string {
-    return ``;
-  }
-
-  protected createLink(): void {
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.type = 'text/css';
-    link.href = this.link();
-
-    this.shadowRoot.appendChild(link);
-  }
-
-  protected createStyle(): void {
-    if (!this.styles()) {
+  protected createStyleTag(): void {
+    const styleTagContent = `${this.styles()} ${Vanille.getStyles()}`;
+    
+    if (!styleTagContent) {
       return;
     }
-
+    
     this.styleTag = document.createElement('style');
-    this.updateStyles();
-    this.shadowRoot.appendChild(this.styleTag);
     effect(() => {
-      this.updateStyles();
-    });
+        this.updateStyles();
+      });
+    this.shadowRoot.appendChild(this.styleTag);
   }
 
   protected updateStyles(): void {
-    const styles = this.styles()
+    const styleTagContent = `${this.styles()} ${Vanille.getStyles()}`;
+    
+    const styles = styleTagContent
       .trim()
       .replaceAll(/(\S+)(h*.*\{)/gm, `$1[${this.$scopedId}]$2 `);
 
@@ -91,8 +81,7 @@ export class View<P extends Record<string, unknown>> extends HTMLElement {
     const node = this.render?.(this.props);
 
     if (node) {
-      this.createLink();
-      this.createStyle();
+      this.createStyleTag();
 
       // for root only
       if (!this.$scopedId) {

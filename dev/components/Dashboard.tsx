@@ -1,4 +1,4 @@
-import { View } from '@vanille/core';
+import { View, For, state } from '@vanille/core';
 import { DashboardHeaderWidget } from './DashboardHeaderWidget';
 
 export class Dashboard extends View {
@@ -6,7 +6,7 @@ export class Dashboard extends View {
   constructor() {
     super();
 
-    this.widgets = [
+    this.widgets = state([
       {
         color: 'bg-gradient-dark',
         title: "Today's Money",
@@ -51,7 +51,7 @@ export class Dashboard extends View {
           </span>
         )
       }
-    ];
+    ]);
   }
 
   render() {
@@ -223,7 +223,7 @@ export class Dashboard extends View {
         </nav>
         <div class="container-fluid py-4">
           <div class="row">
-            {/* <List class="row" value={this.widgets} item={(widget) => <DashboardHeaderWidget widget={widget} />} /> */}
+            <For class="row" items={this.widgets} template={(widget) => <DashboardHeaderWidget widget={widget} />} />
           </div>
           <div class="row mt-4">
             <div class="col-lg-4 col-md-6 mt-4 mb-4">
