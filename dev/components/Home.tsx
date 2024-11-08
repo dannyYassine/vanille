@@ -1,11 +1,12 @@
-import { View } from '@vanille/core';
+import { state } from '@vanille/core';
 
-export class Home extends View {
-  onButtonClicked() {
-    window.history.pushState({}, '', '/login');
-  }
+export function Home() {
+  const login = state('login');
 
-  render() {
+    const onButtonClicked = () => {
+      window.history.pushState({}, '', `/${login.get()}`)
+    };
+
     return (
       <main class="main-content  mt-0">
         <div
@@ -32,7 +33,7 @@ export class Home extends View {
                           ref="loginButton"
                           type="button"
                           class="btn bg-gradient-primary w-100 my-4 mb-2"
-                          onclick={() => this.onButtonClicked()}
+                          onclick={onButtonClicked}
                         >
                           Log in
                         </button>
@@ -86,5 +87,4 @@ export class Home extends View {
         </div>
       </main>
     );
-  }
 }

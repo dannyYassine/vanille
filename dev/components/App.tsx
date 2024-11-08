@@ -1,9 +1,8 @@
-import { Route, View } from '@vanille/core';
+import Vanille, { Route, View } from '@vanille/core';
 import { Nav } from './Nav';
 import { Main } from './Main';
 import { Login } from './Login';
 import { Home } from './Home';
-import Vanille from '@vanille/core';
 
 Vanille.setStyles(`
 @import url("${window.location.origin}/assets/css/material-dashboard.css?v=3.1.0");

@@ -35,7 +35,7 @@ export class Route extends View<{ startWith?: string; path?: string }> {
     this.location = window.$location;
   }
 
-  bindings(): void {
+  connected(): void {
     window.addEventListener('locationchange', () => {
       this.checkPath();
     });

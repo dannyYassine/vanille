@@ -44,11 +44,30 @@ export class View<P = {}> extends HTMLElement {
     return Object.getOwnPropertyNames(this.__proto__).reduce(define, accum);
   }
 
-  bindings() {}
-
   protected connectedCallback() {
     this.updateRender();
+    this.connected();
   }
+
+  disconnectedCallback() {
+    this.disconnected();
+  }
+
+  adoptedCallback() {
+    this.adopted();
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    this.attributeChanged(name, oldValue, newValue);
+  }
+
+  public connected() {}
+
+  public disconnected() {}
+
+  public adopted() {}
+
+  public attributeChanged(name, oldValue, newValue) {}
 
   protected createStyleTag(): void {
     const styleTagContent = `${this.styles()} ${Vanille.getStyles()}`;
@@ -66,7 +85,7 @@ export class View<P = {}> extends HTMLElement {
 
   protected updateStyles(): void {
     const styleTagContent = `${this.styles()} ${Vanille.getStyles()}`;
-    
+
     const styles = styleTagContent
       .trim()
       .replaceAll(/(\S+)(h*.*\{)/gm, `$1[${this.$scopedId}]$2 `);
@@ -95,8 +114,6 @@ export class View<P = {}> extends HTMLElement {
         ? this.shadowRoot.appendChild(content)
         : this.appendChild(content);
     }
-
-    this.bindings();
   }
 
   emit(name: string, data?: unknown) {
