@@ -4,7 +4,7 @@ import { Signal, effect } from './signals';
 import Vanille from './Vanille';
 
 export class View<P = {}> extends HTMLElement {
-  props?: P;
+  props: P;
   styleTag?: HTMLStyleElement;
   refs: ProxyConstructor;
   $c: Signal[];

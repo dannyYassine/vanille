@@ -1,13 +1,14 @@
+import { View } from '../../src/View';
 import { render } from '../../src/jsx';
 
 type RenderingOptions = {
   props: Record<string, unknown>;
 };
 
-export function mount(
+export function mount<V>(
   template,
   renderingOptions?: RenderingOptions
-): typeof HTMLElement | null {
+): typeof HTMLElement & View<V> {
   let $el = null;
 
   if (Array.isArray(template)) {
@@ -19,5 +20,5 @@ export function mount(
 
   document.body.appendChild($el);
 
-  return $el;
+  return $el!;
 }

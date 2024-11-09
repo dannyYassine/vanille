@@ -23,7 +23,7 @@ window.addEventListener('popstate', () => {
 // @ts-ignore
 window.$location = window.location;
 
-export class Route extends View<{ startWith?: string; path?: string }> {
+export class Route extends View<{ startWith?: string; path?: string, group?: string }> {
 
   matchesRoute: boolean = false;
 

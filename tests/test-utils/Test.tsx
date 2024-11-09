@@ -1,8 +1,8 @@
 import { BaseView } from '../../src/BaseView';
+import { View } from '../../src/View';
 import { define } from '../../src/decorators';
 
-@define()
-export class Test extends BaseView {
+export class Test extends View {
   render() {
     return (
       <div>
@@ -16,54 +16,48 @@ export class Test extends BaseView {
     );
   }
 }
+customElements.define('v-test', Test);
 
-@define()
-export class TestWithClassComponents extends BaseView {
-  render() {
-    return <Test ref="test" />;
-  }
-}
+// export class TestWithClassComponents extends View {
+//   render() {
+//     return <Test ref="test" />;
+//   }
+// }
+// customElements.define('v-test', TestWithClassComponents);
 
-@define()
-export class TestWithData extends BaseView {
-  data() {
-    return {
-      user: {
-        name: 'vanille'
-      }
-    };
-  }
 
-  render() {
-    return (
-      <div>
-        <div data-id="user.name">{this.state.user.name}</div>
-      </div>
-    );
-  }
-}
+// export class TestWithData extends View {
+//   data() {
+//     return {
+//       user: {
+//         name: 'vanille'
+//       }
+//     };
+//   }
 
-@define()
-export class TestWithPropListeners extends BaseView {
-  setBindings(): void {
-    this.props.user.$on('name', (nv) => {
-      this.refs.username.textContent = nv;
-    });
-    this.props.$on('user', (nv) => {
-      this.refs.user.textContent = nv.name;
-    });
-  }
+//   render() {
+//     return (
+//       <div>
+//         <div data-id="user.name">{this.state.user.name}</div>
+//       </div>
+//     );
+//   }
+// }
+// customElements.define('v-test', TestWithData);
 
+export class TestWithPropListeners extends View {
   render() {
     return (
       <div>
         <div ref="username" data-id="user.name">
-          {this.props.user.name}
+          {() => this.props.user.get().name}
         </div>
         <div ref="user" data-id="user.name">
-          {this.props.user.name}
+          {() => this.props.user.get().name}
         </div>
       </div>
     );
   }
 }
+customElements.define('v-test-with-prop-listeners', TestWithPropListeners);
+

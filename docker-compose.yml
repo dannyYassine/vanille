@@ -20,15 +20,15 @@ services:
     networks:
       - vanille
 
-  # playwright:
-  #   container_name: vanille-playwright
-  #   build:
-  #     context: .
-  #     dockerfile: dev-env/playwright.dockerfile
-  #   command: tail -f /dev/null
-  #   ports:
-  #     - '3001:3001'
-  #   volumes:
-  #     - .:/usr/src/client
-  #   networks:
-  #     - vanille
+  playwright:
+    container_name: vanille-playwright
+    build:
+      context: .
+      dockerfile: dev-env/playwright.dockerfile
+    command: tail -f /dev/null
+    ports:
+      - '3001:3001'
+    volumes:
+      - .:/usr/src/client
+    networks:
+      - vanille
