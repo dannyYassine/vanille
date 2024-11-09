@@ -8,7 +8,7 @@ export class If extends View {
   }
 
   render() {
-    if (this.value) {
+    if (this.getAttribute('value') && ['true', true, 1].includes(this.getAttribute('value'))) {
       return <slot></slot>;
     }
     

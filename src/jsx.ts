@@ -136,6 +136,7 @@ function handleSignalValue(
   signal: Signal
 ): void {
   signal.subscribe((val) => {
+    $el.props[key] = val;
     $el[key] = val;
     safeSetAttribute($el, key, val);
   });
