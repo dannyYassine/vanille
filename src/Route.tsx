@@ -107,3 +107,4 @@ export class Route extends View<{ startWith?: string; path?: string, group?: str
     return ['slot', { ref: 'slot' }];
   }
 }
+customElements.define('v-route', Route);
