@@ -38,6 +38,16 @@ describe.only('View.tsx', () => {
     });
   });
 
+  describe('rendering as class', () => {
+    test('can render its own template with JSX', () => {
+      const $component = mount(Test);
+
+      const $el = $component.shadowRoot.querySelector('[data-id="test"');
+
+      expect($el).toBeTruthy();
+    });
+  });
+
   describe('getter refs', () => {
     test('dynamically queries DOM element as getter properties', () => {
       const $component = mount(<v-test name={'vanille'} />);
@@ -110,8 +120,8 @@ describe.only('View.tsx', () => {
         </v-test>
       );
 
-      expect(document.querySelector('[ref="slotvanilla"]')).not.toBeNull();
-      expect(document.querySelector('[ref="slotvanilla"]').textContent).toBe('slot vanilla');
+      expect($component.querySelector('[ref="slotvanilla"]')).not.toBeNull();
+      expect($component.querySelector('[ref="slotvanilla"]').textContent).toBe('slot vanilla');
     });
 
     test('can render signal as expressions', () => {
@@ -212,7 +222,7 @@ describe.only('View.tsx', () => {
         </v-test>
       );
 
-      expect(document.querySelector('p[test-id="computed"]')?.getAttribute('value')).toBe(`name`);
+      expect($component.querySelector('p[test-id="computed"]')?.getAttribute('value')).toBe(`name`);
     });
 
     test('can render signal as child reactive expressions', () => {
@@ -224,10 +234,10 @@ describe.only('View.tsx', () => {
         </v-test>
       );
 
-      expect(document.querySelector('p[test-id="computed"]')?.getAttribute('value')).toBe(`name`);
+      expect($component.querySelector('p[test-id="computed"]')?.getAttribute('value')).toBe(`name`);
       name.set('new name');
 
-      expect(document.querySelector('p[test-id="computed"]')?.getAttribute('value')).toBe(`new name`);
+      expect($component.querySelector('p[test-id="computed"]')?.getAttribute('value')).toBe(`new name`);
     });
 
     test('can render computed as child function attributes', () => {
@@ -240,7 +250,7 @@ describe.only('View.tsx', () => {
         </v-test>
       );
 
-      expect(document.querySelector('p[test-id="computed"]')?.getAttribute('value')).toBe(`name: name`);
+      expect($component.querySelector('p[test-id="computed"]')?.getAttribute('value')).toBe(`name: name`);
     });
 
     test('can render computed as child reactive expressions', () => {
@@ -253,10 +263,10 @@ describe.only('View.tsx', () => {
         </v-test>
       );
 
-      expect(document.querySelector('p[test-id="computed"]')?.getAttribute('value')).toBe(`name: name`);
+      expect($component.querySelector('p[test-id="computed"]')?.getAttribute('value')).toBe(`name: name`);
       name.set('new name');
 
-      expect(document.querySelector('p[test-id="computed"]')?.getAttribute('value')).toBe(`name: new name`);    
+      expect($component.querySelector('p[test-id="computed"]')?.getAttribute('value')).toBe(`name: new name`);    
     });
   });
 
