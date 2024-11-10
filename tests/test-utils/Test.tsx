@@ -1,6 +1,7 @@
 import { BaseView } from '../../src/BaseView';
 import { View } from '../../src/View';
 import { define } from '../../src/decorators';
+import { Signal } from '../../src/signals';
 
 export class Test extends View {
   render() {
@@ -45,15 +46,17 @@ customElements.define('v-test', Test);
 // }
 // customElements.define('v-test', TestWithData);
 
-export class TestWithPropListeners extends View {
+export class TestWithPropListeners extends View<{user: Signal<{name: string}>}> {
   render() {
+    const { user } = this.props;
+    
     return (
       <div>
         <div ref="username" data-id="user.name">
-          {() => this.props.user.get().name}
+          {() => user.get().name}
         </div>
         <div ref="user" data-id="user.name">
-          {() => this.props.user.get().name}
+          {() => user.get().name}
         </div>
       </div>
     );

@@ -2,17 +2,46 @@ import { describe, expect, test, afterEach } from 'vitest';
 import { mount } from './test-utils';
 import { Test, TestWithData, TestWithPropListeners } from './test-utils/Test';
 import { computed, state } from '../src/signals';
+import { View } from '../src/View';
+import { ViewMode } from '../src/ViewMode';
 
 describe.only('View.tsx', () => {
   afterEach(() => {
     document.body.innerHTML = '';
   });
 
+  describe('can render with different modes', () => {
+    test('can render with default open mode', () => {
+      const $component = mount(new Test());
+
+      const $el = $component.shadowRoot!.querySelector('[data-id="test"');
+
+      expect($el).toBeTruthy();
+    });
+
+    test('can render with default closed mode', () => {
+      const $component = mount(new Test(ViewMode.CLOSED));
+
+      const $el = $component.querySelector('[data-id="test"');
+
+      expect($component.shadowRoot).toBeFalsy();
+      expect($el).toBeTruthy();
+    });
+
+    test('can render with default closed mode', () => {
+      const $component = mount(new Test(ViewMode.NONE));
+
+      const $el = $component.shadowRoot!.querySelector('[data-id="test"');
+
+      expect($el).toBeTruthy();
+    });
+  });
+
   describe('rendering as jsx template', () => {
     test('can render its own template with JSX', () => {
       const $component = mount(<v-test />);
 
-      const $el = $component.shadowRoot.querySelector('[data-id="test"');
+      const $el = $component.shadowRoot!.querySelector('[data-id="test"');
 
       expect($el).toBeTruthy();
     });
@@ -21,7 +50,7 @@ describe.only('View.tsx', () => {
       const name = 'vanille';
       const $component = mount(<v-test name={name} />);
 
-      const $el = $component.shadowRoot.querySelector('[data-id="name"]');
+      const $el = $component.shadowRoot!.querySelector('[data-id="name"]');
 
       expect($el).toBeTruthy();
       expect($el.textContent).toBe(name);
@@ -31,7 +60,7 @@ describe.only('View.tsx', () => {
       const user = { name: 'vanille' };
       const $component = mount(<v-test user={user} />);
 
-      const $el = $component.shadowRoot.querySelector('[data-id="user.name"]');
+      const $el = $component.shadowRoot!.querySelector('[data-id="user.name"]');
 
       expect($el).toBeTruthy();
       expect($el.textContent).toBe(user.name);
@@ -42,7 +71,7 @@ describe.only('View.tsx', () => {
     test('can render its own template with JSX', () => {
       const $component = mount(Test);
 
-      const $el = $component.shadowRoot.querySelector('[data-id="test"');
+      const $el = $component.shadowRoot!.querySelector('[data-id="test"');
 
       expect($el).toBeTruthy();
     });
@@ -82,7 +111,7 @@ describe.only('View.tsx', () => {
     test('trigger listeners when lower properties changed', () => {
       const user = state({
         name: 'vanille' 
-    });
+      });
       const $component = mount(<v-test-with-prop-listeners user={user} />);
 
       let $el = $component.refs.username;
@@ -274,7 +303,7 @@ describe.only('View.tsx', () => {
     test('can render its own template with web component class', () => {
       const $component = mount(Test);
 
-      const $el = $component.shadowRoot.querySelector('[data-id="test"');
+      const $el = $component.shadowRoot!.querySelector('[data-id="test"');
 
       expect($el).toBeTruthy();
     });
@@ -283,7 +312,7 @@ describe.only('View.tsx', () => {
       const name = 'vanille';
       const $component = mount(Test, { props: { name } });
 
-      const $el = $component.shadowRoot.querySelector('[data-id="name"]');
+      const $el = $component.shadowRoot!.querySelector('[data-id="name"]');
 
       expect($el).toBeTruthy();
       expect($el.textContent).toBe(name);
@@ -293,7 +322,7 @@ describe.only('View.tsx', () => {
       const user = { name: 'vanille' };
       const $component = mount(Test, { props: { user } });
 
-      const $el = $component.shadowRoot.querySelector('[data-id="user.name"]');
+      const $el = $component.shadowRoot!.querySelector('[data-id="user.name"]');
 
       expect($el).toBeTruthy();
       expect($el.textContent).toBe(user.name);

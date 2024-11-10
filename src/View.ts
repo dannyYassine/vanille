@@ -2,28 +2,36 @@ import { render } from './jsx';
 import { generateRandomString } from './helpers/random';
 import { Signal, effect } from './signals';
 import Vanille from './Vanille';
+import { ViewMode } from './ViewMode';
 
 export class View<P = {}> extends HTMLElement {
   props: P;
   styleTag?: HTMLStyleElement;
   refs: ProxyConstructor;
-  $c: Signal[];
+  $c: Signal<unknown>[];
   $scopedId: string;
 
-  constructor(mode = 'open') {
+  constructor(viewMode: ViewMode = ViewMode.OPEN) {
     super();
     this.$c = [];
-    this.attachShadow({ mode: mode });
+    if (viewMode) {
+        this.attachShadow({ mode: viewMode });
+    }
+    
     this.refs = new Proxy(
       {},
       {
         get: (_, prop: string) => {
-          return this.shadowRoot.querySelector(
+          return this.root.querySelector(
             `[${this.$scopedId}][ref=${prop}]`
           );
         },
       }
     ) as typeof Proxy;
+  }
+
+  get root(): ShadowRoot | Element {
+    return this.shadowRoot ? this.shadowRoot : this;
   }
 
   styles(): string {
@@ -80,7 +88,7 @@ export class View<P = {}> extends HTMLElement {
     effect(() => {
         this.updateStyles();
       });
-    this.shadowRoot.appendChild(this.styleTag);
+    this.root.appendChild(this.styleTag);
   }
 
   protected updateStyles(): void {
@@ -95,7 +103,7 @@ export class View<P = {}> extends HTMLElement {
 
   updateRender() {
     // temp, optimize
-    this.shadowRoot.innerHTML = '';
+    this.root.innerHTML = '';
 
     const node = this.render?.(this.props);
 
@@ -110,9 +118,7 @@ export class View<P = {}> extends HTMLElement {
       node.$scopedId = this.$scopedId;
       const content = render(node, window.document);
 
-      this.shadowRoot
-        ? this.shadowRoot.appendChild(content)
-        : this.appendChild(content);
+      this.root.appendChild(content);
     }
   }
 

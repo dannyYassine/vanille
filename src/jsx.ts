@@ -118,7 +118,7 @@ function handleComputedValue(
   key: string,
   value: Function
 ): void {
-  const $c = computed(value);
+  const $c = computed(value.bind($el));
   if (!$el.$c) $el.$c = [];
   $el.$c.push($c);
 
@@ -145,6 +145,8 @@ function handleSignalValue(
 
 function safeSetAttribute($el: HTMLElement, key: string, value: any): void {
   try {
+    // $el.props[key] = value;
+    // $el[key] = value;
     $el.setAttribute(key, value);
   } catch (e) {
     // Silently handle invalid attribute values

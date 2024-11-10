@@ -1,5 +1,8 @@
-export class Signal {
-    constructor(initialValue) {
+export class Signal<P> {
+    value: P;
+    subscribers: Set<(newValue: P, oldValue: P) => void>;
+
+    constructor(initialValue?: P) {
       this.value = initialValue;
       this.subscribers = new Set();
     }
@@ -53,7 +56,10 @@ export class Signal {
   }
   
   // Implementation of Signal.Computed
-  export class Computed extends Signal {
+  export class Computed<P> extends Signal<P> {
+    computeFn: () => P;
+    dependencies: Set<Signal<P>>;
+
     constructor(computeFn) {
       super();
   
@@ -76,7 +82,7 @@ export class Signal {
     }
   
     // Compute the value and track dependencies
-    compute(val) {
+    compute(val?: boolean) {
       // Unsubscribe from previous dependencies
       // this.dependencies.forEach((dep) => dep.unsubscribe(this.update));
   
@@ -160,7 +166,7 @@ export class Signal {
     return unsubscribe;
   }
   
-  export const state = (val) => {
+  export const state: (value: P) => Signal<P> = (val: P) => {
     return new Signal(val);
   };
   
