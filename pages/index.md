@@ -24,10 +24,10 @@ features:
   - title: JSX templates
     details: Quickly create your UI with standardized jsx syntax
     icon: 🚀
-  - title: Observables props and data attributes
-    details: React to recursive changes with observable objects
+  - title: Signals
+    details: React with observable computed and state changes
     icon: ⚡️
   - title: No virtual DOM
-    details: With observables, you are in charge of what gets updated and when on the UI
+    details: With signals, you are in charge of what gets updated and when on the UI
     icon: 🛠
 ---

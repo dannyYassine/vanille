@@ -7,48 +7,60 @@
 Import the base web component:
 
 ```ts
-import { BaseView } from '@vanille/core';
+import { View } from '@vanille/core';
 ```
 
 ::: info
-`BaseView` extends the `HTMLElement` class
+`View` extends the `HTMLElement` class
 :::
 
 Then start building your components:
 
 ```ts
-import { BaseView, define } from '@vanille/core';
+import { View } from '@vanille/core';
 
-@define()
-export class Application extends BaseView {
+export class MyComponent extends View {
   [...]
 }
 ```
 
 ::: tip
-The decorator `define` is syntactic sugar for:
+There's no neet to use `customElements.define()` to register your custom web components since `vanille` will automatically do that for you behind the scenes.
 
 ```ts
 const prefix: string = 'v';
-customElements.define(`${prefix}-${application}', Application);
+customElements.define(`${prefix}-${MyComponent.name.toLowerCase()}', MyComponent);
 ```
 
 :::
 
-Next, start building your UI with in-house JSX:
+## Class components
+
+Next, start building your UI with built-in jsx:
 
 ```ts
-import { BaseView, define } from '@vanille/core';
+import { View } from '@vanille/core';
 
-@define()
-export class Application extends BaseView {
+export class MyComponent extends View {
   render() {
     return <div>Hello world!</div>;
   }
 }
 ```
 
-`vanille` comes pack with syntactic sugar decorators, all of which are already sprinkled on the base web component class `BaseView`.
+## Functional components
+
+`vanille` also supports functional components for smaller and less use case driven UIs:
+
+```ts
+export function MyComponent(props) {
+  return <div>Hello world!</div>;
+}
+```
+
+## Built-in methods
+
+`vanille` comes pack with syntactic sugar methods, all of which are already sprinkled on the base web component class `View`.
 
 ```ts
 import {
@@ -62,4 +74,4 @@ import {
 } from '@vanille/core';
 ```
 
-More in depth in [Decorators](./decorators.md).
+More details in [components in depth](./decorators.md).
