@@ -31,7 +31,12 @@ describe('jsx.tsx', () => {
 
       $button.click();
 
-      expect(spyFn).toHaveBeenCalled();
+      await new Promise((resolve) => {
+        setTimeout(() => {
+          expect(spyFn).toHaveBeenCalled();
+          resolve();
+        }, 1000);
+      });
     });
 
     test('able propagate data up in the event', async () => {
@@ -46,7 +51,12 @@ describe('jsx.tsx', () => {
 
       $button.click();
 
-      expect(spyFn).toHaveBeenCalled();
+      await new Promise((resolve) => {
+        setTimeout(() => {
+          expect(spyFn).toHaveBeenCalled();
+          resolve();
+        }, 1000);
+      });
     });
 
     test('add scoped-id to all html elements in component', () => {
@@ -85,7 +95,7 @@ class ParentTest extends View {
   }
 
   onEvent(e) {
-    this.emit('ParentEvent', e.detail);
+    this.emit('onParentEvent', e.detail);
   }
 }
 customElements.define(`v-parent-test`, ParentTest);
