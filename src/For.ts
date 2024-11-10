@@ -1,5 +1,6 @@
 import { render } from './jsx';
 import { View } from './View';
+import { ViewMode } from './ViewMode';
 
 export class For extends View<{
   items: any[];
@@ -8,6 +9,10 @@ export class For extends View<{
 }> {
   private markersByKey: Map<string, [Comment, Comment]> = new Map();
   private itemsByKey: Map<string, any> = new Map();
+
+  constructor() {
+    super(ViewMode.CLOSED);
+  }
 
   connectedCallback() {
     if (!this.props?.items) return;
@@ -70,17 +75,17 @@ export class For extends View<{
     const endComment = document.createComment(`/for-${key}`);
     this.markersByKey.set(key, [startComment, endComment]);
 
-    this.shadowRoot.appendChild(startComment);
+    this.root.appendChild(startComment);
 
     if (this.props.template) {
       const template = this.props.template(item, index);
       const element = render(template, document);
-      this.shadowRoot.appendChild(element);
+      this.root.appendChild(element);
     } else {
-      this.shadowRoot.appendChild(document.createTextNode(String(item)));
+      this.root.appendChild(document.createTextNode(String(item)));
     }
 
-    this.shadowRoot.appendChild(endComment);
+    this.root.appendChild(endComment);
   }
 
   private updateExistingItem(item: any, key: string, index: number) {

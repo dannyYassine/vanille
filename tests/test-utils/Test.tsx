@@ -19,12 +19,12 @@ export class Test extends View {
 }
 customElements.define('v-test', Test);
 
-// export class TestWithClassComponents extends View {
-//   render() {
-//     return <Test ref="test" />;
-//   }
-// }
-// customElements.define('v-test', TestWithClassComponents);
+export class TestWithClassComponents extends View {
+  render() {
+    return <Test ref="test" />;
+  }
+}
+customElements.define('v-testwithclasscomponents', TestWithClassComponents);
 
 
 // export class TestWithData extends View {
@@ -49,7 +49,7 @@ customElements.define('v-test', Test);
 export class TestWithPropListeners extends View<{user: Signal<{name: string}>}> {
   render() {
     const { user } = this.props;
-    
+
     return (
       <div>
         <div ref="username" data-id="user.name">

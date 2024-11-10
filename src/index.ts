@@ -6,6 +6,7 @@ export { state, computed } from './signals';
 
 // view
 export { View } from './View';
+export { ViewMode } from './ViewMode';
 
 // routing components
 export { Route } from './Route';

@@ -1,8 +1,8 @@
 import { describe, expect, test, vi } from 'vitest';
 import { mount } from './test-utils';
 import { BaseView } from './../src/BaseView';
-import { define } from './../src/decorators/define';
 import { Test, TestWithClassComponents } from './test-utils/Test';
+import { View } from '../src/View';
 
 describe('jsx.tsx', () => {
   describe('function render', () => {
@@ -25,21 +25,13 @@ describe('jsx.tsx', () => {
 
     test('able to listen to custom events using "on" at beginning of the event name', async () => {
       const spyFn = vi.fn();
-      const spyFunction = () => {
-        spyFn();
-      };
-      const $component = mount(<v-emit-test onEmit={() => spyFunction()}></v-emit-test>);
+      const $component = mount(<v-emit-test onEmit={() => spyFn()}></v-emit-test>);
 
       const $button = $component.refs.button;
 
       $button.click();
 
-      await new Promise((resolve) => {
-        setTimeout(() => {
-          expect(spyFn).toHaveBeenCalled();
-          resolve(null);
-        }, 1000);
-      });
+      expect(spyFn).toHaveBeenCalled();
     });
 
     test('able propagate data up in the event', async () => {
@@ -54,12 +46,7 @@ describe('jsx.tsx', () => {
 
       $button.click();
 
-      await new Promise((resolve) => {
-        setTimeout(() => {
-          expect(spyFn).toHaveBeenCalled();
-          resolve(null);
-        }, 1000);
-      });
+      expect(spyFn).toHaveBeenCalled();
     });
 
     test('add scoped-id to all html elements in component', () => {
@@ -91,8 +78,8 @@ describe('jsx.tsx', () => {
   });
 });
 
-@define()
-class ParentTest extends BaseView {
+
+class ParentTest extends View {
   render() {
     return <v-child-test ref="child" onTestEvent={(e) => this.onEvent(e)}></v-child-test>;
   }
@@ -101,17 +88,20 @@ class ParentTest extends BaseView {
     this.emit('ParentEvent', e.detail);
   }
 }
+customElements.define(`v-parent-test`, ParentTest);
 
-@define()
-class ChildTest extends BaseView {
+
+class ChildTest extends View {
   render() {
-    return <button ref="button" onclick={() => this.emit('TestEvent', { customData: '' })}></button>;
+    return <button ref="button" onclick={() => this.emit('onTestEvent', { customData: '' })}></button>;
   }
 }
+customElements.define(`v-child-test`, ChildTest);
 
-@define()
-class EmitTest extends BaseView {
+
+class EmitTest extends View {
   render() {
-    return <button ref="button" onclick={(e) => this.emit('Emit')}></button>;
+    return <button ref="button" onclick={(e) => this.emit('onEmit')}></button>;
   }
 }
+customElements.define(`v-emit-test`, EmitTest);
