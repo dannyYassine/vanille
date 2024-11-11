@@ -26,6 +26,7 @@ export default defineConfig({
       name: 'vanille',
       fileName: 'vanille'
     },
+    minify: true,
     outDir: resolve(__dirname, 'src/dist')
   },
   esbuild: {

@@ -1,10 +1,10 @@
 import { BaseView } from '../../src/BaseView';
 import { View } from '../../src/View';
-import { define } from '../../src/decorators';
 import { Signal } from '../../src/signals';
 
 export class Test extends View {
   render() {
+  
     return (
       <div>
         <div data-id="test"></div>

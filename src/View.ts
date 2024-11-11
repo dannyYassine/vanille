@@ -13,6 +13,7 @@ export class View<P = {}> extends HTMLElement {
 
   constructor(viewMode: ViewMode = ViewMode.OPEN) {
     super();
+    this.props = {};
     this.$c = [];
     if (viewMode) {
         this.attachShadow({ mode: viewMode });

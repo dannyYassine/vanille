@@ -72,22 +72,13 @@ export class Signal<P> {
       this.compute(true);
     }
   
-    // Get the computed value
-    get() {
-      // Track the signal's access (assume some global tracking function is available)
-      if (globalThis.trackDependency) {
-        globalThis.trackDependency(this);
-      }
-      return this.value;
-    }
-  
     // Compute the value and track dependencies
     compute(val?: boolean) {
       // Unsubscribe from previous dependencies
-      // this.dependencies.forEach((dep) => dep.unsubscribe(this.update));
+    //   this.dependencies.forEach((dep) => dep.unsubscribe(this.update));
   
       // Track dependencies during the computation
-      // this.dependencies.clear();
+    //   this.dependencies.clear();
   
       if (val) {
         // Monkey-patch the dependency tracking system
@@ -118,30 +109,10 @@ export class Signal<P> {
     update = () => {
       this.compute(); // Recompute value when dependencies change
     };
-  
-    // Subscribe to changes
-    subscribe(callback) {
-      const unsubscribe = () => {
-        this.unsubscribe(callback);
-      };
-      this.subscribers.add(callback);
-  
-      return unsubscribe;
-    }
-  
-    // Unsubscribe from changes
-    unsubscribe(callback) {
-      this.subscribers.delete(callback);
-    }
-  
-    // Notify subscribers of value change
-    notifySubscribers(newValue, oldValue) {
-      this.subscribers.forEach((callback) => callback(this.value, oldValue));
-    }
   }
   
   export function effect(fn) {
-    const signals: Signal[] = [];
+    const signals: Signal<unknown>[] = [];
     // Assume we have some mechanism to track dependencies
     globalThis.trackDependency = (signal) => {
       signal.subscribe(fn); // Subscribe to changes
@@ -165,16 +136,16 @@ export class Signal<P> {
     // Return an unsubscribe function
     return unsubscribe;
   }
-  
-  export const state: (value: P) => Signal<P> = (val: P) => {
-    return new Signal(val);
+
+  export function state<P>(value: P): Signal<P> {
+    return new Signal<P>(value);
   };
   
-  export const stateArray = (val) => {
-    return new Signal(val.map(() => new Signal(val)));
+  export function stateArray<P>(value: P[]): Signal<Signal<P>[]> {
+    return new Signal<Signal<P>[]>(value.map((val) => new Signal(val)));
   };
   
-  export const computed = (cb) => {
-    return new Computed(cb);
+  export function computed<P>(cb: () => P): Computed<P> {
+    return new Computed<P>(cb);
   };
   

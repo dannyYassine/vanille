@@ -302,7 +302,7 @@ describe('View.tsx', () => {
   describe('rendering as web component class', () => {
     test('can render its own template with web component class', () => {
       const $component = mount(Test);
-
+      
       const $el = $component.shadowRoot!.querySelector('[data-id="test"');
 
       expect($el).toBeTruthy();

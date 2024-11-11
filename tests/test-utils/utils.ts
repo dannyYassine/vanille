@@ -14,10 +14,14 @@ export function mount<V>(
 
   if (Array.isArray(template)) {
     $el = render(template);
+  } else if (template instanceof HTMLElement) {
+    $el = template;
   } else {
-    $el = typeof template === 'function' ? new template() : template;
-    $el.props = { ...$el.props, ...renderingOptions?.props };
+    const engine = new TestEngine();
+    $el = engine.buildElement(template);
   }
+  $el.props = { ...$el.props, ...renderingOptions?.props };
+
 
   document.body.appendChild($el);
 
@@ -32,12 +36,13 @@ export function shallowMount<V>(
 
   if (Array.isArray(template)) {
     $el = render(template, new TestEngine());
+  } else if (template instanceof HTMLElement) {
+    $el = template;
   } else {
-    // customElements.define(`v-${template.name.toLowerCase()}`, template);
-
-    $el = typeof template === 'function' ? new template() : template;
-    $el.props = { ...$el.props, ...renderingOptions?.props };
+    const engine = new TestEngine();
+    $el = engine.buildElement(template);
   }
+  $el.props = { ...$el.props, ...renderingOptions?.props };
 
   document.body.appendChild($el);
 
