@@ -1,6 +1,6 @@
+import { Engine } from './Engine';
 import { generateRandomString } from './helpers/random';
 import { computed, Signal } from './signals';
-import { View } from './View';
 
 export function h(...args: any[]): any[] {
   return [...args];
@@ -13,12 +13,12 @@ window.h = h;
 
 export function render(
   jsx: Array<unknown>,
-  document: Document
+  engine: Engine = new Engine()
 ): HTMLElement & HasScopedId & HasProps {
   const [tagName, attrs, ...children] = jsx;
   const $scopedId = (jsx as any).$scopedId ?? `v${generateRandomString(8)}`;
 
-  const $el = createElement(tagName as string, document);
+  const $el = engine.buildElement(tagName as string);
   initializeElement($el, $scopedId);
 
   if (attrs) {
@@ -26,41 +26,10 @@ export function render(
   }
 
   if (children.length) {
-    children.filter(Boolean).forEach((child) => renderChild($el, child as any));
+    children.filter(Boolean).forEach((child) => renderChild($el, child as any, engine));
   }
 
   return $el;
-}
-
-function createElement(
-  tagName: string | { name: string } | Function,
-  document: Document
-): HTMLElement & HasScopedId & HasProps {
-  const isCustomElement = tagName?.name;
-
-  if (isCustomElement) {
-
-    // class component
-    if (tagName instanceof Function && tagName.__proto__.name !== '') {
-      let Constructor = customElements.get(`v-${tagName.name.toLowerCase()}`);
-      if (!Constructor) {
-        customElements.define(`v-${tagName.name.toLowerCase()}`, tagName);
-        Constructor = customElements.get(`v-${tagName.name.toLowerCase()}`);
-      }
-      return new Constructor();
-    }
-
-    // functional component
-    if (tagName instanceof Function && tagName.__proto__.name === '') {
-      const view = new View();
-      view.render = tagName.bind(view);
-
-      return view;
-    }
-
-    return document.createElement(tagName as string);
-  }
-  return document.createElement(tagName as string) as any;
 }
 
 function initializeElement(
@@ -155,10 +124,11 @@ function safeSetAttribute($el: HTMLElement, key: string, value: any): void {
 
 function renderChild(
   $el: HTMLElement,
-  child: (string | HTMLElement | Array<unknown>) & HasScopedId
+  child: (string | HTMLElement | Array<unknown>) & HasScopedId,
+  engine: Engine
 ): void {
   if (isNestedArray(child)) {
-    (child as Array<unknown>).forEach((c) => renderChild($el, c as any));
+    (child as Array<unknown>).forEach((c) => renderChild($el, c as any, engine));
     return;
   }
 
@@ -184,7 +154,7 @@ function renderChild(
   }
 
   (child as any).$scopedId = $el.$scopedId;
-  $el.appendChild(render(child as Array<unknown>, document));
+  $el.appendChild(render(child as Array<unknown>, engine));
 }
 
 function isNestedArray(child: any): boolean {

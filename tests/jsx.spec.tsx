@@ -3,6 +3,7 @@ import { mount } from './test-utils';
 import { BaseView } from './../src/BaseView';
 import { Test, TestWithClassComponents } from './test-utils/Test';
 import { View } from '../src/View';
+import { shallowMount } from './test-utils/utils';
 
 describe('jsx.tsx', () => {
   describe('function render', () => {
@@ -86,8 +87,16 @@ describe('jsx.tsx', () => {
       expect(id.length).toBe(8);
     });
   });
-});
 
+  describe.skip('shallow mount', () => {
+    test('can shallow mount', () => {
+      const $component = shallowMount(ParentTest);
+
+      console.log($component.refs.child);
+      expect($component.refs.child).toBeFalsy();
+    });
+  })
+});
 
 class ParentTest extends View {
   render() {
@@ -99,7 +108,6 @@ class ParentTest extends View {
   }
 }
 customElements.define(`v-parent-test`, ParentTest);
-
 
 class ChildTest extends View {
   render() {

@@ -5,7 +5,7 @@ import { computed, state } from '../src/signals';
 import { View } from '../src/View';
 import { ViewMode } from '../src/ViewMode';
 
-describe.only('View.tsx', () => {
+describe('View.tsx', () => {
   afterEach(() => {
     document.body.innerHTML = '';
   });

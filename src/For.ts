@@ -79,7 +79,7 @@ export class For extends View<{
 
     if (this.props.template) {
       const template = this.props.template(item, index);
-      const element = render(template, document);
+      const element = render(template);
       this.root.appendChild(element);
     } else {
       this.root.appendChild(document.createTextNode(String(item)));
@@ -97,7 +97,7 @@ export class For extends View<{
 
     if (this.props.template) {
       const template = this.props.template(item, index);
-      const element = render(template, document);
+      const element = render(template);
       range.insertNode(element);
     } else {
       range.insertNode(document.createTextNode(String(item)));

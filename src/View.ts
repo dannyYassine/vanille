@@ -116,7 +116,7 @@ export class View<P = {}> extends HTMLElement {
         this.setAttribute(this.$scopedId, '');
       }
       node.$scopedId = this.$scopedId;
-      const content = render(node, window.document);
+      const content = render(node);
 
       this.root.appendChild(content);
     }
