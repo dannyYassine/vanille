@@ -15,8 +15,9 @@
   
   .image-container img {
     border-radius: 5px;
-    max-width: 500px !important;
-    width: 500px !important;
+    max-width: 550px !important;
+    width: 550px !important;
+    height: auto;
   }
 }
 
