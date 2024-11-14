@@ -18,10 +18,10 @@ describe('For.tsx', () => {
       const array = state([1, 2]);
       const $component = mount(<For items={array} template={(i) => <div index={i}>{i}</div>} />);
 
-      const $el = $component.childNodes[1];
+      const $el = $component.root.childNodes[1];
       expect($el).toBeTruthy();
 
-      const $elDiv = $component.querySelector('div[index="1"]');
+      const $elDiv = $component.root.querySelector('div[index="1"]');
       expect($elDiv).toBeTruthy();
     });
 
@@ -29,24 +29,24 @@ describe('For.tsx', () => {
       let array = state([1, 2]);
       const $component = mount(<For items={array} template={(i) => <div index={i}>{i}</div>} />);
 
-      const $el = $component.childNodes[1];
+      const $el = $component.root.childNodes[1];
       expect($el).toBeTruthy();
 
-      let $elDiv = $component.querySelector('div[index="1"]');
+      let $elDiv = $component.root.querySelector('div[index="1"]');
       expect($elDiv).toBeTruthy();
-      $elDiv = $component.querySelector('div[index="2"]');
+      $elDiv = $component.root.querySelector('div[index="2"]');
       expect($elDiv).toBeTruthy();
 
       $component.props.items.set([3, 4]);
 
-      $elDiv = $component.querySelector('div[index="1"]');
+      $elDiv = $component.root.querySelector('div[index="1"]');
       expect($elDiv).toBeFalsy();
-      $elDiv = $component.querySelector('div[index="2"]');
+      $elDiv = $component.root.querySelector('div[index="2"]');
       expect($elDiv).toBeFalsy();
 
-      $elDiv = $component.querySelector('div[index="3"]');
+      $elDiv = $component.root.querySelector('div[index="3"]');
       expect($elDiv).toBeTruthy();
-      $elDiv = $component.querySelector('div[index="4"]');
+      $elDiv = $component.root.querySelector('div[index="4"]');
       expect($elDiv).toBeTruthy();
     });
 
@@ -56,7 +56,7 @@ describe('For.tsx', () => {
 
       $component.props.items.mutSet((a) => a.push(3));
 
-      expect($component.querySelector('div[index="3"]')).toBeTruthy();
+      expect($component.root.querySelector('div[index="3"]')).toBeTruthy();
     });
 
     test('does re-render when using pop', () => {
@@ -65,7 +65,7 @@ describe('For.tsx', () => {
 
       $component.props.items.mutSet((a) => a.pop());
 
-      expect($component.querySelector('div[index="2"]')).toBeFalsy();
+      expect($component.root.querySelector('div[index="2"]')).toBeFalsy();
     });
 
     test('does re-render when using shift', () => {
@@ -74,7 +74,7 @@ describe('For.tsx', () => {
 
       $component.props.items.mutSet((a) => a.shift());
 
-      expect($component.querySelector('div[index="1"]')).toBeFalsy();
+      expect($component.root.querySelector('div[index="1"]')).toBeFalsy();
     });
 
     test('does re-render when using unshift', () => {
@@ -83,7 +83,7 @@ describe('For.tsx', () => {
 
       $component.props.items.mutSet((a) => a.unshift(3));
 
-      expect($component.querySelector('div[index="3"]')).toBeTruthy();
+      expect($component.root.querySelector('div[index="3"]')).toBeTruthy();
     });
 
     test('does re-render when using splice', () => {
@@ -92,7 +92,7 @@ describe('For.tsx', () => {
 
       $component.props.items.mutSet((a) => a.splice(0, 1));
 
-      expect($component.querySelector('div[index="1"]')).toBeFalsy();
+      expect($component.root.querySelector('div[index="1"]')).toBeFalsy();
     });
 
     test('does re-render when using sort', () => {
