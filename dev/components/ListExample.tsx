@@ -1,4 +1,4 @@
-import { View, For, state } from '@vanille/core';
+import { View, For, state, stateArray } from '@vanille/core';
 import { DashboardHeaderWidget } from './DashboardHeaderWidget';
 
 export class ListExample extends View {
@@ -49,7 +49,7 @@ export class ListExample extends View {
     }
   ];
 
-  widgets = state([
+  widgets = stateArray([
     {
       color: 'bg-gradient-dark',
       title: "Today's Money",

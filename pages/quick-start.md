@@ -75,3 +75,15 @@ Then in your `index.html`:
   </body>
 </html>
 ```
+
+::: info
+
+`vanille` will automatically register your custom components to `customElements`.
+
+```ts
+customElements.define(`v-${Component.name.toLowerCase()}`, Component.name);
+```
+
+Import your components and use them in your templates.
+
+:::

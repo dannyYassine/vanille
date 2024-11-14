@@ -58,20 +58,62 @@ export function MyComponent(props) {
 }
 ```
 
-## Built-in methods
+## Available class methods 
 
 `vanille` comes pack with syntactic sugar methods, all of which are already sprinkled on the base web component class `View`.
 
 ```ts
-import {
-  define,
-  hasJsxTemplate,
-  hasObservableProps,
-  hasObservableState,
-  hasRefs,
-  hasShadowDom,
-  hasEmit
-} from '@vanille/core';
+import { View } from '@vanille/core';
+
+export MyComponent extends View {
+  // your JSX code here
+  render() {}
+
+  // custom scoped styles
+  styles() {}
+
+  // wrapper for connectedCallback
+  connected() {}
+
+  // wrapper for disconnectedCallback
+  disconnected() {}
+
+  // wrapper for adoptedCallback
+  adopted() {}
+
+  // wrapper for attributeChangedCallback
+  attributeChanged() {}
+}
+
 ```
 
-More details in [components in depth](./decorators.md).
+## Built-in methods 
+
+#### emit
+
+Send an event to the parent component:
+
+```ts
+this.emit('on-counter-clicked', count);
+```
+
+## Functional components
+
+All `vanille` and built-in web components methods are available to be used inside functional components:
+
+```ts
+export function MyComponent({ count }) {
+  this.connected = () => {
+    // mounted to the DOM!
+  }
+
+  return <div class="count">{count}</div>
+}
+
+```
+
+::: info
+`Functional components` are converted into `class components` under the hood, thus `this` refers to the instance of your component.
+
+This creates a nice developer experience without worrying about class sematics.
+:::

@@ -75,10 +75,10 @@ export class Signal<P> {
     // Compute the value and track dependencies
     compute(val?: boolean) {
       // Unsubscribe from previous dependencies
-    //   this.dependencies.forEach((dep) => dep.unsubscribe(this.update));
+      // this.dependencies.forEach((dep) => dep.unsubscribe(this.update));
   
       // Track dependencies during the computation
-    //   this.dependencies.clear();
+      // this.dependencies.clear();
   
       if (val) {
         // Monkey-patch the dependency tracking system

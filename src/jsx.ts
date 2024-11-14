@@ -92,7 +92,9 @@ function handleComputedValue(
   $el.$c.push($c);
 
   $c.subscribe((val) => {
-    $el[key] = val;
+    if (key in $el) {
+      $el[key] = val;
+    }
     safeSetAttribute($el, key, val);
   });
 
@@ -105,8 +107,9 @@ function handleSignalValue(
   signal: Signal
 ): void {
   signal.subscribe((val) => {
-    $el.props[key] = val;
-    $el[key] = val;
+    if (key in $el) {
+      $el[key] = val;
+    }
     safeSetAttribute($el, key, val);
   });
   safeSetAttribute($el, key, signal.get());
@@ -114,8 +117,9 @@ function handleSignalValue(
 
 function safeSetAttribute($el: HTMLElement, key: string, value: any): void {
   try {
-    // $el.props[key] = value;
-    // $el[key] = value;
+    if (key in $el) {
+      $el[key] = value;
+    }
     $el.setAttribute(key, value);
   } catch (e) {
     // Silently handle invalid attribute values

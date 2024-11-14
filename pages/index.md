@@ -7,7 +7,7 @@ hero:
   text: 'A minimalistic vanilla web component framework'
   tagline: Using native browser features with a few exceptions
   image:
-    src: /logo.png
+    src: /code1.png
     alt: VitePress
   actions:
     - theme: brand
@@ -29,5 +29,5 @@ features:
     icon: ⚡️
   - title: No virtual DOM
     details: With signals, you are in charge of what gets updated and when on the UI
-    icon: 🛠
+    icon: 🛠 
 ---

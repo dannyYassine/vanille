@@ -11,7 +11,7 @@ export class For extends View<{
   private itemsByKey: Map<string, any> = new Map();
 
   constructor() {
-    super(ViewMode.CLOSED);
+    super(ViewMode.OPEN);
   }
 
   connectedCallback() {

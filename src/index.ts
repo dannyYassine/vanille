@@ -2,7 +2,7 @@
 export { render, h } from './jsx';
 
 // state
-export { state, computed } from './signals';
+export { state, computed, stateArray } from './signals';
 
 // view
 export { View } from './View';
