@@ -1,12 +1,15 @@
-import { Route, define } from '@vanille/core';
+import Vanille, { Route, View } from '@vanille/core';
 import { Nav } from './Nav';
 import { Main } from './Main';
-import { DevView } from './DevView';
 import { Login } from './Login';
 import { Home } from './Home';
 
-@define()
-export class App extends DevView {
+Vanille.setStyles(`
+@import url("${window.location.origin}/assets/css/material-dashboard.css?v=3.1.0");
+@import url("${window.location.origin}/assets/css/app.css");
+`);
+
+customElements.define('v-app', class extends View {
   render() {
     return (
       <section>
@@ -16,7 +19,7 @@ export class App extends DevView {
         <Route path="/login">
           <Login />
         </Route>
-        <Route start-with="/app">
+        <Route startWith="/app">
           <div>
             <Nav />
           </div>
@@ -27,4 +30,4 @@ export class App extends DevView {
       </section>
     );
   }
-}
+});

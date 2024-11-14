@@ -1,14 +1,12 @@
-import { define, List } from '@vanille/core';
-import { DevView } from './DevView';
+import { View, For, state, stateArray } from '@vanille/core';
 import { DashboardHeaderWidget } from './DashboardHeaderWidget';
 
-@define()
-export class Dashboard extends DevView {
+export class Dashboard extends View {
   widgets: any[];
   constructor() {
     super();
 
-    this.widgets = [
+    this.widgets = stateArray([
       {
         color: 'bg-gradient-dark',
         title: "Today's Money",
@@ -53,7 +51,7 @@ export class Dashboard extends DevView {
           </span>
         )
       }
-    ];
+    ]);
   }
 
   render() {
@@ -225,7 +223,7 @@ export class Dashboard extends DevView {
         </nav>
         <div class="container-fluid py-4">
           <div class="row">
-            <List class="row" value={this.widgets} item={(widget) => <DashboardHeaderWidget widget={widget} />} />
+            <For class="row" items={this.widgets} template={(widget) => <DashboardHeaderWidget widget={widget} />} />
           </div>
           <div class="row mt-4">
             <div class="col-lg-4 col-md-6 mt-4 mb-4">

@@ -1,5 +1,4 @@
-import { BaseView } from './BaseView';
-import { define } from './decorators';
+import { View } from './View';
 
 history.pushState = ((f) =>
   function pushState() {
@@ -24,9 +23,7 @@ window.addEventListener('popstate', () => {
 // @ts-ignore
 window.$location = window.location;
 
-@define()
-export class Route extends BaseView {
-  props: { startWith?: string; path?: string } = {};
+export class Route extends View<{ startWith?: string; path?: string, group?: string }> {
 
   matchesRoute: boolean = false;
 
@@ -38,7 +35,7 @@ export class Route extends BaseView {
     this.location = window.$location;
   }
 
-  setBindings(): void {
+  connected(): void {
     window.addEventListener('locationchange', () => {
       this.checkPath();
     });
@@ -49,11 +46,11 @@ export class Route extends BaseView {
     if (this.location.pathname === this.props.path || this.matchesPattern()) {
       if (!this.matchesRoute) {
         this.matchesRoute = true;
-        this.update();
+        this.updateRender();
       }
     } else if (this.matchesRoute) {
       this.matchesRoute = false;
-      this.update();
+      this.shadowRoot.innerHTML = '';
     }
   }
 
@@ -110,3 +107,4 @@ export class Route extends BaseView {
     return ['slot', { ref: 'slot' }];
   }
 }
+customElements.define('v-route', Route);

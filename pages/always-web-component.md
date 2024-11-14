@@ -7,59 +7,113 @@
 Import the base web component:
 
 ```ts
-import { BaseView } from '@vanille/core';
+import { View } from '@vanille/core';
 ```
 
 ::: info
-`BaseView` extends the `HTMLElement` class
+`View` extends the `HTMLElement` class
 :::
 
 Then start building your components:
 
 ```ts
-import { BaseView, define } from '@vanille/core';
+import { View } from '@vanille/core';
 
-@define()
-export class Application extends BaseView {
+export class MyComponent extends View {
   [...]
 }
 ```
 
 ::: tip
-The decorator `define` is syntactic sugar for:
+There's no neet to use `customElements.define()` to register your custom web components since `vanille` will automatically do that for you behind the scenes.
 
 ```ts
 const prefix: string = 'v';
-customElements.define(`${prefix}-${application}', Application);
+customElements.define(`${prefix}-${MyComponent.name.toLowerCase()}', MyComponent);
 ```
 
 :::
 
-Next, start building your UI with in-house JSX:
+## Class components
+
+Next, start building your UI with built-in jsx:
 
 ```ts
-import { BaseView, define } from '@vanille/core';
+import { View } from '@vanille/core';
 
-@define()
-export class Application extends BaseView {
+export class MyComponent extends View {
   render() {
     return <div>Hello world!</div>;
   }
 }
 ```
 
-`vanille` comes pack with syntactic sugar decorators, all of which are already sprinkled on the base web component class `BaseView`.
+## Functional components
+
+`vanille` also supports functional components for smaller and less use case driven UIs:
 
 ```ts
-import {
-  define,
-  hasJsxTemplate,
-  hasObservableProps,
-  hasObservableState,
-  hasRefs,
-  hasShadowDom,
-  hasEmit
-} from '@vanille/core';
+export function MyComponent(props) {
+  return <div>Hello world!</div>;
+}
 ```
 
-More in depth in [Decorators](./decorators.md).
+## Available class methods 
+
+`vanille` comes pack with syntactic sugar methods, all of which are already sprinkled on the base web component class `View`.
+
+```ts
+import { View } from '@vanille/core';
+
+export MyComponent extends View {
+  // your JSX code here
+  render() {}
+
+  // custom scoped styles
+  styles() {}
+
+  // wrapper for connectedCallback
+  connected() {}
+
+  // wrapper for disconnectedCallback
+  disconnected() {}
+
+  // wrapper for adoptedCallback
+  adopted() {}
+
+  // wrapper for attributeChangedCallback
+  attributeChanged() {}
+}
+
+```
+
+## Built-in methods 
+
+#### emit
+
+Send an event to the parent component:
+
+```ts
+this.emit('on-counter-clicked', count);
+```
+
+## Functional components
+
+All `vanille` and built-in web components methods are available to be used inside functional components:
+
+```ts
+export function MyComponent({ count }) {
+  this.connected = () => {
+    // mounted to the DOM!
+  }
+
+  return <div class="count">{count}</div>
+}
+
+```
+
+::: info
+`Functional components` are converted into `class components` under the hood, thus `this` refers to the instance of your component.
+
+This creates a nice developer experience without worrying about class sematics.
+:::

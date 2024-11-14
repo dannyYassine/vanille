@@ -1,13 +1,13 @@
-import { BaseView } from './BaseView';
-export declare class Route extends BaseView {
-    props: {
-        startWith?: string;
-        path?: string;
-    };
+import { View } from './View';
+export declare class Route extends View<{
+    startWith?: string;
+    path?: string;
+    group?: string;
+}> {
     matchesRoute: boolean;
     location: Location;
     constructor();
-    setBindings(): void;
+    connected(): void;
     checkPath(): void;
     matchesPattern(): boolean;
     render(): "" | (string | {

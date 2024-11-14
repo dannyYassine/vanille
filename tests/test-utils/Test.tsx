@@ -1,9 +1,10 @@
 import { BaseView } from '../../src/BaseView';
-import { define } from '../../src/decorators';
+import { View } from '../../src/View';
+import { Signal } from '../../src/signals';
 
-@define()
-export class Test extends BaseView {
+export class Test extends View {
   render() {
+  
     return (
       <div>
         <div data-id="test"></div>
@@ -16,54 +17,50 @@ export class Test extends BaseView {
     );
   }
 }
+customElements.define('v-test', Test);
 
-@define()
-export class TestWithClassComponents extends BaseView {
+export class TestWithClassComponents extends View {
   render() {
     return <Test ref="test" />;
   }
 }
+customElements.define('v-testwithclasscomponents', TestWithClassComponents);
 
-@define()
-export class TestWithData extends BaseView {
-  data() {
-    return {
-      user: {
-        name: 'vanille'
-      }
-    };
-  }
 
+// export class TestWithData extends View {
+//   data() {
+//     return {
+//       user: {
+//         name: 'vanille'
+//       }
+//     };
+//   }
+
+//   render() {
+//     return (
+//       <div>
+//         <div data-id="user.name">{this.state.user.name}</div>
+//       </div>
+//     );
+//   }
+// }
+// customElements.define('v-test', TestWithData);
+
+export class TestWithPropListeners extends View<{user: Signal<{name: string}>}> {
   render() {
-    return (
-      <div>
-        <div data-id="user.name">{this.state.user.name}</div>
-      </div>
-    );
-  }
-}
+    const { user } = this.props;
 
-@define()
-export class TestWithPropListeners extends BaseView {
-  setBindings(): void {
-    this.props.user.$on('name', (nv) => {
-      this.refs.username.textContent = nv;
-    });
-    this.props.$on('user', (nv) => {
-      this.refs.user.textContent = nv.name;
-    });
-  }
-
-  render() {
     return (
       <div>
         <div ref="username" data-id="user.name">
-          {this.props.user.name}
+          {() => user.get().name}
         </div>
         <div ref="user" data-id="user.name">
-          {this.props.user.name}
+          {() => user.get().name}
         </div>
       </div>
     );
   }
 }
+customElements.define('v-test-with-prop-listeners', TestWithPropListeners);
+

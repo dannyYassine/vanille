@@ -1,8 +1,13 @@
 import { afterEach, describe, expect, test } from 'vitest';
 import { mount } from './test-utils';
 import '../src/If';
+import { state } from '../src/signals';
 
 describe('If.tsx', () => {
+  afterEach(() => {
+    document.body.innerHTML = '';
+  });
+
   describe('props value', () => {
     test('does render slot when value is true', () => {
       const $component = mount(
@@ -11,7 +16,7 @@ describe('If.tsx', () => {
         </v-if>
       );
 
-      const $el = $component.querySelector('slot');
+      const $el = $component.shadowRoot.querySelector('slot');
 
       expect($el).toBeTruthy();
     });
@@ -31,34 +36,38 @@ describe('If.tsx', () => {
 
   describe('props value reactivity', () => {
     test('does render slot when value changes to true', () => {
+      const value = state(false);
+
       const $component = mount(
-        <v-if value={false}>
+        <v-if value={value}>
           <div test-id="test-if"></div>
         </v-if>
       );
 
-      let $el = $component.querySelector('slot');
+      let $el = $component.shadowRoot.querySelector('slot');
       expect($el).toBeFalsy();
 
-      $component.props.value = true;
+      value.set(true);
 
-      $el = $component.querySelector('slot');
+      $el = $component.shadowRoot.querySelector('slot');
       expect($el).toBeTruthy();
     });
 
     test('does not render slot when value is false', () => {
+      const value = state(true);
+
       const $component = mount(
-        <v-if value={true}>
+        <v-if value={value}>
           <div test-id="test-if-2"></div>
         </v-if>
       );
 
-      let $el = $component.querySelector('slot');
+      let $el = $component.shadowRoot.querySelector('slot');
       expect($el).toBeTruthy();
 
-      $component.props.value = false;
+      value.set(false);
 
-      $el = $component.querySelector('slot');
+      $el = $component.shadowRoot.querySelector('slot');
       expect($el).toBeFalsy();
     });
   });

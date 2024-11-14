@@ -1,19 +1,20 @@
 // jsx rendering
 export { render, h } from './jsx';
 
+// state
+export { state, computed, stateArray } from './signals';
+
+// view
+export { View } from './View';
+export { ViewMode } from './ViewMode';
+
 // routing components
 export { Route } from './Route';
 
 // core components
 export { If } from './If';
-export { List } from './List';
+export { For } from './For';
 
-// observables
-export { observable } from './Observable';
-export type { Observable } from './Observable';
+import Vanille from './Vanille';
 
-// all decorators
-export * from './decorators';
-
-// base class that contains all of the above
-export { BaseView } from './BaseView';
+export default Vanille;

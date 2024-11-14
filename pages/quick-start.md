@@ -34,27 +34,34 @@ Using `vite`, please specify the `esbuild` options, in order to convert jsx temp
   }
 ```
 
-### `tsconfig.json`
-To use `decorators` provided by `vanille`, enable `experimentalDecorators`:
-
-```json
-    "experimentalDecorators": true
-```
-
 ## Basic usage
 
 Import `vanille` in your `.tsx` or `.jsx` file and use the default behaviour:
 
 ```ts
-// Application.ts
-import { BaseView, define } from '@vanille/core';
+// MyComponent.ts
+import { View } from '@vanille/core';
 
-@define()
-export class Application extends BaseView {
+export class MyComponent extends View {
   render() {
     return <div>Hello world!</div>;
   }
 }
+```
+
+Mount the root application node:
+
+```ts
+// Application.ts
+import { View } from '@vanille/core';
+import { MyComponent } from './MyComponent';
+
+customElements.define('v-application', class extends View {
+    render() {
+      return <MyComponent />;
+    }
+  }
+);
 ```
 
 Then in your `index.html`:
@@ -68,3 +75,15 @@ Then in your `index.html`:
   </body>
 </html>
 ```
+
+::: info
+
+`vanille` will automatically register your custom components to `customElements`.
+
+```ts
+customElements.define(`v-${Component.name.toLowerCase()}`, Component.name);
+```
+
+Import your components and use them in your templates.
+
+:::

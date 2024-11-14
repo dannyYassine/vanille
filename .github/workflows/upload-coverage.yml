@@ -14,17 +14,19 @@ jobs:
   coverage:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           working-directory: .
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
       - name: Build containers
-        run: docker-compose -f docker-compose-ci.yml build playwright
+        run: docker compose -f docker-compose-ci.yml build playwright
       - name: Install dependencies
-        run: docker-compose run playwright yarn
+        run: docker compose run playwright yarn
       - name: Run tests with coverage
-        run: docker-compose run playwright yarn test:coverage
+        run: docker compose run playwright yarn test:coverage
       - name: Upload coverage
         run: CODECOV_TOKEN=${{secrets.CODECOV_TOKEN}} . send-coverage.sh
       - name: Stop containers
         if: always()
-        run: docker-compose -f docker-compose-ci.yml down
+        run: docker compose -f docker-compose-ci.yml down
