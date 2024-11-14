@@ -1,8 +1,6 @@
-import { define } from '@vanille/core';
-import { DevView } from './DevView';
+import { View } from '@vanille/core';
 
-@define()
-export class Nav extends DevView {
+export class Nav extends View {
   render() {
     return (
       <aside
@@ -25,7 +23,7 @@ export class Nav extends DevView {
           </a>
         </div>
         <hr class="horizontal light mt-0 mb-2" />
-        <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
+        <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
           <ul class="navbar-nav">
             <li class="nav-item">
               <a
@@ -39,7 +37,7 @@ export class Nav extends DevView {
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-white " onclick={() => window.history.pushState({}, '', '/app/tables')}>
+              <a class="nav-link text-white" onclick={() => window.history.pushState({}, '', '/app/tables')}>
                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i class="material-icons opacity-10">table_view</i>
                 </div>

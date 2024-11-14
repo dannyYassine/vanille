@@ -6,6 +6,7 @@ let originalLocation = window.location;
 describe('Route.tsx', () => {
   afterEach(() => {
     window.$location = originalLocation;
+    document.body.innerHTML = '';
   });
 
   describe('missing path and startWith props', () => {
@@ -21,7 +22,7 @@ describe('Route.tsx', () => {
         </v-route>
       );
 
-      const $el = $component.shadowRoot.querySelector('slot');
+      const $el = $component.querySelector('slot');
 
       expect($el).toBeFalsy();
     });
@@ -40,7 +41,7 @@ describe('Route.tsx', () => {
           <div test-id="test"></div>
         </v-route>
       );
-
+        
       const $el = $component.shadowRoot.querySelector('slot');
 
       expect($el).toBeTruthy();
@@ -83,7 +84,7 @@ describe('Route.tsx', () => {
     });
   });
 
-  describe('prop start-with', () => {
+  describe('prop startWith', () => {
     test('can render its slot when path matches pathname', () => {
       const $location = {
         pathname: '/'
@@ -92,7 +93,7 @@ describe('Route.tsx', () => {
       window.$location = $location;
 
       const $component = mount(
-        <v-route start-with="/">
+        <v-route startWith="/">
           <div test-id="test"></div>
         </v-route>
       );
@@ -110,7 +111,7 @@ describe('Route.tsx', () => {
       window.$location = $location;
 
       const $component = mount(
-        <v-route start-with="/long">
+        <v-route startWith="/long">
           <div test-id="test"></div>
         </v-route>
       );
@@ -128,7 +129,7 @@ describe('Route.tsx', () => {
       window.$location = $location;
 
       const $component = mount(
-        <v-route start-with="/long/:id">
+        <v-route startWith="/long/:id">
           <div test-id="test"></div>
         </v-route>
       );
@@ -146,7 +147,7 @@ describe('Route.tsx', () => {
       window.$location = $location;
 
       const $component = mount(
-        <v-route start-with="/another">
+        <v-route startWith="/another">
           <div test-id="test"></div>
         </v-route>
       );

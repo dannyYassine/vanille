@@ -1,40 +1,7 @@
-import { define, Observable, If } from '@vanille/core';
-import { DevView } from './DevView';
+import { If, View } from '@vanille/core';
 import { LoginForm } from './Login';
 
-@define()
-export class LoginView extends DevView {
-  props: Observable<{ form: LoginForm }>;
-
-  updateButtonEnabled() {
-    this.isSignInEnabled
-      ? this.refs.loginButton.removeAttribute('disabled')
-      : this.refs.loginButton.setAttribute('disabled', '');
-
-    this.refs.loading.props.value = this.isSignInEnabled;
-  }
-
-  get isSignInEnabled() {
-    return this.props.form.email && this.props.form.password;
-  }
-
-  setBindings(): void {
-    this.props.form.$on('email', (nv) => {
-      this.updateButtonEnabled();
-    });
-    this.props.form.$on('password', (nv) => {
-      this.updateButtonEnabled();
-    });
-    this.updateButtonEnabled();
-  }
-
-  onInputEnterPressed(e) {
-    if (e.key !== 'Enter') {
-      return;
-    }
-    e.preventDefault();
-    this.emit('LoginClicked');
-  }
+export class LoginView extends View<{form: LoginForm}> {
 
   render() {
     return (
@@ -77,9 +44,11 @@ export class LoginView extends DevView {
                         <input
                           type="email"
                           ref="email"
+                          value={() => this.props.form.get().email}
                           class="form-control"
-                          onkeypress={(e) => this.onInputEnterPressed(e)}
-                          oninput={(e) => (this.props.form.email = e.target.value)}
+                          oninput={(e) => (this.props.form.mutSet((f) => {
+                            f.email = e.target.value;
+                          }))}
                         />
                       </div>
                       <div class="input-group input-group-outline mb-3">
@@ -87,25 +56,29 @@ export class LoginView extends DevView {
                         <input
                           type="password"
                           ref="password"
+                          value={() => this.props.form.get().password}
                           class="form-control"
-                          onkeypress={(e) => this.onInputEnterPressed(e)}
-                          oninput={(e) => (this.props.form.password = e.target.value)}
+                          oninput={(e) => (this.props.form.mutSet((f) => {
+                            f.password = e.target.value;
+                          }))}
                         />
                       </div>
                       <div class="form-check form-switch d-flex align-items-center mb-3">
                         <input
                           class="form-check-input"
                           type="checkbox"
+                          value={() => this.props.form.get().rememberMe}
                           id="rememberMe"
-                          onkeypress={(e) => this.onInputEnterPressed(e)}
-                          oninput={(e) => (this.props.form.rememberMe = e.target.checked)}
+                          oninput={(e) => (this.props.form.mutSet((f) => {
+                            f.rememberMe = e.target.checked;
+                          }))}
                         />
                         <label class="form-check-label mb-0 ms-3" for="rememberMe">
                           Remember me
                         </label>
                       </div>
                       <div>
-                        <If ref="loading" value={false}>
+                        <If ref="loading" value={() => this.props.form.get().rememberMe}>
                           Appeared because of "v-if"
                         </If>
                       </div>
@@ -113,9 +86,9 @@ export class LoginView extends DevView {
                         <button
                           ref="loginButton"
                           type="button"
-                          disabled
+                          id="button"
                           class="btn bg-gradient-primary w-100 my-4 mb-2"
-                          onclick={() => this.emit('LoginClicked')}
+                          onclick={() => this.emit('onLoginClicked')}
                         >
                           Sign in
                         </button>

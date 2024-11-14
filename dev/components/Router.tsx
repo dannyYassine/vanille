@@ -1,15 +1,14 @@
-import { define, Route } from '@vanille/core';
+import { Route, View } from '@vanille/core';
 import { Tables } from './Tables';
 import { Dashboard } from './Dashboard';
-import { DevView } from './DevView';
 import { ListExample } from './ListExample';
+import { Welcome } from './Welcome';
 
-@define()
-export class Router extends DevView {
+export class Router extends View {
   render() {
     return (
       <section>
-        <Route path="/app">Welcome</Route>
+        <Route path="/app"><Welcome /></Route>
         <Route path="/app/dashboard">
           <Dashboard />
         </Route>

@@ -1,14 +1,14 @@
-# What is `vanilla`?
+# What is `vanille`?
 
 ## Overview
 
-`vanille` (French word for "vanilla") is a minimalistic framework aim to have an almost zero footprint building web applications.
+`vanille` (French word for "vanilla") is a minimalistic framework aim to have an almost zero footprint for building frontend web applications.
 
 The joy of building javascript applications with vanilla javascript inspired the creation of a framework with the standardized bare essentials:
 
 - Templating with JSX
-- Pass `objects` to custom element attributes
-- Observable `props` and `state`
+- Observe changes with Signals
+- Inhouse reactive DOM (no virtual dom)
 
 ::: tip
 
