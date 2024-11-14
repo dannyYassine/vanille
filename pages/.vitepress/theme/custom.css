@@ -9,15 +9,14 @@
   --vp-c-indigo-1: #eb89b6;
 
   .image-container {
-    transform: skew(-4deg, 4deg);
+    transform: skew(-2deg, 2deg);
     animation: up-down 5s ease-in infinite;
   }
   
   .image-container img {
     border-radius: 5px;
     max-width: 550px !important;
-    width: 550px !important;
-    height: auto;
+    height: auto !important;
   }
 }
 
