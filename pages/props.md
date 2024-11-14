@@ -44,7 +44,7 @@ export class App extends BaseView {
 
 ## Signals as attributes
 
-Covered in detail in the [Signals](./observe-signals.md) section, its possible to listen to prop changes at any given level:
+Covered in detail in the Signals section, its possible to listen to prop changes at any given level:
 
 Declare a signal as a property and assign it to the child's attributte:
 
