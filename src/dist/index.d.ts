@@ -1,5 +1,5 @@
 export { render, h } from './jsx';
-export { state, computed } from './signals';
+export { state, computed, stateArray } from './signals';
 export { View } from './View';
 export { ViewMode } from './ViewMode';
 export { Route } from './Route';
