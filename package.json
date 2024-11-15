@@ -1,16 +1,10 @@
 {
   "name": "@vanille/core",
-  "version": "0.0.37",
+  "version": "0.0.38",
   "type": "module",
   "main": "./src/dist/vanille.umd.cjs",
-  "module": "./src/dist/vanille.js",
+  "module": "./src/index.ts",
   "types": "./src/dist/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./src/dist/index.js",
-      "require": "./src/dist/vanille.umd.cjs"
-    }
-  },
   "homepage": "https://dannyyassine.github.io/vanille/",
   "author": {
     "name": "Danny Yassine",
