@@ -77,6 +77,28 @@ describe('View.tsx', () => {
     });
   });
 
+  describe('rendering as function', () => {
+    test('can render functional components', () => {
+      function App(){
+        return <div data-test="app"></div>
+      }
+      const $component = mount(App);
+
+      expect($component.root.querySelector('[data-test="app"]')).toBeTruthy();
+    });
+  });
+
+  describe('function def', () => {
+    test('can rener functional components', () => {
+      function App(){
+        return <div data-test="app"></div>
+      }
+      const $component = mount(App);
+
+      expect($component.root.querySelector('[data-test="app"]')).toBeTruthy();
+    });
+  });
+
   describe('getter refs', () => {
     test('dynamically queries DOM element as getter properties', () => {
       const $component = mount(<v-test name={'vanille'} />);

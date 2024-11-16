@@ -21,7 +21,6 @@ export class Engine {
             return view;
           }
       
-          return this.createElement(tagName as string);
         }
         return this.createElement(tagName as string) as any;
       }

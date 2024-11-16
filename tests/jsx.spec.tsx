@@ -88,6 +88,41 @@ describe('jsx.tsx', () => {
     });
   });
 
+  describe('render functional', () => {
+    test('def outputs all methods', () => {
+      function App(){
+        this.myMethod = () => {
+
+        };
+        return <div data-test="app"></div>
+      }
+      const $component = mount(App);
+
+      expect($component.def().myMethod).toBeTruthy();
+    });
+
+    test('def bind this context to all methods', () => {
+      let self = null;
+      let didExecuteMethod = false;
+      class App extends View {
+        render() {
+          return <div data-test="app" onclick={this.def().myMethod}></div>
+        }
+
+        myMethod() {
+          didExecuteMethod = true;
+          expect(this).toEqual(self);
+        }
+      }
+      const $component = mount(App);
+      self = $component!;
+
+      $component.root.querySelector('[data-test="app"]').onclick()
+
+      expect(didExecuteMethod).toBeTruthy();
+    });
+  })
+
   describe.skip('shallow mount', () => {
     test('can shallow mount', () => {
       const $component = shallowMount(ParentTest);
