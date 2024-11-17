@@ -22,41 +22,16 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
-      - name: Set up Docker Buildx
+      # Set up Docker Buildx with Cloud Driver
+      - name: Set up Docker Buildx (Cloud)
         uses: docker/setup-buildx-action@v3
+        with:
+          version: "lab:latest"
+          driver: cloud
+          endpoint: "dannyyassine/default"
+          install: true
       - name: Build containers
         run: docker compose -f docker-compose-ci.yml build playwright
-        
-      # Build and push using Docker Compose
-      - name: Build and push with Docker Compose
-        run: |
-          # Build all services
-          docker compose build
-          
-          # Tag the client image
-          docker tag vanille-client ${{ secrets.DOCKER_USERNAME }}/vanille-client:latest
-          docker tag vanille-client ${{ secrets.DOCKER_USERNAME }}/vanille-client:${{ github.sha }}
-          
-          # Tag the playwright image
-          docker tag vanille-playwright ${{ secrets.DOCKER_USERNAME }}/vanille-playwright:latest
-          docker tag vanille-playwright ${{ secrets.DOCKER_USERNAME }}/vanille-playwright:${{ github.sha }}
-          
-          # Push the images (only if not a pull request)
-          if [ "${{ github.event_name }}" != "pull_request" ]; then
-            # Push client images
-            docker push ${{ secrets.DOCKER_USERNAME }}/vanille-client:latest
-            docker push ${{ secrets.DOCKER_USERNAME }}/vanille-client:${{ github.sha }}
-            
-            # Push playwright images
-            docker push ${{ secrets.DOCKER_USERNAME }}/vanille-playwright:latest
-            docker push ${{ secrets.DOCKER_USERNAME }}/vanille-playwright:${{ github.sha }}
-          fi
-
-      # Optional: Output image digests for verification
-      - name: Image digest
-        run: |
-          docker inspect ${{ secrets.DOCKER_USERNAME }}/vanille-client:latest
-          docker inspect ${{ secrets.DOCKER_USERNAME }}/vanille-playwright:latest
       - name: Install dependencies
         run: docker compose run playwright yarn
       - name: Run tests with coverage
