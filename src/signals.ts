@@ -1,3 +1,5 @@
+import { isPrimitive } from "./helpers/isPrimitive";
+
 export class Signal<P> {
     value: P;
     subscribers: Set<(newValue: P, oldValue: P) => void>;
@@ -30,7 +32,11 @@ export class Signal<P> {
     mutSet(newValue) {
       const oldValue = this.value;
       if (typeof newValue === 'function') {
-        newValue(this.value);
+        newValue = newValue(this.value);
+      }
+
+      if (isPrimitive(this.value)) {
+        this.value = newValue;
       }
   
       this.notifySubscribers(this.value, oldValue);
