@@ -120,7 +120,6 @@ describe('View.tsx', () => {
       const $component = mount(App);
 
       const $el = $component.root.children.item(0);
-      console.log($el!.innerHTML);
       expect($el!.innerHTML).toEqual(`div[${$component.$scopedId}] { 
             color: red;
           }
@@ -150,6 +149,56 @@ describe('View.tsx', () => {
       const $component = mount(App);
 
       expect($component.root.querySelector('[data-test="app"]')).toBeTruthy();
+    });
+  });
+
+  describe('function emit', () => {
+    test('can emit primitive value', () => {
+      let count = 0;
+      function Child() {
+        this.emitUp = () => {
+          this.emit('oncount', 1);
+        }
+        return <div></div>
+      }
+      function App() {
+        this.onCount = (value) => {
+          count = value.detail;
+        }
+        return <Child ref="child" oncount={this.onCount} />
+      }
+      const $component = mount(App);
+
+      $component.refs.child.emitUp();
+
+      setTimeout(() => {
+        expect(count).toBeTruthy();
+        expect(count).toEqual(1);
+      });
+    });
+
+    test('can emit objects', () => {
+      let count = {};
+      function Child() {
+        this.emitUp = () => {
+          this.emit('oncount', {count: 1});
+        }
+        return <div></div>
+      }
+      function App() {
+        this.onCount = (value) => {
+          count = value.detail;
+        }
+        return <Child ref="child" oncount={this.onCount} />
+      }
+      const $component = mount(App);
+
+      $component.refs.child.emitUp();
+
+      setTimeout(() => {
+        expect(count).toBeTruthy();
+        expect(count).toEqual({count: 1});
+      });
     });
   });
 

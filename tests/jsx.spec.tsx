@@ -28,7 +28,7 @@ describe('jsx.tsx', () => {
           {array}
         </div>);
       }
-      
+
       const $component = mount(App);
       const $parent = $component.root.querySelector('[parent]');
 
@@ -148,7 +148,6 @@ describe('jsx.tsx', () => {
     test('can shallow mount', () => {
       const $component = shallowMount(ParentTest);
 
-      console.log($component.refs.child);
       expect($component.refs.child).toBeFalsy();
     });
   })

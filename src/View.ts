@@ -15,9 +15,7 @@ export class View<P = {}> extends HTMLElement {
     super();
     this.props = {};
     this.$c = [];
-    if ([ViewMode.OPEN, ViewMode.CLOSED].includes(viewMode)) {
-        this.attachShadow({ mode: viewMode });
-    }
+    this.attachShadow({ mode: viewMode });
     
     this.refs = new Proxy(
       {},
