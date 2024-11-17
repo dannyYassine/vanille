@@ -78,7 +78,7 @@ export class App extends View {}
 ### Fast templating web components with in-house JSX
 
 ```ts
-export class App extends BaseView {
+export class App extends View {
   render() {
     return (
       <div>
@@ -92,7 +92,7 @@ export class App extends BaseView {
 ### Signals
 
 ```ts
-export class App extends BaseView {
+export class App extends View {
   render() {
     const name = state('your name');
     const computedName = computed(() => name.get());
@@ -128,7 +128,7 @@ const user = { name: 'vanille' };
 
 <v-app user="user"></v-app>;
 
-export class App extends BaseView {
+export class App extends View {
   render() {
     return (
       <p>{this.props.user.name}</p>
@@ -137,29 +137,10 @@ export class App extends BaseView {
 }
 ```
 
-### Web component attributes become observable props
-
-```ts
-const user: User = { name: 'vanille' };
-
-<v-app user="user"></v-app>;
-
-export class App extends BaseView {
-  setBindings() {
-    this.props.$on('user', (newValue: User) => {
-      // user changed
-    });
-    this.props.user.$on('name', (newValue: string) => {
-      // name changed
-    });
-  }
-}
-```
-
 ### Query the DOM with `refs` to update elements
 
 ```ts
-export class App extends BaseView {
+export class App extends View {
   setBindings() {
     this.refs.name.textContent = newValue;
   }
