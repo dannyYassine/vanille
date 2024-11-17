@@ -22,14 +22,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
-      # Set up Docker Buildx with Cloud Driver
-      - name: Set up Docker Buildx (Cloud)
-        uses: docker/setup-buildx-action@v3
-        with:
-          version: "lab:latest"
-          driver: cloud
-          endpoint: "dannyyassine/default"
-          install: true
       - name: Build containers
         run: docker compose -f docker-compose-ci.yml build playwright
       - name: Install dependencies

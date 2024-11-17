@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/playwright:v1.31.0-focal
+FROM dannyyassine/vanille-playwright:cd52517dd4583a9fcae0fe095218f13b0a7822cf
 
 WORKDIR /usr/src/client
 
