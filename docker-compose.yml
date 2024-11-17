@@ -9,7 +9,7 @@ services:
     container_name: vanille-client
     build:
       context: .
-      dockerfile: dev-env/client.dockerfile
+      dockerfile: docker/client.dockerfile
     command: tail -f /dev/null
     ports:
       - '3000:3000' # frontend
@@ -24,7 +24,7 @@ services:
     container_name: vanille-playwright
     build:
       context: .
-      dockerfile: dev-env/playwright.dockerfile
+      dockerfile: docker/playwright.dockerfile
     command: tail -f /dev/null
     ports:
       - '3001:3001'

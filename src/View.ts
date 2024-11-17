@@ -15,9 +15,7 @@ export class View<P = {}> extends HTMLElement {
     super();
     this.props = {};
     this.$c = [];
-    if ([ViewMode.OPEN, ViewMode.CLOSED].includes(viewMode)) {
-        this.attachShadow({ mode: viewMode });
-    }
+    this.attachShadow({ mode: viewMode });
     
     this.refs = new Proxy(
       {},
@@ -79,7 +77,7 @@ export class View<P = {}> extends HTMLElement {
   public attributeChanged(name, oldValue, newValue) {}
 
   protected createStyleTag(): void {
-    const styleTagContent = `${this.styles()} ${Vanille.getStyles()}`;
+    const styleTagContent = `${this.styles()}${Vanille.getStyles()}`;
     
     if (!styleTagContent) {
       return;
@@ -108,14 +106,14 @@ export class View<P = {}> extends HTMLElement {
 
     const node = this.render?.(this.props);
 
+    // for root only
+    if (!this.$scopedId) {
+      this.$scopedId = `v${generateRandomString(8)}`;
+      this.setAttribute(this.$scopedId, '');
+    }
+
     if (node) {
       this.createStyleTag();
-
-      // for root only
-      if (!this.$scopedId) {
-        this.$scopedId = `v${generateRandomString(8)}`;
-        this.setAttribute(this.$scopedId, '');
-      }
       node.$scopedId = this.$scopedId;
       const content = render(node);
 

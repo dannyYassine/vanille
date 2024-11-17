@@ -1,4 +1,5 @@
 import { Engine } from './Engine';
+import { isPrimitive } from './helpers/isPrimitive';
 import { generateRandomString } from './helpers/random';
 import { computed, Signal } from './signals';
 
@@ -167,10 +168,6 @@ function isNestedArray(child: any): boolean {
     ((typeof child[0] === 'string' && typeof child[1] !== 'object') ||
       Array.isArray(child[0]))
   );
-}
-
-function isPrimitive(child: any): boolean {
-  return ['string', 'number'].includes(typeof child);
 }
 
 function isHTMLElement(child: any): boolean {

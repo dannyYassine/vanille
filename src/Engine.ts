@@ -14,14 +14,13 @@ export class Engine {
           }
       
           // functional component
-          if (tagName instanceof Function && tagName.__proto__.name === '') {
+          // if (tagName instanceof Function && tagName.__proto__.name === '') {
             const view = new View();
             view.render = tagName.bind(view);
       
             return view;
-          }
+          // }
       
-          return this.createElement(tagName as string);
         }
         return this.createElement(tagName as string) as any;
       }

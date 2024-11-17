@@ -5,7 +5,7 @@ export default defineConfig({
   head: [['link', { rel: 'icon', href: '/vanille/favicon.ico' }]],
   title: 'vanille',
   base: '/vanille/',
-  description: 'A minimalistic vanilla web component framework',
+  description: 'A minimalistic web component framework',
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [

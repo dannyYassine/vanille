@@ -4,6 +4,7 @@ import { Test, TestWithData, TestWithPropListeners } from './test-utils/Test';
 import { computed, state } from '../src/signals';
 import { View } from '../src/View';
 import { ViewMode } from '../src/ViewMode';
+import Vanille from '../src/Vanille';
 
 describe('View.tsx', () => {
   afterEach(() => {
@@ -74,6 +75,130 @@ describe('View.tsx', () => {
       const $el = $component.shadowRoot!.querySelector('[data-id="test"');
 
       expect($el).toBeTruthy();
+    });
+  });
+
+  describe('rendering with styles', () => {
+    test('can with custom styles', () => {
+      function App() {
+        this.styles = () => {
+         return `
+          div {
+            color: red;
+          }
+         `;
+        }
+        return <div data-id="test"></div>;
+      }
+      const $component = mount(App);
+
+      const $el = $component.root.children.item(0);
+
+      expect($el!.innerHTML).toEqual(`div[${$component.$scopedId}] { 
+            color: red;
+          }`);
+    });
+
+    test('can with custom styles and global styles', () => {
+      Vanille.setStyles(
+        `
+        div {
+          color: blue;
+        }
+        `
+      );
+      function App() {
+        this.styles = () => {
+         return `
+          div {
+            color: red;
+          }
+         `;
+        }
+        return <div data-id="test"></div>;
+      }
+      const $component = mount(App);
+
+      const $el = $component.root.children.item(0);
+      expect($el!.innerHTML).toEqual(`div[${$component.$scopedId}] { 
+            color: red;
+          }
+          
+        div[${$component.$scopedId}] { 
+          color: blue;
+        }`);
+    });
+  });
+
+  describe('rendering as function', () => {
+    test('can render functional components', () => {
+      function App(){
+        return <div data-test="app"></div>
+      }
+      const $component = mount(App);
+
+      expect($component.root.querySelector('[data-test="app"]')).toBeTruthy();
+    });
+  });
+
+  describe('function def', () => {
+    test('can rener functional components', () => {
+      function App(){
+        return <div data-test="app"></div>
+      }
+      const $component = mount(App);
+
+      expect($component.root.querySelector('[data-test="app"]')).toBeTruthy();
+    });
+  });
+
+  describe('function emit', () => {
+    test('can emit primitive value', () => {
+      let count = 0;
+      function Child() {
+        this.emitUp = () => {
+          this.emit('oncount', 1);
+        }
+        return <div></div>
+      }
+      function App() {
+        this.onCount = (value) => {
+          count = value.detail;
+        }
+        return <Child ref="child" oncount={this.onCount} />
+      }
+      const $component = mount(App);
+
+      $component.refs.child.emitUp();
+
+      setTimeout(() => {
+        expect(count).toBeTruthy();
+        expect(count).toEqual(1);
+      });
+    });
+
+    test('can emit objects', () => {
+      let count = {};
+      function Child() {
+        this.emitUp = () => {
+          this.emit('oncount', {count: 1});
+        }
+        return <div></div>
+      }
+      function App() {
+        this.onCount = (value) => {
+          count = value.detail;
+        }
+        return <Child ref="child" oncount={this.onCount} />
+      }
+      const $component = mount(App);
+
+      $component.refs.child.emitUp();
+
+      setTimeout(() => {
+        expect(count).toBeTruthy();
+        expect(count).toEqual({count: 1});
+      });
     });
   });
 

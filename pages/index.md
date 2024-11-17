@@ -4,7 +4,7 @@ layout: home
 
 hero:
   name: 'vanille'
-  text: 'A minimalistic vanilla web component framework'
+  text: 'A minimalistic web component framework'
   tagline: Using native browser features with a few exceptions
   image:
     src: /code1.png

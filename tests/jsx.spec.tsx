@@ -1,4 +1,4 @@
-import { describe, expect, test, vi } from 'vitest';
+import { afterEach, describe, expect, test, vi } from 'vitest';
 import { mount } from './test-utils';
 import { BaseView } from './../src/BaseView';
 import { Test, TestWithClassComponents } from './test-utils/Test';
@@ -6,6 +6,10 @@ import { View } from '../src/View';
 import { shallowMount } from './test-utils/utils';
 
 describe('jsx.tsx', () => {
+  afterEach(() => {
+    document.body.innerHTML = '';
+  });
+
   describe('function render', () => {
     test('renders template with no children', () => {
       const $component = mount(<div test-id="test"></div>);
@@ -14,6 +18,23 @@ describe('jsx.tsx', () => {
 
       expect($component).toBeTruthy();
       expect($el).toBeTruthy();
+    });
+
+    test('renders template with children as array', () => {
+      function App() {
+        const array = [<div id="1"></div>, <div id="2"></div>];
+
+        return (<div parent>
+          {array}
+        </div>);
+      }
+
+      const $component = mount(App);
+      const $parent = $component.root.querySelector('[parent]');
+
+      expect($parent?.children.length).toEqual(2);
+      expect($parent.querySelector('[id="1"]')).toBeTruthy();
+      expect($parent.querySelector('[id="2"]')).toBeTruthy();
     });
 
     test('able to render jsx with class', () => {
@@ -88,11 +109,45 @@ describe('jsx.tsx', () => {
     });
   });
 
+  describe('render functional', () => {
+    test('def outputs all methods', () => {
+      function App(){
+        this.myMethod = () => {
+
+        };
+        return <div data-test="app"></div>
+      }
+      const $component = mount(App);
+
+      expect($component.def().myMethod).toBeTruthy();
+    });
+
+    test('def bind this context to all methods', () => {
+      let self = null;
+      let didExecuteMethod = false;
+      class App extends View {
+        render() {
+          return <div data-test="app" onclick={this.def().myMethod}></div>
+        }
+
+        myMethod() {
+          didExecuteMethod = true;
+          expect(this).toEqual(self);
+        }
+      }
+      const $component = mount(App);
+      self = $component!;
+
+      $component.root.querySelector('[data-test="app"]').onclick()
+
+      expect(didExecuteMethod).toBeTruthy();
+    });
+  })
+
   describe.skip('shallow mount', () => {
     test('can shallow mount', () => {
       const $component = shallowMount(ParentTest);
 
-      console.log($component.refs.child);
       expect($component.refs.child).toBeFalsy();
     });
   })

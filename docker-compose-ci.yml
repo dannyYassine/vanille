@@ -9,7 +9,8 @@ services:
     container_name: client
     build:
       context: .
-      dockerfile: dev-env/client.ci.dockerfile
+      dockerfile: docker/client.ci.dockerfile
+    image: vanille-client
     command: tail -f /dev/null
     ports:      
       - "3000:3000" # frontend
@@ -21,7 +22,8 @@ services:
     container_name: playwright
     build:
       context: .
-      dockerfile: dev-env/playwright.ci.dockerfile
+      dockerfile: docker/playwright.ci.dockerfile
+    image: vanille-playwright
     ports:
       - "3001:3001"
     networks:

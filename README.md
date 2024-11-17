@@ -2,7 +2,7 @@
 <img height="auto" style="width: 320px; object-fit: contain;" src="https://github.com/dannyYassine/vanille/blob/main/vanille.png?raw=true" alt="logo.png">
 </p>
 <h3 align="center">
-  A minimalistic vanilla web component framework
+  A minimalistic web component framework
 </h3>
 <p align="center">
   Using native browser features to maximum performance with a few exceptions
@@ -24,12 +24,19 @@
 
 <hr />
 
-### Features:
-- Templating with JSX
-- Pass `objects` to custom element attributes
-- Observable `props` and `state`
+### Features
 
-### Installation:
+- Web components as first class citizens
+- Templating with JSX
+- Reactive rendering with signals
+- Pass `objects` to custom element attributes
+- No virtual DOM
+
+<p align="center">
+<img height="auto" style="width: 75%; max-width: 500px; border-radius: 5px; object-fit: contain;" src="https://github.com/dannyYassine/vanille/blob/main/pages/public/code1.png?raw=true" alt="logo.png">
+</p>
+
+### Installation
 
 ```bash
 yarn add @vanille/core
@@ -55,25 +62,45 @@ To use `decorators`, enable `experimentalDecorators`:
 ```
 
 ### No dependencies
+
 All features are in-house implementations to maximize native functionality, with a few exceptions (check out below!)
 
 <hr />
 
 ### Extending web components for native performance
-```ts
-import { BaseView } from '@vanille/core';
 
-export class App extends BaseView {}
+```ts
+import { View } from '@vanille/core';
+
+export class App extends View {}
 ```
 
 ### Fast templating web components with in-house JSX
 
 ```ts
-export class App extends BaseView {
+export class App extends View {
   render() {
     return (
       <div>
         <span>JSX!</span>
+      </div>
+    );
+  }
+}
+```
+
+### Signals
+
+```ts
+export class App extends View {
+  render() {
+    const name = state('your name');
+    const computedName = computed(() => name.get());
+
+    return (
+      <div>
+        <span>{name}</span>
+        <span>{computedName}</span>
       </div>
     );
   }
@@ -94,31 +121,6 @@ export class App extends BaseView {
 </v-route>
 ```
 
-### Observables
-
-```ts
-const object = observable({
-  user: {
-    email: '',
-    contact: {
-      firstName: ''
-    }
-  }
-});
-object.user.$on('email', (newValue, oldValue, user) => {
-  console.log(newValue, oldValue, user);
-});
-object.user.contact.$on('firstName', (newValue, oldValue, user) => {
-  console.log(newValue, oldValue, user);
-});
-
-user.email = 'vanille@js.com';
-// log: 'vanille@js.com' '' { email: '', contact: { firstName: '' } }
-
-user.contact.firstName = 'vanille';
-// log: 'vanille' '' { contact: { firstName: '' } }
-```
-
 ### Pass objects in web component attributes
 
 ```ts
@@ -126,7 +128,7 @@ const user = { name: 'vanille' };
 
 <v-app user="user"></v-app>;
 
-export class App extends BaseView {
+export class App extends View {
   render() {
     return (
       <p>{this.props.user.name}</p>
@@ -135,51 +137,12 @@ export class App extends BaseView {
 }
 ```
 
-### Web component attributes become observable props
-
-```ts
-const user: User = { name: 'vanille' };
-
-<v-app user="user"></v-app>;
-
-export class App extends BaseView {
-  setBindings() {
-    this.props.$on('user', (newValue: User) => {
-      // user changed
-    });
-    this.props.user.$on('name', (newValue: string) => {
-      // name changed
-    });
-  }
-}
-```
-
-### Private state as observables
-
-```ts
-export class App extends BaseView {
-  data() {
-    return {
-      name: 'vanille'
-    };
-  }
-
-  setBindings() {
-    this.state.$on('name', (newValue) => {
-      // name changed
-    });
-  }
-}
-```
-
 ### Query the DOM with `refs` to update elements
 
 ```ts
-export class App extends BaseView {
+export class App extends View {
   setBindings() {
-    this.props.$on('name', (newValue: string) => {
-      this.refs.name.textContent = newValue;
-    });
+    this.refs.name.textContent = newValue;
   }
 
   render() {
@@ -193,6 +156,7 @@ export class App extends BaseView {
 ```
 
 ### Declarative testing with JSX
+
 ```tsx
 import { mount } from './test-utils';
 // load the component
