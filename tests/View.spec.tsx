@@ -4,6 +4,7 @@ import { Test, TestWithData, TestWithPropListeners } from './test-utils/Test';
 import { computed, state } from '../src/signals';
 import { View } from '../src/View';
 import { ViewMode } from '../src/ViewMode';
+import Vanille from '../src/Vanille';
 
 describe('View.tsx', () => {
   afterEach(() => {
@@ -74,6 +75,59 @@ describe('View.tsx', () => {
       const $el = $component.shadowRoot!.querySelector('[data-id="test"');
 
       expect($el).toBeTruthy();
+    });
+  });
+
+  describe('rendering with styles', () => {
+    test('can with custom styles', () => {
+      function App() {
+        this.styles = () => {
+         return `
+          div {
+            color: red;
+          }
+         `;
+        }
+        return <div data-id="test"></div>;
+      }
+      const $component = mount(App);
+
+      const $el = $component.root.children.item(0);
+
+      expect($el!.innerHTML).toEqual(`div[${$component.$scopedId}] { 
+            color: red;
+          }`);
+    });
+
+    test('can with custom styles and global styles', () => {
+      Vanille.setStyles(
+        `
+        div {
+          color: blue;
+        }
+        `
+      );
+      function App() {
+        this.styles = () => {
+         return `
+          div {
+            color: red;
+          }
+         `;
+        }
+        return <div data-id="test"></div>;
+      }
+      const $component = mount(App);
+
+      const $el = $component.root.children.item(0);
+      console.log($el!.innerHTML);
+      expect($el!.innerHTML).toEqual(`div[${$component.$scopedId}] { 
+            color: red;
+          }
+          
+        div[${$component.$scopedId}] { 
+          color: blue;
+        }`);
     });
   });
 

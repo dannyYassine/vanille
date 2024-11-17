@@ -79,7 +79,7 @@ export class View<P = {}> extends HTMLElement {
   public attributeChanged(name, oldValue, newValue) {}
 
   protected createStyleTag(): void {
-    const styleTagContent = `${this.styles()} ${Vanille.getStyles()}`;
+    const styleTagContent = `${this.styles()}${Vanille.getStyles()}`;
     
     if (!styleTagContent) {
       return;
@@ -113,7 +113,7 @@ export class View<P = {}> extends HTMLElement {
       this.$scopedId = `v${generateRandomString(8)}`;
       this.setAttribute(this.$scopedId, '');
     }
-    
+
     if (node) {
       this.createStyleTag();
       node.$scopedId = this.$scopedId;
