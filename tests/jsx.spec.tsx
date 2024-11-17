@@ -1,4 +1,4 @@
-import { describe, expect, test, vi } from 'vitest';
+import { afterEach, describe, expect, test, vi } from 'vitest';
 import { mount } from './test-utils';
 import { BaseView } from './../src/BaseView';
 import { Test, TestWithClassComponents } from './test-utils/Test';
@@ -6,6 +6,10 @@ import { View } from '../src/View';
 import { shallowMount } from './test-utils/utils';
 
 describe('jsx.tsx', () => {
+  afterEach(() => {
+    document.body.innerHTML = '';
+  });
+
   describe('function render', () => {
     test('renders template with no children', () => {
       const $component = mount(<div test-id="test"></div>);
@@ -14,6 +18,23 @@ describe('jsx.tsx', () => {
 
       expect($component).toBeTruthy();
       expect($el).toBeTruthy();
+    });
+
+    test('renders template with children as array', () => {
+      function App() {
+        const array = [<div id="1"></div>, <div id="2"></div>];
+
+        return (<div parent>
+          {array}
+        </div>);
+      }
+      
+      const $component = mount(App);
+      const $parent = $component.root.querySelector('[parent]');
+
+      expect($parent?.children.length).toEqual(2);
+      expect($parent.querySelector('[id="1"]')).toBeTruthy();
+      expect($parent.querySelector('[id="2"]')).toBeTruthy();
     });
 
     test('able to render jsx with class', () => {
