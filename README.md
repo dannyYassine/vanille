@@ -33,7 +33,7 @@
 - No virtual-DOM
 
 <p align="center">
-<img height="auto" style="width: 50%; max-width: 500px; border-radius: 5px; object-fit: contain;" src="https://github.com/dannyYassine/vanille/blob/main/pages/public/code1.png?raw=true" alt="logo.png">
+<img height="auto" style="width: 75%; max-width: 500px; border-radius: 5px; object-fit: contain;" src="https://github.com/dannyYassine/vanille/blob/main/pages/public/code1.png?raw=true" alt="logo.png">
 </p>
 
 ### Installation
