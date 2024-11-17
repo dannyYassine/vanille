@@ -2,7 +2,7 @@
 <img height="auto" style="width: 320px; object-fit: contain;" src="https://github.com/dannyYassine/vanille/blob/main/vanille.png?raw=true" alt="logo.png">
 </p>
 <h3 align="center">
-  A minimalistic vanilla web component framework
+  A minimalistic web component framework
 </h3>
 <p align="center">
   Using native browser features to maximum performance with a few exceptions
