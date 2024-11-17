@@ -24,12 +24,15 @@
 
 <hr />
 
-### Features:
-- Templating with JSX
-- Pass `objects` to custom element attributes
-- Observable `props` and `state`
+### Features
 
-### Installation:
+- Web components as first class citizens
+- Templating with JSX
+- Reactive rendering with signals
+- Pass `objects` to custom element attributes
+- No virtual-DOM
+
+### Installation
 
 ```bash
 yarn add @vanille/core
@@ -55,15 +58,17 @@ To use `decorators`, enable `experimentalDecorators`:
 ```
 
 ### No dependencies
+
 All features are in-house implementations to maximize native functionality, with a few exceptions (check out below!)
 
 <hr />
 
 ### Extending web components for native performance
-```ts
-import { BaseView } from '@vanille/core';
 
-export class App extends BaseView {}
+```ts
+import { View } from '@vanille/core';
+
+export class App extends View {}
 ```
 
 ### Fast templating web components with in-house JSX
@@ -74,6 +79,24 @@ export class App extends BaseView {
     return (
       <div>
         <span>JSX!</span>
+      </div>
+    );
+  }
+}
+```
+
+### Signals
+
+```ts
+export class App extends BaseView {
+  render() {
+    const name = state('your name');
+    const computedName = computed(() => name.get());
+
+    return (
+      <div>
+        <span>{name}</span>
+        <span>{computedName}</span>
       </div>
     );
   }
@@ -92,31 +115,6 @@ export class App extends BaseView {
 <v-route path="/users/:id">
   User with id
 </v-route>
-```
-
-### Observables
-
-```ts
-const object = observable({
-  user: {
-    email: '',
-    contact: {
-      firstName: ''
-    }
-  }
-});
-object.user.$on('email', (newValue, oldValue, user) => {
-  console.log(newValue, oldValue, user);
-});
-object.user.contact.$on('firstName', (newValue, oldValue, user) => {
-  console.log(newValue, oldValue, user);
-});
-
-user.email = 'vanille@js.com';
-// log: 'vanille@js.com' '' { email: '', contact: { firstName: '' } }
-
-user.contact.firstName = 'vanille';
-// log: 'vanille' '' { contact: { firstName: '' } }
 ```
 
 ### Pass objects in web component attributes
@@ -154,32 +152,12 @@ export class App extends BaseView {
 }
 ```
 
-### Private state as observables
-
-```ts
-export class App extends BaseView {
-  data() {
-    return {
-      name: 'vanille'
-    };
-  }
-
-  setBindings() {
-    this.state.$on('name', (newValue) => {
-      // name changed
-    });
-  }
-}
-```
-
 ### Query the DOM with `refs` to update elements
 
 ```ts
 export class App extends BaseView {
   setBindings() {
-    this.props.$on('name', (newValue: string) => {
-      this.refs.name.textContent = newValue;
-    });
+    this.refs.name.textContent = newValue;
   }
 
   render() {
@@ -193,6 +171,7 @@ export class App extends BaseView {
 ```
 
 ### Declarative testing with JSX
+
 ```tsx
 import { mount } from './test-utils';
 // load the component
