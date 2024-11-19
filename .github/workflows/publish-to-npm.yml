@@ -4,7 +4,8 @@ on:
 
 jobs:
   publish-to-npm:
-    runs-on: ubuntu-latest
+    # runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
