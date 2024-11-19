@@ -2,14 +2,18 @@
 export { render, h } from './jsx';
 
 // state
-export { state, computed, stateArray } from './signals';
+export { state, computed, stateArray, Signal, Computed } from './signals';
 
 // view
 export { View } from './View';
 export { ViewMode } from './ViewMode';
+export { Directive } from './directives/Directive';
 
 // routing components
 export { Route } from './Route';
+
+// built-ins
+export { ModelDirective } from './directives/ModelDirective';
 
 // core components
 export { If } from './If';

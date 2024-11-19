@@ -1,4 +1,5 @@
 import { Engine } from './Engine';
+import Vanille from './Vanille';
 import { isPrimitive } from './helpers/isPrimitive';
 import { generateRandomString } from './helpers/random';
 import { Computed, computed, Signal } from './signals';
@@ -74,13 +75,29 @@ function handleAttributeValue(
   key: string,
   value: any
 ): void {
-  if (typeof value === 'function') {
+  if (Vanille.getDirective(key)) {
+    handleDirective($el, key, value);
+  } else if (typeof value === 'function') {
     handleComputedValue($el, key, value);
   } else if (value instanceof Signal || value instanceof Computed) {
     handleSignalValue($el, key, value);
   } else {
     safeSetAttribute($el, key, value);
   }
+}
+
+function handleDirective(
+  $el: HTMLElement & HasProps,
+  key: string,
+  value: any
+): void {
+  const directiveClass = Vanille.getDirective(key);
+  const directive = new directiveClass($el, value);
+
+  if (!$el.$d) $el.$d = {};
+  $el.$d[key] = directive;
+
+  directive.created();
 }
 
 function handleComputedValue(
