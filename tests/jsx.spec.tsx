@@ -4,6 +4,7 @@ import { BaseView } from './../src/BaseView';
 import { Test, TestWithClassComponents } from './test-utils/Test';
 import { View } from '../src/View';
 import { shallowMount } from './test-utils/utils';
+import { Signal, computed, state } from '../src/signals';
 
 describe('jsx.tsx', () => {
   afterEach(() => {
@@ -106,6 +107,42 @@ describe('jsx.tsx', () => {
       id = $divScopedId.substring(1);
       expect(/^[A-Za-z0-9]*$/.test(id)).toBe(true);
       expect(id.length).toBe(8);
+    });
+
+    test('should render computed as a child', () => {
+      const signal = state(0);
+
+      function App() {
+        const compute = computed(() => signal.get());
+
+        return <div>{compute}</div>
+      }
+
+      const $component = mount(App);
+
+      expect($component.root.querySelector('div')!.textContent).toEqual("0");
+
+      signal.set(1);
+
+      expect($component.root.querySelector('div')!.textContent).toEqual("1");
+    });
+
+    test('should render computed as an attribute', () => {
+      const signal = state(0);
+
+      function App() {
+        const compute = computed(() => signal.get());
+
+        return <div value={compute}></div>
+      }
+
+      const $component = mount(App);
+
+      expect($component.root.querySelector('div')?.getAttribute('value')).toEqual("0");
+
+      signal.set(1);
+
+      expect($component.root.querySelector('div')?.getAttribute('value')).toEqual("1");
     });
   });
 

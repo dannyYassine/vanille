@@ -1,7 +1,7 @@
 import { Engine } from './Engine';
 import { isPrimitive } from './helpers/isPrimitive';
 import { generateRandomString } from './helpers/random';
-import { computed, Signal } from './signals';
+import { Computed, computed, Signal } from './signals';
 
 export function h(...args: any[]): any[] {
   return [...args];
@@ -76,7 +76,7 @@ function handleAttributeValue(
 ): void {
   if (typeof value === 'function') {
     handleComputedValue($el, key, value);
-  } else if (value instanceof Signal) {
+  } else if (value instanceof Signal || value instanceof Computed) {
     handleSignalValue($el, key, value);
   } else {
     safeSetAttribute($el, key, value);
@@ -139,6 +139,11 @@ function renderChild(
 
   if (isPrimitive(child)) {
     $el.append(child as string | Node);
+    return;
+  }
+
+  if (child instanceof Computed) {
+    renderSignalChild($el, child);
     return;
   }
 
