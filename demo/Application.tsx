@@ -1,4 +1,4 @@
-import Vanille, { View, ModelDirective } from "@vanille/core";
+import Vanille, { View, ModelDirective, IfDirective } from "@vanille/core";
 import javascriptLogo from "./javascript.svg";
 import viteLogo from "/vite.svg";
 import { Counter } from "./Counter.tsx";
@@ -9,6 +9,7 @@ Vanille.setStyles(`
 `);
 
 Vanille.setDirective("v-model", ModelDirective);
+Vanille.setDirective("v-if", IfDirective);
 
 export class Application extends View {
   nameInput = state('');

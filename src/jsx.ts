@@ -24,7 +24,7 @@ export function render(
   initializeElement($el, $scopedId);
 
   if (attrs) {
-    applyAttributes($el, attrs as object);
+    applyAttributes($el, attrs as object, jsx);
   }
 
   if (children.length) {
@@ -45,7 +45,8 @@ function initializeElement(
 
 function applyAttributes(
   $el: HTMLElement & HasScopedId & HasProps,
-  attrs: object
+  attrs: object,
+  jsx: Array<unknown>
 ): void {
   Object.entries(attrs).forEach(([key, value]) => {
     if (isEventHandler(key, value)) {
@@ -54,7 +55,7 @@ function applyAttributes(
     }
 
     $el.props[key] = value;
-    handleAttributeValue($el, key, value);
+    handleAttributeValue($el, key, value, jsx);
   });
 }
 
@@ -73,10 +74,11 @@ function handleEvent($el: HTMLElement, key: string, handler: Function): void {
 function handleAttributeValue(
   $el: HTMLElement & HasProps,
   key: string,
-  value: any
+  value: any,
+  jsx: Array<unknown>
 ): void {
   if (Vanille.getDirective(key)) {
-    handleDirective($el, key, value);
+    handleDirective($el, key, value, jsx);
   } else if (typeof value === 'function') {
     handleComputedValue($el, key, value);
   } else if (value instanceof Signal || value instanceof Computed) {
@@ -89,15 +91,16 @@ function handleAttributeValue(
 function handleDirective(
   $el: HTMLElement & HasProps,
   key: string,
-  value: any
+  value: any,
+  jsx: Array<unknown>
 ): void {
   const directiveClass = Vanille.getDirective(key);
-  const directive = new directiveClass($el, value);
+  const directive = new directiveClass($el, jsx, value);
 
   if (!$el.$d) $el.$d = {};
   $el.$d[key] = directive;
 
-  directive.created();
+  directive.create();
 }
 
 function handleComputedValue(
@@ -144,7 +147,7 @@ function safeSetAttribute($el: HTMLElement, key: string, value: any): void {
   }
 }
 
-function renderChild(
+export function renderChild(
   $el: HTMLElement,
   child: (string | HTMLElement | Array<unknown>) & HasScopedId,
   engine: Engine

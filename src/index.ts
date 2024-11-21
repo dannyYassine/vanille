@@ -14,6 +14,7 @@ export { Route } from './Route';
 
 // built-ins
 export { ModelDirective } from './directives/ModelDirective';
+export { IfDirective } from './directives/IfDirective';
 
 // core components
 export { If } from './If';
