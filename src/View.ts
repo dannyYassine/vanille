@@ -107,10 +107,8 @@ export class View<P = {}> extends HTMLElement {
     const node = this.render?.(this.props);
 
     // for root only
-    if (!this.$scopedId) {
-      this.$scopedId = `v${generateRandomString(8)}`;
-      this.setAttribute(this.$scopedId, '');
-    }
+    this.$scopedId = `v${generateRandomString(8)}`;
+    this.setAttribute(this.$scopedId, '');
 
     if (node) {
       this.createStyleTag();

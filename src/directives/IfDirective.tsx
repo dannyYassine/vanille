@@ -15,7 +15,7 @@ export class IfDirective extends Directive {
         if (!!value === !!oldValue) {
           return;
         }
-        console.log(this.$el);
+        
         this.$el.remove();
       });
 

@@ -39,8 +39,10 @@ function initializeElement(
   $scopedId: string
 ): void {
   $el.props = {};
-  $el.$scopedId = $scopedId;
-  $el.setAttribute($scopedId, '');
+  if (!$el.$scopedId) {
+    $el.$scopedId = $scopedId;
+  }
+  $el.setAttribute($el.$scopedId, '');
 }
 
 function applyAttributes(
@@ -183,7 +185,9 @@ export function renderChild(
     return;
   }
 
-  (child as any).$scopedId = $el.$scopedId;
+  if (!(child as any).$scopedId) {
+    (child as any).$scopedId = $el.$scopedId;
+  }
   $el.appendChild(render(child as Array<unknown>, engine));
 }
 
