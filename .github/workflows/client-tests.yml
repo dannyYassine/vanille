@@ -10,8 +10,8 @@ on:
   
 jobs:
   vitest:
-    runs-on: ubuntu-latest
-    # runs-on: self-hosted
+    # runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
         with:
@@ -19,11 +19,15 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Build containers
-        run: docker compose -f docker-compose-ci.yml build playwright
+        run: |
+          docker compose -f docker-compose-ci.yml build playwright
+          docker compose -f docker-compose-ci.yml up --detach playwright
+      - name: Wait
+        run: sleep 5
       - name: Install node_modules
-        run: docker compose run playwright yarn
+        run: docker exec playwright yarn
       - name: Run tests
-        run: docker compose run playwright yarn test
+        run: docker docker exec playwright yarn test
       - name: Stop containers
         if: always()
         run: docker compose -f docker-compose-ci.yml down

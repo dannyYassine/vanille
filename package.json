@@ -19,7 +19,7 @@
     "port:http": "lt --port 3000 --subdomain vanille-client-app",
     "ngrok-edit": "ngrok config edit",
     "ngrok-setup": "ngrok config add-authtoken",
-    "dev": "yarn port:http & cd dev && yarn dev",
+    "dev": "yarn port:http & cd demo && yarn dev",
     "test": "vitest --segfault-retry=3 run",
     "test:watch": "vitest watch",
     "test:coverage": "vitest run --coverage",
