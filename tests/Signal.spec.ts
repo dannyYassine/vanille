@@ -57,7 +57,7 @@ describe('Signal', () => {
       let result = signal.get();
       expect(result).toEqual(1);
 
-      signal.set((c) => c+= 1);
+      signal.set((c) => (c += 1));
 
       result = signal.get();
       expect(result).toEqual(2);
@@ -66,7 +66,7 @@ describe('Signal', () => {
     test.each([
       ['string', '', '1'],
       ['number', 0, 1],
-      ['object', {}, {name: ''}],
+      ['object', {}, { name: '' }],
       ['array', [], [1]]
     ])('should set new value: %s', (name, value, newValue) => {
       const signal = state(value);
@@ -117,7 +117,7 @@ describe('Signal', () => {
       let result = signal.get();
       expect(result).toEqual(1);
 
-      signal.mutSet((c) => c += 1);
+      signal.mutSet((c) => (c += 1));
 
       result = signal.get();
       expect(result).toEqual(2);
@@ -139,7 +139,7 @@ describe('Signal', () => {
 
     test('should set new value as object', () => {
       const value = {};
-      const newValue = {name: ''};
+      const newValue = { name: '' };
 
       const signal = state(value);
 
@@ -197,13 +197,13 @@ describe('Signal', () => {
 
       const promise = new Promise((resolve) => {
         signal.subscribe((nV, oV) => {
-          resolve({nV, oV});
+          resolve({ nV, oV });
         });
       });
 
       const result = signal.set(1);
 
-      const {nV, oV} = await promise;
+      const { nV, oV } = await promise;
 
       expect(nV).toEqual(1);
       expect(oV).toEqual(0);
@@ -214,13 +214,13 @@ describe('Signal', () => {
 
       const promise = new Promise((resolve) => {
         signal.subscribe((nV, oV) => {
-          resolve({nV, oV});
+          resolve({ nV, oV });
         });
       });
 
       const result = signal.mutSet(1);
 
-      const {nV, oV} = await promise;
+      const { nV, oV } = await promise;
 
       expect(nV).toEqual(1);
       expect(oV).toEqual(0);

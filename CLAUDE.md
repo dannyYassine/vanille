@@ -44,3 +44,45 @@ Vanille (`@vanille/core`) is a zero-dependency web component framework built on 
 - **Component naming:** `v-` prefix for custom elements
 - **No production dependencies** — everything is built in-house
 - **Test pattern:** `tests/**/*.spec.{ts,tsx}`
+
+## Specialized Agents
+
+This project has specialized agents defined in `.github/agents/`. **Always check for and use specialized agents** before performing tasks:
+
+### test-runner Agent
+
+**When to use:** User requests to run tests, check test results, or troubleshoot test failures
+
+**How to use:**
+
+1. Read `.github/agents/test-runner.md` for full instructions
+2. Invoke using `runSubagent` with the prompt identifying as the test-runner agent
+3. Follow the agent's defined workflow and reporting format
+
+**Example invocation:**
+
+```typescript
+runSubagent({
+  description: 'Run all tests',
+  prompt: `You are the test-runner agent defined in .github/agents/test-runner.md. 
+  
+Run all tests in the Vanille project using 'yarn test' and report:
+1. Pass/fail status
+2. Total test counts  
+3. Any failures with details
+4. Execution time`
+});
+```
+
+**For parallel test execution:**
+
+- Distribute the 9 test files across 3 test-runner agents
+- Use the groupings defined in the test-runner agent documentation
+- Aggregate results from all agents
+
+### How to Add New Agents
+
+1. Create `.github/agents/<agent-name>.md`
+2. Use chatagent frontmatter with `name` and `description`
+3. Document the agent's role, workflow, and invocation pattern
+4. Update this section in CLAUDE.md
