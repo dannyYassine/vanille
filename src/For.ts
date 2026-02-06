@@ -37,7 +37,7 @@ export class For extends View<{
     return JSON.stringify(item) !== JSON.stringify(oldItem);
   }
 
-  private updateList(newItems: any[], oldItems: any[]) {
+  private updateList(newItems: any[], _oldItems: any[]) {
     const newItemsByKey = new Map();
     const processedKeys = new Set();
 
@@ -60,7 +60,7 @@ export class For extends View<{
     });
 
     // Second pass: Remove items that no longer exist
-    for (const [key, markers] of this.markersByKey.entries()) {
+    for (const [key] of this.markersByKey.entries()) {
       if (!processedKeys.has(key)) {
         this.removeItem(key);
       }

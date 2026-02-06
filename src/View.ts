@@ -8,13 +8,13 @@ export class View<P = {}> extends HTMLElement {
   props: P;
   styleTag?: HTMLStyleElement;
   refs: ProxyConstructor;
-  $c: Signal<unknown>[];
+  $computeds: Signal<unknown>[];
   $scopedId: string;
 
   constructor(viewMode: ViewMode = ViewMode.OPEN) {
     super();
     this.props = {};
-    this.$c = [];
+    this.$computeds = [];
     this.attachShadow({ mode: viewMode });
     
     this.refs = new Proxy(
@@ -37,8 +37,8 @@ export class View<P = {}> extends HTMLElement {
     return '';
   }
 
-  def(): object {
-    const define = (accum, key) => {
+  def(): Record<string, unknown> {
+    const define = (accum: Record<string, unknown>, key: string) => {
       const val = this[key];
       if (typeof val === 'function') {
         accum[key] = val.bind(this);
@@ -64,8 +64,8 @@ export class View<P = {}> extends HTMLElement {
     this.adopted();
   }
 
-  attributeChangedCallback(name, oldValue, newValue) {
-    this.attributeChanged(name, oldValue, newValue);
+  attributeChangedCallback(_name: string, _oldValue: string, _newValue: string) {
+    this.attributeChanged(_name, _oldValue, _newValue);
   }
 
   public connected() {}
@@ -74,7 +74,7 @@ export class View<P = {}> extends HTMLElement {
 
   public adopted() {}
 
-  public attributeChanged(name, oldValue, newValue) {}
+  public attributeChanged(_name: string, _oldValue: string, _newValue: string) {}
 
   protected createStyleTag(): void {
     const styleTagContent = `${this.styles()}${Vanille.getStyles()}`;
@@ -101,12 +101,10 @@ export class View<P = {}> extends HTMLElement {
   }
 
   updateRender() {
-    // temp, optimize
     this.root.innerHTML = '';
 
     const node = this.render?.(this.props);
 
-    // for root only
     if (!this.$scopedId) {
       this.$scopedId = `v${generateRandomString(8)}`;
       this.setAttribute(this.$scopedId, '');

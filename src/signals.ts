@@ -1,23 +1,24 @@
-import { isPrimitive } from "./helpers/isPrimitive";
+import { isPrimitive } from './helpers/isPrimitive';
+
+type SignalCallback<P> = (newValue: P, oldValue: P) => void;
 
 export class Signal<P> {
     value: P;
-    subscribers: Set<(newValue: P, oldValue: P) => void>;
+    subscribers: Set<SignalCallback<P>>;
 
     constructor(initialValue?: P) {
       this.value = initialValue;
       this.subscribers = new Set();
     }
   
-    get() {
-      // Track the signal's access (assume some global tracking function is available)
+    get(): P {
       if (globalThis.trackDependency) {
         globalThis.trackDependency(this);
       }
       return this.value;
     }
   
-    set(newValue) {
+    set(newValue: P | ((current: P) => P)) {
       if (typeof newValue === 'function') {
         newValue = newValue(this.value);
       }
@@ -29,7 +30,7 @@ export class Signal<P> {
       }
     }
   
-    mutSet(newValue) {
+    mutSet(newValue: P | ((current: P) => P)) {
       const oldValue = this.value;
       if (typeof newValue === 'function') {
         newValue = newValue(this.value);
@@ -42,7 +43,7 @@ export class Signal<P> {
       this.notifySubscribers(this.value, oldValue);
     }
   
-    subscribe(callback) {
+    subscribe(callback: SignalCallback<P>) {
       const unsubscribe = () => {
         this.unsubscribe(callback);
       };
@@ -51,59 +52,44 @@ export class Signal<P> {
       return unsubscribe;
     }
   
-    // Unsubscribe from changes
-    unsubscribe(callback) {
+    unsubscribe(callback: SignalCallback<P>) {
       this.subscribers.delete(callback);
     }
   
-    notifySubscribers(newValue, oldValue) {
+    notifySubscribers(_newValue: P, oldValue: P) {
       this.subscribers.forEach((callback) => callback(this.value, oldValue));
     }
   }
   
-  // Implementation of Signal.Computed
   export class Computed<P> extends Signal<P> {
     computeFn: () => P;
     dependencies: Set<Signal<P>>;
 
-    constructor(computeFn) {
+    constructor(computeFn: () => P) {
       super();
   
       this.computeFn = computeFn;
       this.value = undefined;
       this.subscribers = new Set();
-      this.dependencies = new Set(); // Track dependencies (other signals)
+      this.dependencies = new Set();
   
-      // Compute the initial value and set up tracking
       this.compute(true);
     }
   
-    // Compute the value and track dependencies
-    compute(val?: boolean) {
-      // Unsubscribe from previous dependencies
-      // this.dependencies.forEach((dep) => dep.unsubscribe(this.update));
-  
-      // Track dependencies during the computation
-      // this.dependencies.clear();
-  
-      if (val) {
-        // Monkey-patch the dependency tracking system
-        const trackDependency = (signal) => {
+    compute(initial?: boolean) {
+      if (initial) {
+        const trackDependency = (signal: Signal<P>) => {
           this.dependencies.add(signal);
-          signal.subscribe(this.update); // Subscribe to changes
+          signal.subscribe(this.update);
         };
   
-        // Temporarily replace the global `trackDependency` function
         globalThis.trackDependency = trackDependency;
       }
   
-      // Compute the new value
       const newValue = this.computeFn();
   
-      // Clean up the monkey-patch
       delete globalThis.trackDependency;
   
-      // If the computed value has changed, notify subscribers
       if (newValue !== this.value) {
         const oldValue = this.value;
         this.value = newValue;
@@ -111,47 +97,38 @@ export class Signal<P> {
       }
     }
   
-    // Method to call when a dependency changes
     update = () => {
-      this.compute(); // Recompute value when dependencies change
+      this.compute();
     };
   }
   
-  export function effect(fn) {
+  export function effect(fn: () => void) {
     const signals: Signal<unknown>[] = [];
-    // Assume we have some mechanism to track dependencies
-    globalThis.trackDependency = (signal) => {
-      signal.subscribe(fn); // Subscribe to changes
+    globalThis.trackDependency = (signal: Signal<unknown>) => {
+      signal.subscribe(fn);
       signals.push(signal);
     };
   
-    // Run the effect function
     fn();
   
-    // Clean up the monkey-patch
     delete globalThis.trackDependency;
   
-    // Subscribe the effect to signal changes
-    const unsubscribe = () => {
-      // Cleanup logic to unsubscribe if needed
+    return () => {
       signals.forEach((signal) => {
-        signal.unsubscribe(fn); // Subscribe to changes
+        signal.unsubscribe(fn);
       });
     };
-  
-    // Return an unsubscribe function
-    return unsubscribe;
   }
 
   export function state<P>(value: P): Signal<P> {
     return new Signal<P>(value);
-  };
+  }
   
   export function stateArray<P>(value: P[]): Signal<Signal<P>[]> {
     return new Signal<Signal<P>[]>(value.map((val) => new Signal(val)));
-  };
+  }
   
   export function computed<P>(cb: () => P): Computed<P> {
     return new Computed<P>(cb);
-  };
+  }
   

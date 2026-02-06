@@ -20,10 +20,9 @@ window.addEventListener('popstate', () => {
   window.dispatchEvent(new Event('locationchange'));
 });
 
-// @ts-ignore
-window.$location = window.location;
+(window as any).$location = window.location;
 
-export class Route extends View<{ startWith?: string; path?: string, group?: string }> {
+export class Route extends View<{ startWith?: string; path?: string; group?: string }> {
 
   matchesRoute: boolean = false;
 
@@ -31,8 +30,7 @@ export class Route extends View<{ startWith?: string; path?: string, group?: str
 
   constructor() {
     super();
-    // @ts-ignore
-    this.location = window.$location;
+    this.location = (window as any).$location;
   }
 
   connected(): void {
@@ -80,18 +78,13 @@ export class Route extends View<{ startWith?: string; path?: string, group?: str
       );
     }
 
-    // startWith
-    const paths = propsPaths.filter((path) => {
-      if (path.startsWith(':')) return true;
-      return true;
-    });
     let index = 0;
-    while (index < paths.length) {
-      if (paths[index].startsWith(':')) {
+    while (index < propsPaths.length) {
+      if (propsPaths[index].startsWith(':')) {
         index++;
         continue;
       }
-      if (paths[index] !== browserPaths[index]) {
+      if (propsPaths[index] !== browserPaths[index]) {
         return false;
       }
       index++;

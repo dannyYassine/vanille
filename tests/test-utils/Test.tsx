@@ -1,4 +1,3 @@
-import { BaseView } from '../../src/BaseView';
 import { View } from '../../src/View';
 import { Signal } from '../../src/signals';
 
