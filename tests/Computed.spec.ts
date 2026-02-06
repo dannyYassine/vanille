@@ -137,4 +137,60 @@ describe('Computed', () => {
   });
   });
 
+  describe('multiple dependencies', () => {
+    test('should recompute when any dependency changes', () => {
+      const a = state(1);
+      const b = state(2);
+      const sum = computed(() => a.get() + b.get());
+
+      expect(sum.get()).toBe(3);
+
+      a.set(10);
+      expect(sum.get()).toBe(12);
+
+      b.set(20);
+      expect(sum.get()).toBe(30);
+    });
+
+    test('should track all dependencies', () => {
+      const a = state(1);
+      const b = state(2);
+      const c = state(3);
+      const sum = computed(() => a.get() + b.get() + c.get());
+
+      expect(sum.dependencies.size).toBe(3);
+      expect(sum.get()).toBe(6);
+    });
+  });
+
+  describe('chained computed', () => {
+    test('should update when upstream computed changes', () => {
+      const base = state(2);
+      const doubled = computed(() => base.get() * 2);
+      const quadrupled = computed(() => doubled.get() * 2);
+
+      expect(quadrupled.get()).toBe(8);
+
+      base.set(3);
+      expect(doubled.get()).toBe(6);
+      expect(quadrupled.get()).toBe(12);
+    });
+  });
+
+  describe('no-change optimization', () => {
+    test('should not notify subscribers when recomputed value is unchanged', () => {
+      const signal = state(5);
+      const clamped = computed(() => Math.min(signal.get(), 10));
+      const callback = vi.fn();
+      clamped.subscribe(callback);
+
+      // Both values clamp to the same result
+      signal.set(8);
+      expect(clamped.get()).toBe(8);
+      expect(callback).toHaveBeenCalledTimes(1);
+
+      signal.set(8);
+      expect(callback).toHaveBeenCalledTimes(1);
+    });
+  });
 });
