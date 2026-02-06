@@ -1,6 +1,6 @@
-# AGENTS.md
+# Copilot Instructions
 
-This file provides instructions and context for AI coding agents (e.g. GitHub Copilot) working in this repository.
+This file provides instructions and context for GitHub Copilot and other AI coding agents working in this repository.
 
 ## Project Overview
 
