@@ -1,40 +1,37 @@
-import { View } from "./View";
+import { View } from './View';
+
+type ComponentTag = string | { name: string } | Function;
 
 export class Engine {
-    buildElement(
-        tagName: string | { name: string } | Function,
-      ): HTMLElement {
-        const isCustomElement = tagName?.name;
+    buildElement(tagName: ComponentTag): HTMLElement {
+        const isCustomElement = (tagName as { name: string })?.name;
       
         if (isCustomElement) {
       
-          // class component
-          if (tagName instanceof Function && tagName.__proto__.name !== '') {
-            return this.getElement(tagName);
+          if (tagName instanceof Function && Object.getPrototypeOf(tagName).name !== '') {
+            return this.getElement(tagName as Function & { name: string });
           }
       
-          // functional component
-          // if (tagName instanceof Function && tagName.__proto__.name === '') {
-            const view = new View();
-            view.render = tagName.bind(view);
+          const view = new View();
+          (view as any).render = (tagName as Function).bind(view);
       
-            return view;
-          // }
+          return view;
       
         }
-        return this.createElement(tagName as string) as any;
+        return this.createElement(tagName as string);
       }
 
-    getElement(tag) {
-      let Constructor = window.customElements.get(`v-${tag.name.toLowerCase()}`);
+    getElement(tag: Function & { name: string }): HTMLElement {
+      const elementName = `v-${tag.name.toLowerCase()}`;
+      let Constructor = window.customElements.get(elementName);
         if (!Constructor) {
-          window.customElements.define(`v-${tag.name.toLowerCase()}`, tag);
-          Constructor = window.customElements.get(`v-${tag.name.toLowerCase()}`);
+          window.customElements.define(elementName, tag as CustomElementConstructor);
+          Constructor = window.customElements.get(elementName);
         }
         return new Constructor();
     }
   
-    createElement(tagName) {
+    createElement(tagName: string): HTMLElement {
       return window.document.createElement(tagName);
     }
   }

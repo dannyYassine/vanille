@@ -1,6 +1,5 @@
 import { afterEach, describe, expect, test, vi } from 'vitest';
 import { mount } from './test-utils';
-import { BaseView } from './../src/BaseView';
 import { Test, TestWithClassComponents } from './test-utils/Test';
 import { View } from '../src/View';
 import { shallowMount } from './test-utils/utils';

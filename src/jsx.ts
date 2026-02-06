@@ -8,9 +8,10 @@ export function h(...args: any[]): any[] {
 }
 
 type HasScopedId = { $scopedId: string };
-type HasProps = { props: { string: any } };
-// @ts-ignore
-window.h = h;
+type HasProps = { props: { [key: string]: any } };
+type HasComputeds = { $computeds: Computed<unknown>[] };
+
+(window as any).h = h;
 
 export function render(
   jsx: Array<unknown>,
@@ -84,28 +85,28 @@ function handleAttributeValue(
 }
 
 function handleComputedValue(
-  $el: HTMLElement & HasProps,
+  $el: HTMLElement & HasProps & HasComputeds,
   key: string,
   value: Function
 ): void {
-  const $c = computed(value.bind($el));
-  if (!$el.$c) $el.$c = [];
-  $el.$c.push($c);
+  const $comp = computed(value.bind($el));
+  if (!$el.$computeds) $el.$computeds = [];
+  $el.$computeds.push($comp);
 
-  $c.subscribe((val) => {
+  $comp.subscribe((val) => {
     if (key in $el) {
       $el[key] = val;
     }
     safeSetAttribute($el, key, val);
   });
 
-  safeSetAttribute($el, key, $c.get());
+  safeSetAttribute($el, key, $comp.get());
 }
 
 function handleSignalValue(
   $el: HTMLElement,
   key: string,
-  signal: Signal
+  signal: Signal<unknown>
 ): void {
   signal.subscribe((val) => {
     if (key in $el) {
@@ -179,7 +180,7 @@ function isHTMLElement(child: any): boolean {
   return 'nodeName' in child || child instanceof HTMLElement;
 }
 
-function renderSignalChild($el: HTMLElement, signal: Signal): void {
+function renderSignalChild($el: HTMLElement, signal: Signal<unknown>): void {
   const uuid = generateRandomString(8);
 
   $el.insertAdjacentHTML(
@@ -192,20 +193,20 @@ function renderSignalChild($el: HTMLElement, signal: Signal): void {
   });
 }
 
-function renderComputedChild($el: HTMLElement, f: Function): void {
+function renderComputedChild($el: HTMLElement & HasComputeds, f: Function): void {
   const uuid = generateRandomString(8);
 
-  const $c = computed(f);
+  const $comp = computed(f);
 
-  if (!$el.$c) $el.$c = [];
-  $el.$c.push($c);
+  if (!$el.$computeds) $el.$computeds = [];
+  $el.$computeds.push($comp);
 
   $el.insertAdjacentHTML(
     'beforeend',
-    `<!--${uuid}-->${$c.get()}<!--${uuid}-->`
+    `<!--${uuid}-->${$comp.get()}<!--${uuid}-->`
   );
 
-  $c.subscribe((newValue) => {
+  $comp.subscribe((newValue) => {
     updateSignalContent($el, uuid, newValue);
   });
 }
