@@ -25,6 +25,7 @@ services:
       dockerfile: docker/playwright.ci.dockerfile
     image: vanille-playwright
     ports:
+    
       - "3001:3001"
     networks:
       - vanille
